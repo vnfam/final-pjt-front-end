@@ -13,7 +13,10 @@ module.exports = {
       neutral: '#F0F0EB', // 부드러운 베이지 또는 밝은 회색
       accent: '#A8D08D', // 밝은 녹색의 더 연한 톤
       darkGreen: '#004d40', // 짙은 녹색 (Dark Green)
-      midGreen: '#388E3C', // 중간 톤의 녹색 (Mid Green)
+      midGreen: '#388E3C', // 중간 톤의 녹색 (Mid Green)\
+      white: '#ffffff',
+      red: '#D2042D',
+      confirm: '#27ae60',
       gray: {
         50: '#F9FAFB', // 매우 밝은 회색
         100: '#F3F4F6', // 밝은 회색
