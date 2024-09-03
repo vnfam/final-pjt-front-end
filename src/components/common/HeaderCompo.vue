@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Hello World</h1>
-    <p>Welcome to your Vue.js App</p>
+    <h1>Header</h1>
   </div>
 </template>
 
