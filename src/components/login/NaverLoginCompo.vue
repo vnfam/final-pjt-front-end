@@ -5,7 +5,7 @@
 import { onMounted } from 'vue';
 
 const NAVER_CLIENT_ID = 'tAF0P4jRzJskU8H5YXyd'; // 발급 받은 Client ID 입력
-const NAVER_CALLBACK_URL = 'http://localhost:8080/api/members/oauth/naver'; // 작성했던 Callback URL 입력
+const NAVER_CALLBACK_URL = 'http://localhost:8080/login/oauth2/code/naver'; // 작성했던 Callback URL 입력
 
 const setGetToken = (token) => {
 // 토큰 저장 로직 구현
