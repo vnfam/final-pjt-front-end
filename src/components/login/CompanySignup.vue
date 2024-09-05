@@ -133,18 +133,16 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="experience" class="text-[14px] font-normal mb-4">경력</label>
+          <label for="publishDate" class="text-[14px] font-normal mb-4">개업일자</label>
           <div class="mt-2 flex justify-between items-center">
             <input
-              v-model="experience"
-              @blur="validateExperience"
+              v-model="publishDate"
+              @blur="validatePublishDate"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
-              type="text"
-              placeholder="경력을 입력해 주세요."
+              type="date"
               required
             />
           </div>
-          <p v-if="errors.experience" class="text-red text-[12px] mt-2">{{ errors.experience }}</p>
         </div>
 
         <button
@@ -160,20 +158,18 @@
 </template>
 
 <script>
-import axiosInstance from '@/api/axios';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       companyName: '',
       companyNumber: '',
-      email: '',
       password: '',
       confirmPassword: '',
       owner: '',
       phoneNumber: '',
-      experience: '',
-      speciality: '',
+      publishDate: '',
 
       errors: {},
       emailVerified: false,
@@ -260,40 +256,26 @@ export default {
         delete this.errors.phoneNumber;
       }
     },
-    validateExperience() {
-      const experiencePattern = /^[0-9]+$/;
-      if (!this.experience) {
-        this.errors.experience = '경력을 입력해 주세요.';
-      } else if (!experiencePattern.test(this.experience)) {
-        this.errors.experience = '경력은 숫자만 입력할 수 있습니다.';
-      } else {
-        delete this.errors.experience;
-      }
-    },
     // 업체 등록 요청
     async insertCompany() {
       // 유효성 검사
       this.validateForm();
 
-      console.log('함수 안');
       // 에러가 없는 경우에만 서버로 요청 전송
       if (Object.keys(this.errors).length === 0) {
         const companyData = {
-          companyName: this.companyName,
-          companyNumber: this.companyNumber,
           email: this.email,
+          companyName: this.companyName,
           password: this.password,
-          owner: this.owner,
           phoneNumber: this.phoneNumber,
-          experience: this.experience,
+          owner: this.owner,
+          companyNumber: this.companyNumber,
+          publishDate: this.publishDate,
         };
-        console.log('if문 안');
 
         // 서버로 POST 요청
         try {
-          console.log('try문 안');
-
-          const response = await axiosInstance.post('/company', companyData);
+          const response = await axios.post('/api/company', companyData);
           console.log(response.data);
           alert('업체 등록이 완료되었습니다.');
         } catch (error) {
@@ -313,7 +295,6 @@ export default {
       this.validateConfirmPassword();
       this.validateOwner();
       this.validatePhoneNum();
-      this.validateExperience();
     },
   },
 };
