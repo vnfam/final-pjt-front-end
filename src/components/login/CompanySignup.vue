@@ -20,6 +20,28 @@
         </div>
 
         <div class="mb-[12px]">
+          <label for="companyNumber" class="text-[14px] font-normal mb-4">사업자번호</label>
+          <div class="mt-2 flex justify-between items-center">
+            <input
+              v-model="companyNumber"
+              @blur="validateCompanyNumber"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              type="text"
+              placeholder="사업자 번호를 입력해 주세요."
+              required
+            />
+            <button
+              @click.prevent="verifyCompanyNumber"
+              class="bg-midGreen text-white text-[14px] h-[52px] rounded-[4px] w-[90px] ml-2"
+            >
+              확인
+            </button>
+          </div>
+          <p v-if="errors.companyNumber" class="text-red text-[12px] mt-2">{{ errors.companyNumber }}</p>
+          <p v-if="companyNumberVerified" class="text-confirm text-[12px] mt-2">사업자 번호가 확인되었습니다.</p>
+        </div>
+
+        <div class="mb-[12px]">
           <label for="email" class="text-[14px] font-normal mb-4">이메일</label>
           <div class="mt-2 flex justify-between items-center">
             <input
@@ -99,7 +121,7 @@
           <label for="phone" class="text-[14px] font-normal mb-4">휴대폰번호</label>
           <div class="mt-2 flex justify-between items-center">
             <input
-              v-model="phone"
+              v-model="phoneNumber"
               @blur="validatePhone"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="text"
@@ -107,14 +129,28 @@
               required
             />
           </div>
-          <p v-if="errors.phone" class="text-red text-[12px] mt-2">{{ errors.phone }}</p>
+          <p v-if="errors.phoneNumber" class="text-red text-[12px] mt-2">{{ errors.phoneNumber }}</p>
+        </div>
+
+        <div class="mb-[12px]">
+          <label for="publishDate" class="text-[14px] font-normal mb-4">개업일자</label>
+          <div class="mt-2 flex justify-between items-center">
+            <input
+              v-model="publishDate"
+              @blur="validatePublishDate"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              type="date"
+              required
+            />
+          </div>
         </div>
 
         <button
+          @click="insertCompany"
           type="submit"
-          class="bg-midGreen text-white w-[100%] h-[52px] border-solid border-[1px] border-secondary rounded-[4px] text-[16px] mt-[24px]"
+          class="bg-midGreen text-white w-full h-[52px] rounded-[4px] text-[16px] mt-[24px]"
         >
-          가입하기
+          등록하기
         </button>
       </form>
     </div>
@@ -122,17 +158,22 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      email: '',
+      companyName: '',
+      companyNumber: '',
       password: '',
       confirmPassword: '',
-      companyName: '',
       owner: '',
-      phone: '',
+      phoneNumber: '',
+      publishDate: '',
+
       errors: {},
       emailVerified: false,
+      companyNumberVerified: false,
       passwordsMatch: false,
     };
   },
@@ -140,6 +181,9 @@ export default {
     // 이메일 중복 확인
     verifyEmail() {
       this.emailVerified = true;
+    },
+    verifyCompanyNumber() {
+      this.companyNumberVerified = true;
     },
     validateEmail() {
       this.emailVerified = false; // 이메일이 변경되면 중복 확인 상태를 초기화
@@ -152,6 +196,18 @@ export default {
         delete this.errors.email;
       }
     },
+    validateCompanyNumber() {
+      this.companyNumberVerified = false; // 사업자번호가 변경되면 확인 상태 초기화
+      const companyNumberPattern = /^[0-9-]+$/;
+      if (!this.companyNumber) {
+        this.errors.companyNumber = '사업자 번호를 입력해 주세요.';
+      } else if (!companyNumberPattern.test(this.companyNumber)) {
+        this.errors.companyNumber = '사업자 번호는 숫자와 "-"만 입력할 수 있습니다.';
+      } else {
+        delete this.errors.companyNumber;
+      }
+    },
+
     validatePassword() {
       if (!this.password) {
         this.errors.password = '비밀번호를 입력해 주세요.';
@@ -190,32 +246,56 @@ export default {
         delete this.errors.owner;
       }
     },
-    validatePhone() {
+    validatePhoneNum() {
       const phonePattern = /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}/;
-      if (!this.phone) {
-        this.errors.phone = '휴대폰번호를 입력해 주세요.';
-      } else if (!phonePattern.test(this.phone)) {
-        this.errors.phone = '유효한 휴대폰번호를 입력해 주세요.';
+      if (!this.phoneNumber) {
+        this.errors.phoneNumber = '휴대폰번호를 입력해 주세요.';
+      } else if (!phonePattern.test(this.phoneNumber)) {
+        this.errors.phoneNumberv = '유효한 휴대폰번호를 입력해 주세요.';
       } else {
-        delete this.errors.phone;
+        delete this.errors.phoneNumber;
       }
     },
+    // 업체 등록 요청
+    async insertCompany() {
+      // 유효성 검사
+      this.validateForm();
+
+      // 에러가 없는 경우에만 서버로 요청 전송
+      if (Object.keys(this.errors).length === 0) {
+        const companyData = {
+          email: this.email,
+          companyName: this.companyName,
+          password: this.password,
+          phoneNumber: this.phoneNumber,
+          owner: this.owner,
+          companyNumber: this.companyNumber,
+          publishDate: this.publishDate,
+        };
+
+        // 서버로 POST 요청
+        try {
+          const response = await axios.post('/api/company', companyData);
+          console.log(response.data);
+          alert('업체 등록이 완료되었습니다.');
+        } catch (error) {
+          console.error(error);
+          alert('업체 등록에 실패했습니다.');
+        }
+      } else {
+        alert('입력한 정보를 확인해 주세요.');
+      }
+    },
+
     validateForm() {
+      this.validateCompanyName();
+      this.validateCompanyNumber();
       this.validateEmail();
       this.validatePassword();
       this.validateConfirmPassword();
-      this.validateCompanyName();
       this.validateOwner();
-      this.validatePhone();
-
-      if (Object.keys(this.errors).length === 0) {
-        alert('업체 가입 성공');
-      } else {
-        alert('입력 정보를 다시 확인해주세요');
-      }
+      this.validatePhoneNum();
     },
   },
 };
 </script>
-
-<style></style>

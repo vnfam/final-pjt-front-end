@@ -17,7 +17,7 @@
     <div class="flex">
       <p
         @click="$router.push('/login')"
-        class="cursor-pointer text-[16px] font-semibold mr-4"
+        class="cursor-pointer text-[16px] font-semibold mr-8"
         :class="{ 'text-midGreen': isLoginPage, 'hover:text-midGreen': !isLoginPage }"
       >
         로그인

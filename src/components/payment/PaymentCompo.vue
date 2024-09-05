@@ -1,18 +1,20 @@
 <template>
   <h1>결제 !</h1>
   <button @click="paymentRequest()">결제</button>
+
 </template>
 
 <script>
 const SERVER_BASE_URL = 'http://localhost:8080';
-const membership_name = 'BASIC';
-const membership_id = 1;
-const membership_price = 100;
+
+
 export default {
   props: {
-    membership_name: membership_name,
-    membership_price: membership_price,
-    membership_id: membership_id,
+    membershipList
+  },
+
+  mounted() {
+    SERVER_BASE_URL/memberships
   },
 
   methods: {
@@ -35,18 +37,19 @@ export default {
             return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
           }
 
+
           // 고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
           // (다음 목차에서 설명합니다)
-          const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
-            body: JSON.stringify({
-              imp_uid: response.imp_uid,
-              merchant_uid: response.merchant_uid,
-              // 주문 정보...
-            }),
-          });
+          // const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+          //   method: 'POST',
+          //   headers: { 'Content-Type': 'application/json' },
+          //   // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
+          //   body: JSON.stringify({
+          //     imp_uid: response.imp_uid,
+          //     merchant_uid: response.merchant_uid,
+          //     // 주문 정보...
+          //   }),
+          // });
         }
       );
     },
