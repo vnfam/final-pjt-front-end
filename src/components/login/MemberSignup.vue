@@ -120,7 +120,7 @@
 
         <button
           type="submit"
-          class="bg-midGreen text-white w-[100%] h-[52px] border-solid border-[1px] border-secondary rounded-[4px] text-[16px] mt-[24px]"
+          class="bg-midGreen text-white w-full h-[52px] border-solid border-[1px] border-secondary rounded-[4px] text-[16px] mt-[24px]"
         >
           가입하기
         </button>

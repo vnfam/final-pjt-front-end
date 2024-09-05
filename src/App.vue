@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 1024px; height: 100vh; margin: 0 auto">
+  <div style="width: 1100px; height: 100vh; margin: 0 auto">
     <header-compo></header-compo>
     <div class="mt-5">
       <router-view></router-view>
