@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <h1>결제 !</h1>
   <button @click="paymentRequest()">결제</button>
 
@@ -57,4 +57,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style></style> -->
