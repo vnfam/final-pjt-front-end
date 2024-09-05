@@ -41,8 +41,9 @@
             <button type="button" class="naverLoginBtn"></button>
             <!-- <div class="naverLogin"></div> -->
             <NaverLoginCompo />
-            <div class="kakaoLogin"><a href="http://localhost:8080/oauth2/authorization/naver">로그인</a></div>
-          
+            <div class="kakaoLogin">
+              <a href="http://localhost:8080/oauth2/authorization/naver">로그인</a>
+            </div>
           </div>
         </form>
       </div>
