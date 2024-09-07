@@ -14,6 +14,16 @@
       </div>
     </div>
 
+    <div class="estimate">
+      <p
+        @click="$router.push('/requestEstimate')"
+        class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
+        :class="{ 'text-midGreen font-bold': isRequestEstimatePage, 'hover:text-midGreen': !isRequestEstimatePage }"
+      >
+        견적 요청
+      </p>
+    </div>
+
     <div class="flex">
       <p
         @click="$router.push('/login')"
@@ -44,6 +54,9 @@ export default {
     },
     isSignupPage() {
       return this.$route.path === '/memberSignup' || this.$route.path === '/companySignup';
+    },
+    isRequestEstimatePage() {
+      return this.$route.path === '/requestEstimate';
     },
   },
 };

@@ -3,11 +3,16 @@ import CompanySignup from '@/components/login/CompanySignup.vue';
 import LoginCompo from '@/components/login/LoginCompo.vue';
 import MemberSignup from '@/components/login/MemberSignup.vue';
 import RedirectCompo from '@/components/login/RedirectCompo.vue';
+import RequestEstimateCompo from '@/components/estimate/RequestEstimateCompo'
 
 export default [
   { path: '/', component: HomeCompo },
   { path: '/login', component: LoginCompo },
   { path: '/memberSignup', component: MemberSignup },
   { path: '/companySignup', component: CompanySignup },
-  { path:'/oauth/redirect', component: RedirectCompo } 
+  { path:'/oauth/redirect', component: RedirectCompo },
+  {
+    path: '/requestEstimate',
+    component: RequestEstimateCompo
+  }
 ];
