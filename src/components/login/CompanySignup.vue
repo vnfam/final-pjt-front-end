@@ -202,6 +202,8 @@
           @click="insertCompany"
           type="submit"
           class="bg-midGreen text-white w-full h-[52px] rounded-[4px] text-[16px] mt-[24px]"
+          :disabled="!isFormValid"
+          :class="{ 'opacity-50 cursor=not-allowed': !isFormValid }"
         >
           등록하기
         </button>
@@ -236,6 +238,17 @@ export default {
     };
   },
   computed: {
+    // 전체 입력과 인증 완료됐을 때 true
+    isFormValid() {
+      return (
+        Object.keys(this.errors).length === 0 &&
+        this.emailVerified &&
+        this.companyNumberVerified &&
+        this.passwordsMatch &&
+        this.selectedTypes.length > 0
+      );
+    },
+
     // 전체 선택 여부 계산
     isAllSelected() {
       return this.selectedTypes.length === this.constructionTypes.length;
@@ -246,8 +259,21 @@ export default {
   },
   methods: {
     // 이메일 중복 확인
-    verifyEmail() {
-      this.emailVerified = true;
+    async verifyEmail() {
+      try {
+        const response = await axios.get('/api/company/check-email', {
+          params: { email: this.email },
+        });
+        if (response.data) {
+          this.errors.email = '이미 사용 중인 이메일입니다.';
+        } else {
+          delete this.errors.email;
+          this.emailVerified = true;
+        }
+      } catch (error) {
+        console.error(error);
+        this.errors.email = '이메일 중복 확인에 실패했습니다.';
+      }
     },
     verifyCompanyNumber() {
       this.companyNumberVerified = true;
@@ -289,12 +315,17 @@ export default {
       this.checkPasswordsMatch(); // 중복 호출 방지
     },
     checkPasswordsMatch() {
-      if (this.confirmPassword === this.password) {
-        this.passwordsMatch = true;
-        delete this.errors.confirmPassword;
+      if (this.password && this.confirmPassword) {
+        // 공백이 아닐 때만 검사
+        if (this.confirmPassword === this.password) {
+          this.passwordsMatch = true;
+          delete this.errors.confirmPassword;
+        } else {
+          this.passwordsMatch = false;
+          this.errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+        }
       } else {
-        this.passwordsMatch = false;
-        this.errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+        this.passwordsMatch = false; // 공백일 때는 일치하지 않음
       }
     },
     validateCompanyName() {
