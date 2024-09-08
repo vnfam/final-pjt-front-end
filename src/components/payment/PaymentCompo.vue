@@ -3,40 +3,17 @@
     <div v-for="membership in membershipList" :key="membership.id">
       <div>{{ membership.type }}</div>
       <div>{{ membership.price }}</div>
-      <button @onclick="paymentRequest(membership.id)">결제하기</button>
+      <button @click="this.paymentRequest(membership.id)">결제하기</button>
     </div>
+
+    <button @click="this.refundRequest()">환불 요청</button>
+    <input type="text" v-model="id" style="background-color: aliceblue;">
   </div>
 </template>
 
 <script>
-
 import axios from 'axios';
-const SERVER_BASE_URL = 'http://localhost:8080';
 
-export default {
-  
-  data() {
-    return {
-      membershipList: [],
-    }
-  },
-
-  mounted() {
-    // memberships를 호출해서 membershipList 조회
-    axios.get(`${SERVER_BASE_URL}/api/memberships`)
-      .then(response => {
-        console.log(response.data);
-        this.membershipList = response.data.data;
-        console.log(this.membershipList);
-      })
-  },
-
-  methods: {
-    paymentRequest(memberShip) {
-      // 1. 결제 정보를 생성한다.
-
-      // 2. 이후 PG사를 통해 실제 결제를 요청한다.
-import axios from 'axios';
 
 const SERVER_BASE_URL = 'http://localhost:8080';
 
@@ -44,6 +21,7 @@ export default {
   data() {
     return {
       membershipList: [],
+      id: 36,
     };
   },
 
@@ -57,19 +35,29 @@ export default {
 
   methods: {
     async paymentRequest(membershipId) {
+      console.log("결제 요청")
+      console.log(membershipId);
+
+
      // 향후 Authorization Header 전송을 수행해야한다.
       const response = await axios.post(`${SERVER_BASE_URL}/api/payment/prepare`, {
         membershipId: membershipId,
       });
+
+      const price = response.data.data.price;
+      const membershipType = response.data.data.type;
+      const merchantUid = response.data.data.merchantUid;
+
+      console.log(price);
       console.log(response);
-8
+      try {
       window.IMP.request_pay(
         {
           pg: 'html5_inicis',
           pay_method: 'card',
-          merchant_uid: '', // 주문 고유 번호
-          name: `${response.data.type}`,
-          amount: `${response.data}`,
+          merchant_uid: `${merchantUid}`, // 주문 고유 번호
+          name: `${membershipType}`,
+          amount: `${price}`,
 
           buyer_email: 'gildong@gmail.com',
           buyer_name: '홍길동',
@@ -86,24 +74,18 @@ export default {
           const complete = await axios.post(`${SERVER_BASE_URL}/api/payment/complete`, {
             impUid: response.imp_uid,
             merchantUid: response.merchant_uid,
+            success: response.success,
+            paidAmount: response.paid_amount,
           });
 
-<<<<<<< HEAD
-//          고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
-//          (다음 목차에서 설명합니다)
-          const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
-            body: JSON.stringify({
-              imp_uid: response.imp_uid,
-              merchant_uid: response.merchant_uid,
-              // 주문 정보...
-            }),
-          });
-        }
-=======
-          console.log(complete);
+          const paymentResult = complete.data.data;
+
+          console.log(paymentResult);
+          // payment 결과에 따라
+          if (paymentResult) {
+            // 어떤걸 할지 결정해야함.
+          }
+
           // 고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
           // (다음 목차에서 설명합니다)
           // const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
@@ -116,13 +98,22 @@ export default {
           //     // 주문 정보...
           //   }),
           // });
-
-          throw new Error(response);
         },
->>>>>>> 3f84f11255c9846d2fe5066ef42364a0668941b8
       );
+      } catch(error) {
+        console.log(error);
+      }
+    },
+    async refundRequest() {
+      const result = await axios.post(`${SERVER_BASE_URL}/api/payment/refund`, {
+        id: this.id
+      });
+
+      console.log(result);
     },
   },
+
+  
 };
 </script>
 
