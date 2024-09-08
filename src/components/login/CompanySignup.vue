@@ -401,13 +401,11 @@ export default {
           constructionService: this.selectedTypes, // 선택된 시공 종류 ID 배열
         };
 
-        console.log(companyData);
-
         // 서버로 POST 요청
         try {
-          const response = await axios.post('/api/company', companyData);
-          console.log(response.data);
+          await axios.post('/api/company', companyData);
           alert('업체 등록이 완료되었습니다.');
+          this.$router.push('/');
         } catch (error) {
           console.error(error);
           alert('업체 등록에 실패했습니다.');
