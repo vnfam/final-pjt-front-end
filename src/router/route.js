@@ -21,7 +21,7 @@ export default [
     path: '/requestEstimate',
     component: RequestEstimateCompo,
     children: [
-      { path: '', redirect: '/requestEstimate/stepOne' }, // 기본적으로 step1으로 리디렉션
+      { path: '', redirect: '/requestEstimate/stepOne' }, // 기본적으로 stepOne으로 리다이렉트
       { path: 'stepOne', component: StepOne },
       { path: 'stepTwo', component: StepTwo },
       { path: 'stepThree', component: StepThree },
@@ -29,6 +29,5 @@ export default [
       { path: 'stepFive', component: StepFive },
     ],
   },
-  { path: '/oauth/redirect', component: RedirectCompo },
   { path: '/company/:id', component: CompanyDetail },
 ];
