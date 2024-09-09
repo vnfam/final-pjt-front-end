@@ -3,7 +3,10 @@
     <div>
       <p class="text-2xl font-semibold text-center pb-4">업체 등록</p>
 
-      <form @submit.prevent="validateForm" class="w-[500px] px-10 py-4 pb-20 mx-auto">
+      <form
+        @submit.prevent="validateForm"
+        class="w-[500px] mb-2 overflow-x-hidden overflow-y-scroll px-10 pt-2 pb-4 pb-20 mx-auto"
+      >
         <div class="mb-[12px]">
           <label for="companyName" class="text-[14px] font-normal mb-4">업체 이름</label>
           <div class="mt-2 flex justify-between items-center">
@@ -118,7 +121,8 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="phone" class="text-[14px] font-normal mb-4">휴대폰번호</label>
+          <label for="phone" class="text-[14px] font-normal mb-4">휴대폰번호 </label>
+          <span class="text-[10px] text-[#bbb] leading-[14px]">(숫자만 입력)</span>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="phoneNumber"
@@ -145,10 +149,61 @@
           </div>
         </div>
 
+        <div class="mb-[12px]">
+          <label for="address" class="text-[14px] font-normal mb-4">업체 주소 </label>
+          <span class="text-[10px] text-[#bbb] leading-[14px]">(상세 주소까지 작성)</span>
+          <div class="mt-2 flex justify-between items-center">
+            <input
+              v-model="address"
+              @blur="validateAddress"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              type="text"
+              required
+            />
+          </div>
+          <p v-if="errors.address" class="text-red text-[12px] mt-2">{{ errors.address }}</p>
+        </div>
+
+        <div class="mb-[12px]">
+          <label for="companyDesc" class="text-[14px] font-normal mb-4">업체 소개 </label>
+          <div class="mt-2 flex justify-between items-center">
+            <textarea
+              v-model="companyDesc"
+              class="flex-grow h-[82px] text-[14px] font-normal px-4 py-2 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              type="text"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="mb-[12px]">
+          <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
+
+          <!-- 전체 선택 체크박스 -->
+          <div class="mt-2 mb-3 flex items-center">
+            <input type="checkbox" @change="toggleAllConstructionTypes" :checked="isAllSelected" class="mr-2" />
+            <span>전체 선택</span>
+          </div>
+
+          <!-- 개별 시공 종류 체크박스 -->
+          <div class="mt-2 flex flex-wrap gap-2">
+            <div v-for="type in constructionTypes" :key="type.id" class="flex items-center">
+              <input type="checkbox" :value="type.id" v-model="selectedTypes" class="mr-2" />
+              <span>{{ type.name }}</span>
+            </div>
+          </div>
+
+          <p v-if="selectedTypes.length === 0" class="text-red text-[12px] mt-2">
+            최소 한 개의 시공 종류를 선택해야 합니다.
+          </p>
+        </div>
+
         <button
           @click="insertCompany"
           type="submit"
           class="bg-midGreen text-white w-full h-[52px] rounded-[4px] text-[16px] mt-[24px]"
+          :disabled="!isFormValid"
+          :class="{ 'opacity-50 cursor=not-allowed': !isFormValid }"
         >
           등록하기
         </button>
@@ -165,11 +220,16 @@ export default {
     return {
       companyName: '',
       companyNumber: '',
+      email: '',
       password: '',
       confirmPassword: '',
       owner: '',
       phoneNumber: '',
       publishDate: '',
+      companyDesc: '',
+      address: '',
+      constructionTypes: [], // 시공 종류 데이터 배열
+      selectedTypes: [], // 선택된 시공 종류 배열
 
       errors: {},
       emailVerified: false,
@@ -177,10 +237,43 @@ export default {
       passwordsMatch: false,
     };
   },
+  computed: {
+    // 전체 입력과 인증 완료됐을 때 true
+    isFormValid() {
+      return (
+        Object.keys(this.errors).length === 0 &&
+        this.emailVerified &&
+        this.companyNumberVerified &&
+        this.passwordsMatch &&
+        this.selectedTypes.length > 0
+      );
+    },
+
+    // 전체 선택 여부 계산
+    isAllSelected() {
+      return this.selectedTypes.length === this.constructionTypes.length;
+    },
+  },
+  mounted() {
+    this.getConstructionType();
+  },
   methods: {
     // 이메일 중복 확인
-    verifyEmail() {
-      this.emailVerified = true;
+    async verifyEmail() {
+      try {
+        const response = await axios.get('/api/company/check-email', {
+          params: { email: this.email },
+        });
+        if (response.data) {
+          this.errors.email = '이미 사용 중인 이메일입니다.';
+        } else {
+          delete this.errors.email;
+          this.emailVerified = true;
+        }
+      } catch (error) {
+        console.error(error);
+        this.errors.email = '이메일 중복 확인에 실패했습니다.';
+      }
     },
     verifyCompanyNumber() {
       this.companyNumberVerified = true;
@@ -222,12 +315,17 @@ export default {
       this.checkPasswordsMatch(); // 중복 호출 방지
     },
     checkPasswordsMatch() {
-      if (this.confirmPassword === this.password) {
-        this.passwordsMatch = true;
-        delete this.errors.confirmPassword;
+      if (this.password && this.confirmPassword) {
+        // 공백이 아닐 때만 검사
+        if (this.confirmPassword === this.password) {
+          this.passwordsMatch = true;
+          delete this.errors.confirmPassword;
+        } else {
+          this.passwordsMatch = false;
+          this.errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+        }
       } else {
-        this.passwordsMatch = false;
-        this.errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+        this.passwordsMatch = false; // 공백일 때는 일치하지 않음
       }
     },
     validateCompanyName() {
@@ -256,6 +354,33 @@ export default {
         delete this.errors.phoneNumber;
       }
     },
+    validateAddress() {
+      if (!this.address) {
+        this.errors.address = '업체 주소를 입력해주세요.';
+      } else {
+        delete this.errors.address;
+      }
+    },
+
+    // 시공 종류 조회
+    async getConstructionType() {
+      try {
+        const response = await axios.get('/api/constructionType');
+        this.constructionTypes = response.data; // 시공 종류 데이터 저장
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // 전체 선택/해제
+    toggleAllConstructionTypes() {
+      if (this.isAllSelected) {
+        this.selectedTypes = [];
+      } else {
+        this.selectedTypes = this.constructionTypes.map((type) => type.id);
+      }
+    },
+
     // 업체 등록 요청
     async insertCompany() {
       // 유효성 검사
@@ -271,13 +396,16 @@ export default {
           owner: this.owner,
           companyNumber: this.companyNumber,
           publishDate: this.publishDate,
+          address: this.address,
+          companyDesc: this.companyDesc,
+          constructionService: this.selectedTypes, // 선택된 시공 종류 ID 배열
         };
 
         // 서버로 POST 요청
         try {
-          const response = await axios.post('/api/company', companyData);
-          console.log(response.data);
+          await axios.post('/api/company', companyData);
           alert('업체 등록이 완료되었습니다.');
+          this.$router.push('/');
         } catch (error) {
           console.error(error);
           alert('업체 등록에 실패했습니다.');
@@ -295,6 +423,7 @@ export default {
       this.validateConfirmPassword();
       this.validateOwner();
       this.validatePhoneNum();
+      this.validateAddress();
     },
   },
 };

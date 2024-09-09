@@ -1,3 +1,4 @@
+import CompanyDetail from '@/components/company/CompanyDetail.vue';
 import HomeCompo from '@/components/HomeCompo.vue';
 import CompanySignup from '@/components/login/CompanySignup.vue';
 import LoginCompo from '@/components/login/LoginCompo.vue';
@@ -12,4 +13,5 @@ export default [
   { path: '/companySignup', component: CompanySignup },
   { path: '/oauth/redirect', component: RedirectCompo },
   { path: '/payment', component: PaymentCompo },
+  { path: '/company/:id', component: CompanyDetail },
 ];

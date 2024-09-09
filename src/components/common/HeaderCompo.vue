@@ -1,5 +1,5 @@
 <template>
-  <header class="flex justify-between items-center">
+  <header class="flex justify-between items-center fixed w-[1105px] mx-auto top-0 bg-white z-10">
     <div class="flex justify-between items-center">
       <img @click="$router.push('/')" class="w-[90px] cursor-pointer mr-8" src="@/assets/logo.png" alt="로고" />
       <div class="flex">
