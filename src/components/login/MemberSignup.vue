@@ -154,16 +154,16 @@ export default {
         const response = await axios.get('/api/member/check-email', {
           params: { email: this.email },
         });
-        if (response.data.isDuplicated) {
+        console.log(response.data.duplicated);
+        if (response.data.duplicated) { // 객체로 전달되기 때문에
           this.errors.email = '이미 사용 중인 이메일입니다.';
         } else {
-          this.errors.email = '';
+          delete this.errors.email;
           this.emailVerified = true;
         }
       } catch (error) {
         console.error(error);
         this.errors.email = '이메일 중복 확인에 실패했습니다.';
-        this.emailVerified = false;
       }
     },
     validateEmail() {
