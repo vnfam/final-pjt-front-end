@@ -1,4 +1,4 @@
-import CompanyDetail from '@/components/company/\bCompanyDetail.vue';
+import CompanyDetail from '@/components/company/CompanyDetail.vue';
 import HomeCompo from '@/components/HomeCompo.vue';
 import CompanySignup from '@/components/login/CompanySignup.vue';
 import LoginCompo from '@/components/login/LoginCompo.vue';
