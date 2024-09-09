@@ -149,23 +149,23 @@ export default {
   },
   methods: {
     // 이메일 중복 확인
-    // async verifyEmail() {
-    //   try {
-    //     const response = await axios.get('/api/member/check-email', {
-    //       params: { email: this.email },
-    //     });
-    //     if (response.data) {
-    //       this.errors.email = '이미 사용 중인 이메일입니다.';
-    //     } else {
-    //       delete this.errors.email;
-    //       this.emailVerified = true;
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //     this.errors.email = '이메일 중복 확인에 실패했습니다.';
-    //     this.emailVerified = false;
-    //   }
-    // },
+    async verifyEmail() {
+      try {
+        const response = await axios.get('/api/member/check-email', {
+          params: { email: this.email },
+        });
+        if (response.data.isDuplicated) {
+          this.errors.email = '이미 사용 중인 이메일입니다.';
+        } else {
+          this.errors.email = '';
+          this.emailVerified = true;
+        }
+      } catch (error) {
+        console.error(error);
+        this.errors.email = '이메일 중복 확인에 실패했습니다.';
+        this.emailVerified = false;
+      }
+    },
     validateEmail() {
       this.emailVerified = false; // 이메일이 변경되면 중복 확인 상태를 초기화
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -238,11 +238,17 @@ export default {
     },
     validateForm() {
       this.validateEmail();
+      console.log('email validate success');
       this.validatePassword();
+      console.log('password validate success');
       this.validateConfirmPassword();
+      console.log('password validate success');
       this.validateName();
+      console.log('name validate success');
       this.validateNickname();
+      console.log('email validate success');
       this.validatePhone();
+      console.log('email validate success');
     },
     async insertMember() {
 
@@ -262,6 +268,7 @@ export default {
         // 서버로 POST 요청
         try {
           const response = await axios.post('/api/member', memberData);
+          console.log(response);
           console.log(response.data);
           alert('회원 등록이 완료되었습니다.');
         } catch (error) {

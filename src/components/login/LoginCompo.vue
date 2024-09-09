@@ -10,7 +10,7 @@
             <div class="inputEmail m-0 p-0 align-baseline">
               <label for="email" class="block text-sm font-medium mb-2">ID</label>
               <div class="relative flex">
-                <input type="text" id="email" autofocus placeholder="example@gmail.com" class="p-3 rounded border-1 border-solid text-base w-full h-12 resize-none
+                <input type="text" v-model="email" autofocus placeholder="example@gmail.com" class="p-3 rounded border-1 border-solid text-base w-full h-12 resize-none
                 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500">
                 <p v-if="errors.email" class="text-red text-[12px] mt-2">{{ errors.email }}</p>
@@ -20,14 +20,14 @@
             <div>
               <label for="password" class="block text-sm font-medium mb-2">PW</label>
               <div class="relative flex">
-                <input type="text" id="email" autofocus placeholder="example1234" class="p-3 rounded border-1 border-solid text-base w-full resize-none
+                <input type="text" v-model="password" autofocus placeholder="example1234" class="p-3 rounded border-1 border-solid text-base w-full resize-none
                 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500">
                 <p v-if="errors.password" class="text-red text-[12px] mt-2">{{ errors.password }}</p>
               </div>
             </div>
             <!-- 버튼 -->
-              <button @click="loginBtn" class="emailLoginBtn hover:bg-[#2C7130] inline-block font-medium text-center border-1 border-solid cursor-pointer select-none duration-0 ease-in-out text-neutral bg-midGreen px-3 py-3 text-base rounded" type="submit">이메일 로그인</button>
+              <button @click="loginAccount" class="emailLoginBtn hover:bg-[#2C7130] inline-block font-medium text-center border-1 border-solid cursor-pointer select-none duration-0 ease-in-out text-neutral bg-midGreen px-3 py-3 text-base rounded" type="submit">이메일 로그인</button>
           </div>
           <!-- 위 버튼과 다른 기능을 하다보니 div를 나눔 -->
           <div class="findOrsignup flex gap-5 justify-center items-center mt-6 mb-10">
@@ -92,15 +92,17 @@ export default {
       // 이메일과 비밀번호 검증
       this.checkEmail();
       this.checkPassword();
-
+    },
+    async loginAccount() {
       // 에러가 없을 경우 로그인 시도
       if (Object.keys(this.errors).length === 0) {
+        const loginData = {
+          email: this.email,
+          password: this.password,
+        };
+        // 서버 요청
         try {
-          const response = await axios.post('/api/login', {
-            email: this.email,
-            password: this.password,
-          });
-
+          const response = await axios.get('/api/login', loginData);
           if (response.data.success) {
             alert('로그인 성공');
             // 로그인 성공 시 원하는 페이지로 이동
