@@ -39,6 +39,7 @@
           </div>
           <!-- 소셜로그인 -->
           <div class="flex flex-col gap-3 mt-4 mb-3">
+
             <button type="button" class="naverLoginBtn font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 py-3 text-base rounded-s w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center">
               <img alt="네이버 로고" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" class="css-1oxvs31 e1rypd771" style="color:transparent" srcset="https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=32&amp;q=75 1x, https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75 2x" src="https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75">
               <a data-v-12dd5d6d="" href="http://localhost:8080/oauth2/authorization/naver">네이버로 시작</a>
