@@ -1,39 +1,25 @@
 <template>
-  <div class="max-w-lg mx-auto bg-gray-100 p-8 rounded-lg">
-    <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
-      <div 
-        class="h-2 bg-primary rounded-full"
-        :style="{ width: animatedProgressWidth + '%' }"
-      ></div>
-    </div>
-    <h2 class="text-lg font-semibold mb-4">인테리어 예산을 선택해주세요.</h2>
+  <div class="max-w-lg mx-auto bg-gray-100 rounded-lg">
+    <h2 class="text-lg font-semibold mb-4">공사 예정일을 선택해주세요.</h2>
     <div class="space-y-3">
       <label class="flex items-center">
-        <input type="radio" name="budget" value="1천만원 미만" v-model="budget" class="mr-2">
-        1천만원 미만
+        <input type="radio" name="schedule" value="1개월 이내" v-model="schedule" class="mr-2">
+        1개월 이내
       </label>
       <label class="flex items-center">
-        <input type="radio" name="budget" value="1천만원대" v-model="budget" class="mr-2">
-        1천만원대
+        <input type="radio" name="schedule" value="2개월 이내" v-model="schedule" class="mr-2">
+        2개월 이내
       </label>
       <label class="flex items-center">
-        <input type="radio" name="budget" value="2천만원대" v-model="budget" class="mr-2">
-        2천만원대
+        <input type="radio" name="schedule" value="3개월 이내" v-model="schedule" class="mr-2">
+        3개월 이내
       </label>
       <label class="flex items-center">
-        <input type="radio" name="budget" value="3천만원대" v-model="budget" class="mr-2">
-        3천만원대
+        <input type="radio" name="schedule" value="3개월 이후" v-model="schedule" class="mr-2">
+        3개월 이후
       </label>
       <label class="flex items-center">
-        <input type="radio" name="budget" value="4천만원대" v-model="budget" class="mr-2">
-        4천만원대
-      </label>
-      <label class="flex items-center">
-        <input type="radio" name="budget" value="5천만원 이상" v-model="budget" class="mr-2">
-        5천만원 이상
-      </label>
-      <label class="flex items-center">
-        <input type="radio" name="budget" value="미정" v-model="budget" class="mr-2">
+        <input type="radio" name="schedule" value="미정" v-model="schedule" class="mr-2">
         미정
       </label>
     </div>
@@ -49,11 +35,11 @@
 
       <button 
         @click="nextStep" 
-        :disabled="!budget"
+        :disabled="!schedule"
         class="w-24 py-2 rounded-lg text-white"
         :class="{
-          'bg-gray-400 cursor-not-allowed': !budget, // 비활성화 상태
-          'bg-primary hover:bg-primary-dark cursor-pointer': budget // 활성화 상태
+          'bg-gray-400 cursor-not-allowed': !schedule, // 비활성화 상태
+          'bg-primary hover:bg-primary-dark cursor-pointer': schedule // 활성화 상태
         }"
       >
         다음
@@ -64,32 +50,37 @@
 
 <script>
 export default {
+  props: [
+    'step',
+  ],
+
   data() {
     return {
-      budget: '',           // 선택된 예산
-      step: 3,              // 현재 스텝
-      animatedProgressWidth: '0' // 초기 프로그레스 바 너비
+      schedule: '',        // 선택된 공사 예정일
+      stepTwo: this.step,  // 현재 스텝
     };
   },
+
   computed: {
-    progressWidth() {
-      return (this.step / 5) * 100; // 전체 5단계 기준
-    }
+    
   },
+
   methods: {
     nextStep() {
-      if (this.budget) {
+      if (this.schedule) {
+        this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepFour'); // 다음 단계로 이동
       }
     },
+
     prevStep() {
+      this.$emit('prevStep');
       this.$router.push('/requestEstimate/stepTwo'); // 이전 단계로 이동
-    }
+    },
   },
+  
   mounted() {
-    setTimeout(() => {
-      this.animatedProgressWidth = this.progressWidth;
-    }, 100);
+    
   }
 };
 </script>
