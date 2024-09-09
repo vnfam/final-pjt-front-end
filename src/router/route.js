@@ -1,9 +1,10 @@
+import CompanyDetail from '@/components/company/CompanyDetail.vue';
 import HomeCompo from '@/components/HomeCompo.vue';
 import CompanySignup from '@/components/login/CompanySignup.vue';
 import LoginCompo from '@/components/login/LoginCompo.vue';
 import MemberSignup from '@/components/login/MemberSignup.vue';
 import RedirectCompo from '@/components/login/RedirectCompo.vue';
-import RequestEstimateCompo from '@/components/estimate/RequestEstimateCompo'
+import RequestEstimateCompo from '@/components/estimate/RequestEstimateCompo';
 import StepOne from '@/components/estimate/StepOne.vue';
 import StepTwo from '@/components/estimate/StepTwo.vue';
 import StepThree from '@/components/estimate/StepThree.vue';
@@ -15,7 +16,7 @@ export default [
   { path: '/login', component: LoginCompo },
   { path: '/memberSignup', component: MemberSignup },
   { path: '/companySignup', component: CompanySignup },
-  { path:'/oauth/redirect', component: RedirectCompo },
+  { path: '/oauth/redirect', component: RedirectCompo },
   {
     path: '/requestEstimate',
     component: RequestEstimateCompo,
@@ -25,7 +26,9 @@ export default [
       { path: 'stepTwo', component: StepTwo },
       { path: 'stepThree', component: StepThree },
       { path: 'stepFour', component: StepFour },
-      { path: 'stepFive', component: StepFive }
-    ]
-  }
+      { path: 'stepFive', component: StepFive },
+    ],
+  },
+  { path: '/oauth/redirect', component: RedirectCompo },
+  { path: '/company/:id', component: CompanyDetail },
 ];
