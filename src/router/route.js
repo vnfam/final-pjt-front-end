@@ -10,6 +10,7 @@ import StepTwo from '@/components/estimate/StepTwo.vue';
 import StepThree from '@/components/estimate/StepThree.vue';
 import StepFour from '@/components/estimate/StepFour.vue';
 import StepFive from '@/components/estimate/StepFive.vue';
+import PaymentCompo from '@/components/payment/PaymentCompo.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -29,5 +30,6 @@ export default [
       { path: 'stepFive', component: StepFive },
     ],
   },
+  { path: '/payment', component: PaymentCompo },
   { path: '/company/:id', component: CompanyDetail },
 ];
