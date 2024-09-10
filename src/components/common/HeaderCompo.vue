@@ -17,7 +17,7 @@
     <div class="flex">
       <div class="flex justify-between items-center" v-if="isLogin">
         <p
-          v-if="role === 'MEMBER'"
+          v-if="role === 'USER'"
           @click="$router.push('/requestEstimate')"
           class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
           :class="{ 'text-midGreen font-bold': isRequestEstimatePage, 'hover:text-midGreen': !isRequestEstimatePage }"
