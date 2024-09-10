@@ -12,7 +12,9 @@
 </template>
 
 <script>
+import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
+import { mapState } from 'pinia';
 
 const SERVER_BASE_URL = 'http://localhost:8080';
 
@@ -24,8 +26,16 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState(useUserStore, ['user']),
+
+    ...mapState(useUserStore, {
+      token: 'accessToken',
+    }),
+  },
+
   mounted() {
-    axios.get(`${SERVER_BASE_URL}/api/memberships`).then((response) => {
+    axios.get(`${SERVER_BASE_URL}/api/membershiptypes`).then((response) => {
       this.membershipList = response.data.data;
       this.membershipList.forEach((item) => console.log(item));
     });
@@ -44,9 +54,12 @@ export default {
       const price = response.data.data.price;
       const membershipType = response.data.data.type;
       const merchantUid = response.data.data.merchantUid;
+      const access = localStorage.getItem('accessToken');
 
       console.log(price);
       console.log(response);
+      console.log('토큰 정보 : ' + access);
+
       try {
         window.IMP.request_pay(
           {
@@ -64,16 +77,22 @@ export default {
           },
           async (response) => {
             console.log(response);
-            if (response.error_code != null) {
-              return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
-            }
 
-            const complete = await axios.post(`${SERVER_BASE_URL}/api/payment/complete`, {
-              impUid: response.imp_uid,
-              merchantUid: response.merchant_uid,
-              success: response.success,
-              paidAmount: response.paid_amount,
-            });
+            console.log('토큰 정보 : ' + this.token);
+            const complete = await axios.post(
+              `${SERVER_BASE_URL}/api/memberships`,
+              {
+                impUid: response.imp_uid,
+                merchantUid: response.merchant_uid,
+                success: response.success,
+                paidAmount: response.paid_amount,
+              },
+              {
+                headers: {
+                  Authorization: access,
+                },
+              }
+            );
 
             const paymentResult = complete.data.data;
 
@@ -102,7 +121,7 @@ export default {
       }
     },
     async refundRequest() {
-      const result = await axios.post(`${SERVER_BASE_URL}/api/payment/refund`, {
+      const result = await axios.post(`${SERVER_BASE_URL}/api/membership`, {
         id: this.id,
       });
 
@@ -112,6 +131,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
