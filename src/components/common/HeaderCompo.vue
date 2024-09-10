@@ -26,6 +26,13 @@
 
     <div class="flex">
       <p
+        @click="$router.push('/portfolio/create')"
+        class="cursor-pointer text-[16px] font-semibold mr-8"
+        :class="{ 'text-midGreen': isCreatePortfolioPage, 'hover:text-midGreen': !isCreatePortfolioPage }"
+      >
+        시공 사례 작성
+      </p>
+      <p
         @click="$router.push('/login')"
         class="cursor-pointer text-[16px] font-semibold mr-8"
         :class="{ 'text-midGreen': isLoginPage, 'hover:text-midGreen': !isLoginPage }"
@@ -54,6 +61,9 @@ export default {
     },
     isSignupPage() {
       return this.$route.path === '/memberSignup' || this.$route.path === '/companySignup';
+    },
+    isCreatePortfolioPage() {
+      return this.$route.path === '/portfolio/create' || this.$route.path === '/portfolio/create';
     },
     isRequestEstimatePage() {
       return this.$route.path === '/requestEstimate';
