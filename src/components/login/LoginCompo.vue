@@ -164,13 +164,7 @@ export default {
         // 서버 요청
         try {
           const response = await axios.post(`http://localhost:8080/form/login`, loginData);
-          const authHeader = response.headers.get('Authorization');
-          console.log(authHeader);
-          console.log(response.headers['Authorization']);
-
-          console.log(response);
-
-          userStore.login(response.data.nickName);
+          userStore.login(response.data.nickName, response.headers.get('Authorization'));
           this.$router.back();
         } catch (error) {
           console.log(error);
