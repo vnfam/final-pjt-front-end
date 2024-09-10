@@ -9,11 +9,13 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { CkeditorPlugin } from '@ckeditor/ckeditor5-vue';
 
 import { createPinia } from 'pinia';
+import { createPersistedState } from 'pinia-plugin-persistedstate';
 
 library.add(fas);
 
 const app = createApp(App);
 const pinia = createPinia();
+pinia.use(createPersistedState());
 
 app.use(router);
 app.use(CkeditorPlugin);
