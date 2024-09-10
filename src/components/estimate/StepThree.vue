@@ -52,12 +52,13 @@
 export default {
   props: [
     'step',
+    'formData',
   ],
 
   data() {
     return {
-      schedule: '',        // 선택된 공사 예정일
-      stepTwo: this.step,  // 현재 스텝
+      schedule: this.formData.schedule || '',        // 선택된 공사 예정일
+      stepThree: this.step,  // 현재 스텝
     };
   },
 
@@ -68,8 +69,10 @@ export default {
   methods: {
     nextStep() {
       if (this.schedule) {
+        this.$emit('updateFormData', { schedule: this.schedule });
         this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepFour'); // 다음 단계로 이동
+        console.log(this.schedule);
       }
     },
 
