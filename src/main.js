@@ -6,6 +6,7 @@ import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { CkeditorPlugin } from '@ckeditor/ckeditor5-vue';
 
 import { createPinia } from 'pinia';
 
@@ -15,6 +16,7 @@ const app = createApp(App);
 const pinia = createPinia();
 
 app.use(router);
+app.use(CkeditorPlugin);
 app.use(pinia);
 
 app.component('font-awesome-icon', FontAwesomeIcon);
