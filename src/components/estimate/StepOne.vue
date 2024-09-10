@@ -39,17 +39,20 @@
 export default {
   props: [
     'step',
+    'formData',
   ],
   data() {
     return {
-      buildingType: '', // 선택된 건물 유형
+      buildingType: this.formData.buildingType || '', // 부모에서 받은 데이터로 초기화
     };
   },
   methods: {
     nextStep() {
       if (this.buildingType) {
+        this.$emit('updateFormData', { buildingType: this.buildingType });
         this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepTwo'); // 다음 스텝으로 이동
+        console.log(this.buildingType);
       }
     },
   },

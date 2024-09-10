@@ -37,7 +37,7 @@
           'bg-primary hover:bg-primary-dark cursor-pointer': address, // 활성화 상태
         }"
       >
-        다음
+        완료
       </button>
     </div>
   </div>
@@ -47,15 +47,16 @@
 export default {
   props: [
     'step',
+    'formData',
   ],
 
   data() {
     return {
-      address: '', // 주소
-      detailedAddress: '', // 상세 주소 (선택)
-      measureDate: '', // 실측 가능일 (선택)
+      address: this.formData.address || '', // 주소
+      detailedAddress: this.formData.detailedAddress || '', // 상세 주소 (선택)
+      measureDate: this.formData.measureDate || '', // 실측 가능일 (선택)
       minDate: '', // 현재 날짜를 저장
-      stepFour: this.step, // 현재 스텝
+      stepFive: this.step, // 현재 스텝
     };
   },
 
@@ -106,6 +107,11 @@ export default {
         alert('주소를 입력해주세요.');
         return;
       } else {
+        this.$emit('updateFormData', {
+          address: this.address,
+          detailedAddress: this.detailedAddress,
+          measureDate: this.measureDate,
+        }); // formData 업데이트
         alert('견적 요청이 완료되었습니다.');
         this.$router.push('/');
       }
