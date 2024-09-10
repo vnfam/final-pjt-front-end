@@ -60,12 +60,13 @@
 export default {
   props: [
     'step',
+    'formData',
   ],
 
   data() {
     return {
-      budget: '',            // 선택된 예산
-      stepThree: this.step,  // 현재 스텝
+      budget: this.formData.budget || '',            // 선택된 예산
+      stepFour: this.step,  // 현재 스텝
     };
   },
 
@@ -76,8 +77,10 @@ export default {
   methods: {
     nextStep() {
       if (this.budget) {
+        this.$emit('updateFormData', { budget: this.budget });
         this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepFive'); // 다음 단계로 이동
+        console.log(this.budget);
       }
     },
 
