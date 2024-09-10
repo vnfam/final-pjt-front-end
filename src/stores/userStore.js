@@ -18,13 +18,18 @@ export const useUserStore = defineStore('user', {
       this.isLogin = true;
       this.accessToken = accessToken;
       this.role = role;
-      console.log('저장 정보 : ' + this.nickName + ' ' + this.isLogin + ' ' + this.accessToken);
+
+      console.log('저장 정보 : ' + this.nickName + '\n ' + this.isLogin + '\n ' + this.role + '\n ' + this.accessToken);
     },
 
     logout() {
       this.$reset();
+      localStorage.removeItem('user');
+      console.log('로그아웃 완료');
     },
   },
-
-  getters: {},
+  persist: {
+    enable: true,
+    strategies: [{ key: 'user', storage: localStorage }],
+  },
 });
