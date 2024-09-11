@@ -12,6 +12,7 @@ import StepThree from '@/components/estimate/StepThree.vue';
 import StepFour from '@/components/estimate/StepFour.vue';
 import StepFive from '@/components/estimate/StepFive.vue';
 import PaymentCompo from '@/components/payment/PaymentCompo.vue';
+import MyPageCompo from '@/components/common/MyPageCompo.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -34,4 +35,5 @@ export default [
   { path: '/payment', component: PaymentCompo },
   { path: '/company/:id', component: CompanyDetail },
   { path: '/portfolio/create', component: CreatePortfolio },
+  { path: '/mypage', component: MyPageCompo },
 ];
