@@ -35,10 +35,17 @@ export default {
   },
 
   mounted() {
-    axios.get(`${SERVER_BASE_URL}/api/membershiptypes`).then((response) => {
-      this.membershipList = response.data.data;
-      this.membershipList.forEach((item) => console.log(item));
-    });
+    axios.get(`${SERVER_BASE_URL}/api/membershiptypes`).then(
+      (response) => {
+        this.membershipList = response.data.data;
+        this.membershipList.forEach((item) => console.log(item));
+      },
+      {
+        headers: {
+          Authorization: this.token,
+        },
+      }
+    );
   },
 
   methods: {
@@ -47,20 +54,28 @@ export default {
       console.log(membershipId);
 
       // 향후 Authorization Header 전송을 수행해야한다.
-      const response = await axios.post(`${SERVER_BASE_URL}/api/payment/prepare`, {
-        membershipId: membershipId,
-      });
-
-      const price = response.data.data.price;
-      const membershipType = response.data.data.type;
-      const merchantUid = response.data.data.merchantUid;
-      const access = localStorage.getItem('accessToken');
-
-      console.log(price);
-      console.log(response);
-      console.log('토큰 정보 : ' + access);
 
       try {
+        const response = await axios.post(
+          `${SERVER_BASE_URL}/api/payment/prepare`,
+          {
+            membershipId: membershipId,
+          },
+          {
+            headers: {
+              Authorization: this.token,
+            },
+          }
+        );
+
+        const price = response.data.data.price;
+        const membershipType = response.data.data.type;
+        const merchantUid = response.data.data.merchantUid;
+
+        console.log(price);
+        console.log(response);
+        console.log('토큰 정보 : ' + this.token);
+
         window.IMP.request_pay(
           {
             pg: 'html5_inicis',
@@ -75,10 +90,11 @@ export default {
             buyer_addr: '서울특별시 강남구 신사동',
             buyer_postcode: '01181',
           },
+
           async (response) => {
             console.log(response);
 
-            console.log('토큰 정보 : ' + this.token);
+            // 성공시 호출
             const complete = await axios.post(
               `${SERVER_BASE_URL}/api/memberships`,
               {
@@ -89,7 +105,7 @@ export default {
               },
               {
                 headers: {
-                  Authorization: access,
+                  Authorization: this.token,
                 },
               }
             );
