@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: [
     'step',
@@ -103,18 +105,31 @@ export default {
     },
 
     finish() {
-      if (!this.address) {
-        alert('주소를 입력해주세요.');
-        return;
-      } else {
-        this.$emit('updateFormData', {
-          address: this.address,
-          detailedAddress: this.detailedAddress,
-          measureDate: this.measureDate,
-        }); // formData 업데이트
-        alert('견적 요청이 완료되었습니다.');
-        this.$router.push('/');
-      }
+      this.$emit('updateFormData', {
+        address: this.address,
+        detailedAddress: this.detailedAddress,
+        measureDate: this.measureDate,
+      }); // formData 업데이트
+
+      // Wait until the formData is updated
+      this.$nextTick(() => {
+        if (!this.formData.address) {
+          alert('주소를 입력해주세요.');
+          console.log(this.formData.address);
+          return;
+        } else {
+          axios.post('http://localhost:8080/api/estimate_request', this.formData)
+            .then(response => {
+              alert('견적 요청이 완료되었습니다.');
+              this.$router.push('/'); // 성공 후 다른 페이지로 이동
+              console.log(response);
+            })
+            .catch(error => {
+              console.error('폼 제출 중 오류 발생:', error);
+              alert('견적 요청에 실패했습니다.');
+            });
+        }
+      });
     },
     
     prevStep() {
