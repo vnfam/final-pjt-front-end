@@ -118,6 +118,7 @@
 <script>
 import axios from 'axios';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useUserStore } from '@/stores/userStore';
 
 export default {
   data() {
@@ -170,26 +171,35 @@ export default {
 
     // 시공 사례 작성
     async insertPortfolio() {
-      const portfolioData = {
+      const userStore = useUserStore();
+      const token = userStore.accessToken;
+
+      const portfolioRequest = {
         title: this.title,
         content: this.content,
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
         projectArea: this.projectArea,
-        projectBudget: this.budget,
-        // constructionService: this.selectedTypes, // 선택된 시공 종류 ID 배열
+        projectBudget: this.projectBudget,
+        constructionService: this.selectedTypes,
       };
+      const formData = new FormData();
+      formData.append('portfolioRequest', new Blob([JSON.stringify(portfolioRequest)], { type: 'application/json' }));
 
       try {
-        const response = await axios.post('/api/portfolio/create', portfolioData);
+        const response = await axios.post('/api/portfolio/create', formData, {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         alert('시공 사례가 작성되었습니다.');
         const portfolioId = response.data;
         console.log(portfolioId);
-        // this.$route.push(`/portfolio/${portfolioId}`);
       } catch (error) {
         console.error(error);
-        alert('시공 사레 작성에 실패하였습니다.');
+        alert('시공 사례 작성에 실패하였습니다.');
       }
     },
   },
