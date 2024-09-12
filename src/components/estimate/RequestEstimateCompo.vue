@@ -21,7 +21,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 
 export default {
   data() {
@@ -74,22 +73,6 @@ export default {
       console.log(this.formData);
     },
     
-    // // 모든 데이터를 Axios로 서버에 전송
-    // async submitForm() {
-    //   try {
-    //     const response = await axios.post('/api/submit', this.formData);
-    //     if (response.status === 200) {
-    //       alert('견적 요청이 성공적으로 완료되었습니다.');
-    //       this.$router.push('/'); // 요청 완료 후 메인 페이지로 이동
-    //     } else {
-    //       alert('서버 오류가 발생했습니다.');
-    //     }
-    //   } catch (error) {
-    //     console.error('API 호출 중 에러:', error);
-    //     alert('서버 통신 중 문제가 발생했습니다.');
-    //   }
-    // },
-
     // formData 초기화 및 stepOne으로 이동
     resetToStepOne() {
       this.step = 1;
@@ -99,9 +82,10 @@ export default {
   },
 
   mounted() {
-    // 새로고침 시 stepOne으로 이동하고 데이터 초기화
-    if (window.performance && performance.navigation.type === 1) {
-      this.resetToStepOne();
+    // 최신 표준을 사용해 새로고침을 감지
+    const navigationEntries = performance.getEntriesByType("navigation");
+    if (navigationEntries.length > 0 && navigationEntries[0].type === "reload") {
+      this.resetToStepOne(); // 새로고침 시 stepOne으로 이동 및 데이터 초기화
     }
   },
 };
