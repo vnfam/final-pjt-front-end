@@ -92,7 +92,7 @@
           </label>
           <div class="mt-2 flex justify-between items-center">
             <input
-              v-model="nickname"
+              v-model="nickName"
               @blur="validateNickname"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="text"
@@ -100,14 +100,14 @@
               required
             />
           </div>
-          <p v-if="errors.nickname" class="text-red text-[12px] mt-2">{{ errors.nickname }}</p>
+          <p v-if="errors.nickName" class="text-red text-[12px] mt-2">{{ errors.nickName }}</p>
         </div>
 
         <div class="mb-[12px]">
-          <label for="phone" class="text-[14px] font-normal mb-4">휴대폰번호</label>
+          <label for="phoneNumber" class="text-[14px] font-normal mb-4">휴대폰번호</label>
           <div class="mt-2 flex justify-between items-center">
             <input
-              v-model="phone"
+              v-model="phoneNumber"
               @blur="validatePhone"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="text"
@@ -115,10 +115,11 @@
               required
             />
           </div>
-          <p v-if="errors.phone" class="text-red text-[12px] mt-2">{{ errors.phone }}</p>
+          <p v-if="errors.phoneNumber" class="text-red text-[12px] mt-2">{{ errors.phoneNumber }}</p>
         </div>
 
         <button
+          @click="insertMember"
           type="submit"
           class="bg-midGreen text-white w-full h-[52px] border-solid border-[1px] border-secondary rounded-[4px] text-[16px] mt-[24px]"
         >
@@ -130,6 +131,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -137,8 +140,8 @@ export default {
       password: '',
       confirmPassword: '',
       name: '',
-      nickname: '',
-      phone: '',
+      nickName: '',
+      phoneNumber: '',
       errors: {},
       emailVerified: false,
       passwordsMatch: false,
@@ -146,8 +149,22 @@ export default {
   },
   methods: {
     // 이메일 중복 확인
-    verifyEmail() {
-      this.emailVerified = true;
+    async verifyEmail() {
+      try {
+        const response = await axios.get('/api/member/check-email', {
+          params: { email: this.email },
+        });
+        console.log(response.data.duplicated);
+        if (response.data.duplicated) { // 객체로 전달되기 때문에
+          this.errors.email = '이미 사용 중인 이메일입니다.';
+        } else {
+          delete this.errors.email;
+          this.emailVerified = true;
+        }
+      } catch (error) {
+        console.error(error);
+        this.errors.email = '이메일 중복 확인에 실패했습니다.';
+      }
     },
     validateEmail() {
       this.emailVerified = false; // 이메일이 변경되면 중복 확인 상태를 초기화
@@ -161,10 +178,13 @@ export default {
       }
     },
     validatePassword() {
+      const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{10,16}$/;
       if (!this.password) {
         this.errors.password = '비밀번호를 입력해 주세요.';
       } else if (this.password.length < 10 || this.password.length > 16) {
         this.errors.password = '비밀번호는 10~16자로 입력해 주세요.';
+      } else if (!regex.test(this.password)) {
+         this.errors.password = '비밀번호는 영문, 숫자. 특수문자를 포함해서 입력해주세요'; 
       } else {
         delete this.errors.password;
       }
@@ -174,12 +194,18 @@ export default {
       this.checkPasswordsMatch(); // 중복 호출 방지
     },
     checkPasswordsMatch() {
-      if (this.confirmPassword === this.password) {
-        this.passwordsMatch = true;
+      if (!this.errors.password && this.confirmPassword === this.password) {
+        if(!this.password) {
+          this.passwordsMatch = false;
+        } else {
+          this.passwordsMatch = true;
+        }
         delete this.errors.confirmPassword;
-      } else {
+      } else if (this.confirmPassword !== this.password) {
         this.passwordsMatch = false;
         this.errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+      } else {
+        delete this.errors.confirmPassword;
       }
     },
     validateName() {
@@ -192,38 +218,67 @@ export default {
       }
     },
     validateNickname() {
-      if (!this.nickname) {
-        this.errors.nickname = '닉네임을 입력해 주세요.';
-      } else if (this.nickname.length < 2) {
-        this.errors.nickname = '닉네임은 2자 이상 입력해 주세요.';
+      if (!this.nickName) {
+        this.errors.nickName = '닉네임을 입력해 주세요.';
+      } else if (this.nickName.length < 2) {
+        this.errors.nickName = '닉네임은 2자 이상 입력해 주세요.';
       } else {
-        delete this.errors.nickname;
+        delete this.errors.nickName;
       }
     },
     validatePhone() {
       const phonePattern = /^\d{10,11}$/;
-      if (!this.phone) {
-        this.errors.phone = '휴대폰번호를 입력해 주세요.';
-      } else if (!phonePattern.test(this.phone)) {
-        this.errors.phone = '유효한 휴대폰번호를 입력해 주세요.';
+      if (!this.phoneNumber) {
+        this.errors.phoneNumber = '휴대폰번호를 입력해 주세요.';
+      } else if (!phonePattern.test(this.phoneNumber)) {
+        this.errors.phoneNumber = '유효한 휴대폰번호를 입력해 주세요.';
       } else {
-        delete this.errors.phone;
+        delete this.errors.phoneNumber;
       }
     },
     validateForm() {
       this.validateEmail();
+      console.log('email validate success');
       this.validatePassword();
+      console.log('password validate success');
       this.validateConfirmPassword();
+      console.log('password validate success');
       this.validateName();
+      console.log('name validate success');
       this.validateNickname();
+      console.log('email validate success');
       this.validatePhone();
+      console.log('email validate success');
+    },
+    async insertMember() {
+
+      this.validateForm();
 
       if (Object.keys(this.errors).length === 0) {
-        alert('회원가입 성공');
+        const memberData = {
+          email: this.email,
+          password: this.confirmPassword,
+          name: this.name,
+          nickName: this.nickName,
+          phoneNumber: this.phoneNumber
+        };
+        
+        console.log(memberData);
+
+        // 서버로 POST 요청
+        try {
+          const response = await axios.post('/api/member', memberData);
+          console.log(response);
+          console.log(response.data);
+          alert('회원 등록이 완료되었습니다.');
+        } catch (error) {
+          console.error(error);
+          alert('회원 등록에 실패했습니다.');
+        }
       } else {
-        alert('입력 정보를 다시 확인해주세요');
+        alert('입력한 정보를 확인해 주세요.');
       }
-    },
+    }
   },
 };
 </script>
