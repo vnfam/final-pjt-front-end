@@ -15,6 +15,7 @@
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
 import { mapState } from 'pinia';
+import authInstance from '@/utils/axiosUtils';
 
 const SERVER_BASE_URL = 'http://localhost:8080';
 
@@ -56,17 +57,9 @@ export default {
       // 향후 Authorization Header 전송을 수행해야한다.
 
       try {
-        const response = await axios.post(
-          `${SERVER_BASE_URL}/api/payment/prepare`,
-          {
-            membershipId: membershipId,
-          },
-          {
-            headers: {
-              Authorization: this.token,
-            },
-          }
-        );
+        const response = await authInstance.post(`/api/payment/prepare`, {
+          membershipId: membershipId,
+        });
 
         const price = response.data.data.price;
         const membershipType = response.data.data.type;
@@ -95,7 +88,7 @@ export default {
             console.log(response);
 
             // 성공시 호출
-            const complete = await axios.post(
+            const complete = await authInstance.post(
               `${SERVER_BASE_URL}/api/memberships`,
               {
                 impUid: response.imp_uid,
@@ -137,7 +130,7 @@ export default {
       }
     },
     async refundRequest() {
-      const result = await axios.post(`${SERVER_BASE_URL}/api/membership`, {
+      const result = await authInstance.post(`${SERVER_BASE_URL}/api/membership`, {
         id: this.id,
       });
 

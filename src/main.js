@@ -23,3 +23,5 @@ app.use(pinia);
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
+
+export { pinia };
