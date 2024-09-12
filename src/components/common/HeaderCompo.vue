@@ -4,6 +4,7 @@
       <img @click="$router.push('/')" class="w-[90px] cursor-pointer mr-8" src="@/assets/logo.png" alt="로고" />
       <div class="flex">
         <p
+          @click="$router.push('/')"
           class="cursor-pointer mr-7 text-[16px] font-semibold"
           :class="{ 'text-midGreen font-bold': isHomePage, 'hover:text-midGreen': !isHomePage }"
         >
@@ -11,6 +12,14 @@
         </p>
         <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공사례</p>
         <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공후기</p>
+        <p
+          v-if="role === 'COMPANY'"
+          @click="$router.push('/estimate/list')"
+          class="cursor-pointer text-[16px] font-semibold mr-8"
+          :class="{ 'text-midGreen': isEstimateListPage, 'hover:text-midGreen': !isEstimateListPage }"
+        >
+          시공요청 조회
+        </p>
       </div>
     </div>
 
@@ -32,6 +41,7 @@
         >
           시공사례 작성
         </p>
+
         <p class="cursor-pointer text-[16px] font-bold mr-8 hover:text-midGreen">{{ nickName }} 님</p>
         <p @click="handleLogout" class="cursor-pointer text-[16px] font-semibold mr-8 hover:text-midGreen">로그아웃</p>
       </div>
@@ -92,6 +102,11 @@ export default {
     isSignupPage() {
       return this.$route.path === '/memberSignup' || this.$route.path === '/companySignup';
     },
+
+    isEstimateListPage() {
+      return this.$route.path === '/estimate/list';
+    },
+
     isCreatePortfolioPage() {
       return this.$route.path === '/portfolio/create';
     },
