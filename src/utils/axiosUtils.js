@@ -24,9 +24,7 @@ authInstance.interceptors.request.use(
 authInstance.interceptors.request.use(
   (request) => {
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
     const accessToken = user.accessToken;
-    console.log('savedAccessToken' + accessToken);
 
     if (accessToken) {
       request.headers['Authorization'] = accessToken;
@@ -62,11 +60,9 @@ authInstance.interceptors.response.use(
           withCredentials: true, // 쿠키로 refreshToken이 전송될 경우 필요
         }
       );
-
-      if (res.status === 200) {
-        console.log('재발급 실패');
-        console.log(res.data.data);
-      }
+      const accessToken = res.data.data;
+      setAccessToken(accessToken);
+      console.log('재발급 성공');
       return authInstance(originalRequest);
     } catch (refreshError) {
       console.log('에러 !');
@@ -75,5 +71,12 @@ authInstance.interceptors.response.use(
     }
   }
 );
+
+function setAccessToken(accessToken) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  user.accessToken = accessToken;
+
+  localStorage.setItem('user', JSON.stringify(user));
+}
 
 export default authInstance;
