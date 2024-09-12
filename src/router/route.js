@@ -5,6 +5,7 @@ import LoginCompo from '@/components/login/LoginCompo.vue';
 import MemberSignup from '@/components/login/MemberSignup.vue';
 import RedirectCompo from '@/components/login/RedirectCompo.vue';
 import PaymentCompo from '@/components/payment/PaymentCompo.vue';
+import ReviewCard from '@/components/review/ReviewCard.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -14,4 +15,5 @@ export default [
   { path: '/oauth/redirect', component: RedirectCompo },
   { path: '/payment', component: PaymentCompo },
   { path: '/company/:id', component: CompanyDetail },
+  { path: '/review/:id', component: ReviewCard},
 ];

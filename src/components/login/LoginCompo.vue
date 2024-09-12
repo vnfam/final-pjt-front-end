@@ -20,7 +20,7 @@
             <div>
               <label for="password" class="block text-sm font-medium mb-2">PW</label>
               <div class="relative flex">
-                <input type="text" v-model="password" autofocus placeholder="example1234" class="p-3 rounded border-1 border-solid text-base w-full resize-none
+                <input type="password" v-model="password" autofocus placeholder="example1234" class="p-3 rounded border-1 border-solid text-base w-full resize-none
                 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500">
                 <p v-if="errors.password" class="text-red text-[12px] mt-2">{{ errors.password }}</p>
