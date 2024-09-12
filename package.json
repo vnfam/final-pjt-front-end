@@ -8,8 +8,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^43.1.0",
-    "@ckeditor/ckeditor5-vue": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -19,9 +17,11 @@
     "pinia": "^2.2.2",
     "pinia-plugin-persistedstate": "^4.0.0",
     "pnpm": "^9.9.0",
+    "quill": "^2.0.2",
     "swiper": "7",
     "vue": "^3.4.38",
-    "vue-router": "^4.4.3"
+    "vue-router": "^4.4.3",
+    "vue3-quill": "^0.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

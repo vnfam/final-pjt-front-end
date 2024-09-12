@@ -21,9 +21,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <div class="mt-2 flex justify-between items-center">
-          <ckeditor class="editor" :config="editorConfig" :editor="Editor" v-model="content" />
-        </div>
+        <quill-editor v-model:value="content" :content="content" :options="editorOptions" class="custom-quill-editor" />
       </div>
 
       <div class="flex justify-between items-center mb-[12px]">
@@ -127,13 +125,11 @@
 
 <script>
 import axios from 'axios';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useUserStore } from '@/stores/userStore';
 
 export default {
   data() {
     return {
-      Editor: ClassicEditor,
       title: '',
       content: '',
       startDate: '',
@@ -145,10 +141,11 @@ export default {
       selectedTypes: [],
       buildingTypes: [],
       selectedBuildingType: '',
-      editorConfig: {
-        width: '1100px',
-        height: '500px',
-        placeholder: '내용을 입력하세요',
+      editorOptions: {
+        placeholder: '내용을 입력해주세요..',
+        // modules: {
+        //   toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['image', 'code-block']],
+        // },
       },
     };
   },
@@ -229,15 +226,17 @@ export default {
 </script>
 
 <style>
-.editor-container {
-  width: 100%;
-  height: 500px;
-  margin: 0 auto;
-  box-sizing: border-box;
+.custom-quill-editor {
+  height: 300px;
 }
 
-.ck-editor__editable_inline {
-  min-height: 500px;
-  width: 720px;
+.ql-container {
+  height: 100%;
+}
+
+.ql-editor {
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 </style>
