@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <span>...</span>
+        <span v-if="hasMoreServices">...</span>
         <div
           v-if="hasMoreServices"
           class="bg-[#f8f8f8] mr-2 whitespace-nowrap rounded-[40px] h-[24px] text-[12px] font-normal leading-[16px] tracking-[-0.3px] px-2 py-1"
