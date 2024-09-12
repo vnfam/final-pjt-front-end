@@ -11,6 +11,8 @@
           <div class="inputAccount flex flex-col gap-5">
             <!-- 아이디 -->
             <div class="inputEmail m-0 p-0 align-baseline">
+              <p v-if="errors.total" class="text-red text-[12px] mt-2">{{ errors.total }}</p>
+
               <label for="email" class="block text-sm font-medium mb-2">ID</label>
               <div class="relative flex">
                 <input
@@ -169,10 +171,12 @@ export default {
         } catch (error) {
           console.log(error);
           console.error('로그인 오류:', error);
-          alert('서버 오류가 발생했습니다.');
+          if (error.code == 401) {
+            this.errors.total = '아이디 또는 패스워드를 확인해 주세요.';
+          }
         }
       } else {
-        alert('입력 정보를 다시 확인해주세요');
+        this.errors.total = '아이디 또는 패스워드를 확인해 주세요.';
       }
     },
   },
