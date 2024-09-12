@@ -1,40 +1,37 @@
 <template>
-  <div class="max-w-lg mx-auto bg-gray-100 rounded-lg">
-    <h2 class="text-lg font-semibold mb-4">시공 분야를 선택해주세요.</h2>
+  <h2 class="text-lg font-semibold my-10">시공 분야를 선택해주세요.</h2>
 
-    <!-- 전체 선택 체크박스 -->
-    <label class="items-center">
-      <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="mx-1">
-      전체 선택
-    </label>
+  <!-- 전체 선택 체크박스 -->
+  <label class="items-center">
+    <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="mr-2" />
+    <span>전체 선택</span>
+  </label>
 
-    <!-- 개별 시공 종류 체크박스 -->
-    <div class="mt-2 flex flex-wrap gap-2">
-      <div v-for="type in constructionTypes" :key="type.id" class="flex items-center">
-        <input type="checkbox" :value="type.id" v-model="constructionType" class="mr-2" />
-        <span>{{ type.name }}</span>
-      </div>
-    </div>  
-
-    <!-- 시공 종류를 선택하지 않았을 때 경고 메시지 -->
-    <p v-if="!isValidSelection" class="text-red mt-4">최소 한 개의 시공 종류를 선택해야 합니다.</p>
-
-    <!-- 이전/다음 버튼 -->
-    <div class="mt-6 flex justify-between">
-      <button @click="prevStep" class="w-24 py-2 bg-primary rounded-lg text-white">이전</button>
-
-      <button
-        @click="nextStep"
-        :disabled="!isValidSelection"
-        class="w-24 py-2 rounded-lg text-white"
-        :class="{
-          'bg-gray-400 cursor-not-allowed': !isValidSelection,
-          'bg-primary hover:bg-primary-dark cursor-pointer': isValidSelection
-        }"
-      >
-        다음
-      </button>
+  <!-- 개별 시공 종류 체크박스 -->
+  <div class="mt-5 mb-10">
+    <div v-for="type in constructionTypes" :key="type.id" class="flex items-center">
+      <input type="checkbox" :value="type.id" v-model="constructionType" class="mr-2 my-3" />
+      <span>{{ type.name }}</span>
     </div>
+    <!-- 시공 종류를 선택하지 않았을 때 경고 메시지 -->
+    <p v-if="!isValidSelection" class="text-red mt-2">최소 한 개의 시공 종류를 선택해야 합니다.</p>
+  </div>
+
+  <!-- 이전/다음 버튼 -->
+  <div class="mt-6 flex justify-between">
+    <button @click="prevStep" class="w-24 py-2 bg-primary rounded-lg text-white">이전</button>
+
+    <button
+      @click="nextStep"
+      :disabled="!isValidSelection"
+      class="w-24 py-2 rounded-lg text-white"
+      :class="{
+        'bg-gray-400 cursor-not-allowed': !isValidSelection,
+        'bg-primary hover:bg-primary-dark cursor-pointer': isValidSelection
+      }"
+    >
+      다음
+    </button>
   </div>
 </template>
 
@@ -46,7 +43,7 @@ export default {
 
   data() {
     return {
-      constructionType: this.formData.constructionType || [], // 부모 컴포넌트에서 전달된 데이터로 초기화
+      constructionType: this.formData.constructionTypeIds || [], // 부모 컴포넌트에서 전달된 데이터로 초기화
       constructionTypes: [], // 서버에서 가져온 시공 종류를 저장할 배열
       selectAll: this.formData.selectAll || false, // 전체 선택 상태 초기화
     };
@@ -91,7 +88,7 @@ export default {
       if (this.isValidSelection) {
         // 선택된 시공 종류 데이터를 부모 컴포넌트로 전달
         this.$emit('updateFormData', {
-          constructionType: this.constructionType,
+          constructionTypeIds: this.constructionType,
           selectAll: this.selectAll,
         });
         this.$emit('nextStep');
