@@ -1,21 +1,21 @@
 <template>
   <div>
     <h1>견적 요청</h1>
-    <div class="max-w-lg mx-auto bg-gray-100 p-8 rounded-lg">
+    <div class="max-w-xl mx-auto bg-gray-100 p-8 rounded-lg">
       <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
         <div 
           class="h-2 bg-primary rounded-full"
           :style="{ width: progressWidth + '%' }"
         ></div>
       </div>
-    <router-view 
-      :step="step" 
-      :progress-width="progressWidth" 
-      :formData="formData" 
-      @nextStep="nextStep" 
-      @prevStep="prevStep" 
-      @updateFormData="updateFormData">
-    </router-view> 
+        <router-view 
+          :step="step" 
+          :progress-width="progressWidth" 
+          :formData="formData" 
+          @nextStep="nextStep" 
+          @prevStep="prevStep" 
+          @updateFormData="updateFormData">
+        </router-view> 
     </div>
   </div>
 </template>
@@ -27,8 +27,9 @@ export default {
     return {
       step: 1, // 현재 스텝을 중앙에서 관리
       formData: {
-        buildingType: '', // Step 1 데이터
-        constructionType: [], // Step 2 데이터
+        buildingTypeId: '', // Step 1 데이터
+        floor: '',
+        constructionTypeIds: [], // Step 2 데이터
         schedule: '', // Step 3 데이터
         budget: '', // Step 4 데이터
         address: '', // Step 5 데이터
@@ -36,8 +37,9 @@ export default {
         measureDate: '', // Step 5 실측 가능일
       },
       initialFormData: { // 초기 상태를 별도로 저장
-        buildingType: '',
-        constructionType: [],
+        buildingTypeId: '',
+        floor: '',
+        constructionTypeIds: [],
         schedule: '',
         budget: '',
         address: '',
