@@ -93,6 +93,16 @@
       </div>
 
       <div class="mb-[12px]">
+        <label for="buildingTypes" class="text-[14px] font-normal mb-4">건물 종류</label>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <div v-for="type in buildingTypes" :key="type.id" class="flex items-center">
+            <input type="radio" :value="type.id" v-model="selectedBuildingType" class="mr-2" />
+            <span class="text-[14px]">{{ type.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-[12px]">
         <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
         <!-- 전체 선택 체크박스 -->
         <div class="mt-2 mb-3 flex items-center">
@@ -118,6 +128,7 @@
 <script>
 import axios from 'axios';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useUserStore } from '@/stores/userStore';
 
 export default {
   data() {
@@ -132,6 +143,8 @@ export default {
       projectBudget: '',
       constructionTypes: [],
       selectedTypes: [],
+      buildingTypes: [],
+      selectedBuildingType: '',
       editorConfig: {
         width: '1100px',
         height: '500px',
@@ -141,6 +154,7 @@ export default {
   },
   mounted() {
     this.getConstructionType();
+    this.getBuildingType();
   },
   computed: {
     // 전체 선택 여부 계산
@@ -149,13 +163,23 @@ export default {
     },
   },
   methods: {
+    // 건물 종류 조회
+    async getBuildingType() {
+      try {
+        const response = await axios.get('/api/buildingType');
+        this.buildingTypes = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     // 시공 종류 조회
     async getConstructionType() {
       try {
         const response = await axios.get('/api/constructionType');
         this.constructionTypes = response.data; // 시공 종류 데이터 저장
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
 
@@ -170,26 +194,34 @@ export default {
 
     // 시공 사례 작성
     async insertPortfolio() {
-      const portfolioData = {
+      const userStore = useUserStore();
+      const token = userStore.accessToken;
+
+      const portfolioRequest = {
         title: this.title,
         content: this.content,
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
         projectArea: this.projectArea,
-        projectBudget: this.budget,
-        // constructionService: this.selectedTypes, // 선택된 시공 종류 ID 배열
+        projectBudget: this.projectBudget,
+        constructionService: this.selectedTypes,
+        buildingTypeId: this.selectedBuildingType,
       };
 
       try {
-        const response = await axios.post('/api/portfolio/create', portfolioData);
+        const response = await axios.post('/api/portfolio/create', portfolioRequest, {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+          },
+        });
         alert('시공 사례가 작성되었습니다.');
         const portfolioId = response.data;
         console.log(portfolioId);
-        // this.$route.push(`/portfolio/${portfolioId}`);
       } catch (error) {
         console.error(error);
-        alert('시공 사레 작성에 실패하였습니다.');
+        alert('시공 사례 작성에 실패하였습니다.');
       }
     },
   },
