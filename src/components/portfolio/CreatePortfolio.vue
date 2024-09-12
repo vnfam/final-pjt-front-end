@@ -93,6 +93,16 @@
       </div>
 
       <div class="mb-[12px]">
+        <label for="buildingTypes" class="text-[14px] font-normal mb-4">건물 종류</label>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <div v-for="type in buildingTypes" :key="type.id" class="flex items-center">
+            <input type="radio" :value="type.id" v-model="selectedBuildingType" class="mr-2" />
+            <span class="text-[14px]">{{ type.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-[12px]">
         <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
         <!-- 전체 선택 체크박스 -->
         <div class="mt-2 mb-3 flex items-center">
@@ -133,6 +143,8 @@ export default {
       projectBudget: '',
       constructionTypes: [],
       selectedTypes: [],
+      buildingTypes: [],
+      selectedBuildingType: '',
       editorConfig: {
         width: '1100px',
         height: '500px',
@@ -142,6 +154,7 @@ export default {
   },
   mounted() {
     this.getConstructionType();
+    this.getBuildingType();
   },
   computed: {
     // 전체 선택 여부 계산
@@ -150,13 +163,23 @@ export default {
     },
   },
   methods: {
+    // 건물 종류 조회
+    async getBuildingType() {
+      try {
+        const response = await axios.get('/api/buildingType');
+        this.buildingTypes = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     // 시공 종류 조회
     async getConstructionType() {
       try {
         const response = await axios.get('/api/constructionType');
         this.constructionTypes = response.data; // 시공 종류 데이터 저장
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
 
@@ -183,15 +206,14 @@ export default {
         projectArea: this.projectArea,
         projectBudget: this.projectBudget,
         constructionService: this.selectedTypes,
+        buildingTypeId: this.selectedBuildingType,
       };
-      const formData = new FormData();
-      formData.append('portfolioRequest', new Blob([JSON.stringify(portfolioRequest)], { type: 'application/json' }));
 
       try {
-        const response = await axios.post('/api/portfolio/create', formData, {
+        const response = await axios.post('/api/portfolio/create', portfolioRequest, {
           headers: {
             Authorization: token,
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         });
         alert('시공 사례가 작성되었습니다.');
