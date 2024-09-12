@@ -12,7 +12,11 @@ import StepThree from '@/components/estimate/StepThree.vue';
 import StepFour from '@/components/estimate/StepFour.vue';
 import StepFive from '@/components/estimate/StepFive.vue';
 import PaymentCompo from '@/components/payment/PaymentCompo.vue';
-import MyPageCompo from '@/components/common/MyPageCompo.vue';
+import UserBaseInfo from '@/components/mypage/user/UserBaseInfo.vue';
+import UserPageCompo from '@/components/mypage/user/UserPageCompo.vue';
+import UserRequestListCompo from '@/components/mypage/user/UserRequestListCompo.vue';
+import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
+import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -35,5 +39,30 @@ export default [
   { path: '/payment', component: PaymentCompo },
   { path: '/company/:id', component: CompanyDetail },
   { path: '/portfolio/create', component: CreatePortfolio },
-  { path: '/mypage', component: MyPageCompo },
+  {
+    path: '/mypage/user',
+    component: UserPageCompo,
+    redirect: '/mypage/user/info',
+    children: [
+      {
+        path: 'info',
+        component: UserBaseInfo,
+      },
+
+      {
+        path: 'requestlist',
+        component: UserRequestListCompo,
+      },
+
+      {
+        path: 'reviewlist',
+        component: UserReviewList,
+      },
+
+      {
+        path: 'bookmark',
+        component: UserBookMark,
+      },
+    ],
+  },
 ];
