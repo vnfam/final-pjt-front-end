@@ -5,7 +5,7 @@
         <h1 class="font-bold text-3xl py-8 self-center">로그인</h1>
         <!-- 로그인 폼 -->
         <form
-          @submit.prevent="loginForm"
+          @submit.prevent="loginAccount"
           class="text-xl bg-[#F9FAFB] p-10 rounded-md border-solid border-2 border-indigo-600 mb-7"
         >
           <div class="inputAccount flex flex-col gap-5">
@@ -39,7 +39,7 @@
             <button
               @click="loginAccount"
               class="emailLoginBtn hover:bg-[#2C7130] inline-block font-medium text-center border-1 border-solid cursor-pointer select-none duration-0 ease-in-out text-neutral bg-midGreen px-3 py-3 text-base rounded"
-              type="submit"
+              type="button"
             >
               이메일 로그인
             </button>
@@ -128,51 +128,57 @@ export default {
     checkEmail() {
       // 이메일 형식 검증
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!this.email) {
-        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
-      } else if (!emailPattern.test(this.email)) {
-        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
+      console.log('이메일: ' + this.email);
+      if (this.email.length != 0 && emailPattern.test(this.email)) {
+        return true;
       }
+      return false;
     },
 
     checkPassword() {
       // 비밀번호 검증
-      if (!this.password) {
-        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
-      } else if (this.password.length < 10) {
-        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
+      if (!this.password || this.password.length < 10) {
+        return false;
       }
+      return true;
     },
 
-    loginForm() {
+    vallidateForm() {
       // 이메일과 비밀번호 검증
-      this.checkEmail();
-      this.checkPassword();
+      console.log('이메일 검증 결과 ' + this.checkEmail());
+      console.log('패스워드 검증 결과 ' + this.checkPassword());
+
+      if (this.checkEmail() && this.checkPassword()) {
+        return true;
+      }
+      return false;
     },
 
     async loginAccount() {
       // 에러가 없을 경우 로그인 시도
-      const userStore = useUserStore();
-      if (this.errorMessage) {
-        const loginData = {
-          email: this.email,
-          password: this.password,
-        };
 
-        // 서버 요청
-        try {
-          const response = await axios.post(`http://localhost:8080/form/login`, loginData);
-          userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
-          this.$router.back();
-        } catch (error) {
-          console.log(error);
-          console.error('로그인 오류:', error);
-          if (error.status == 401) {
-            this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
-          }
-        }
-      } else {
+      if (!this.vallidateForm()) {
         this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
+        return;
+      }
+
+      const userStore = useUserStore();
+      const loginData = {
+        email: this.email,
+        password: this.password,
+      };
+
+      // 서버 요청
+      try {
+        const response = await axios.post(`http://localhost:8080/form/login`, loginData);
+        userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
+        this.$router.push('/');
+      } catch (error) {
+        console.log(error);
+        console.error('로그인 오류:', error);
+        if (error.status == 401) {
+          this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
+        }
       }
     },
   },
