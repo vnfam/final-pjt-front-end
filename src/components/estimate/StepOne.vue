@@ -76,8 +76,6 @@ export default {
         });
         this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepTwo'); // 다음 스텝으로 이동
-        console.log(this.buildingType);
-        console.log(this.floor);
       }
     },
   },

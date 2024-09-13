@@ -72,7 +72,6 @@ export default {
     // 자식 컴포넌트에서 전달된 데이터를 업데이트
     updateFormData(newData) {
       this.formData = { ...this.formData, ...newData };
-      console.log(this.formData);
     },
     
     // formData 초기화 및 stepOne으로 이동
