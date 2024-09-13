@@ -62,10 +62,8 @@ authInstance.interceptors.response.use(
       );
       const accessToken = res.data.data;
       setAccessToken(accessToken);
-      console.log('재발급 성공');
       return authInstance(originalRequest);
     } catch (refreshError) {
-      console.log('에러 !');
       console.log(refreshError);
       return Promise.reject(refreshError);
     }
@@ -75,7 +73,6 @@ authInstance.interceptors.response.use(
 function setAccessToken(accessToken) {
   const user = JSON.parse(localStorage.getItem('user'));
   user.accessToken = accessToken;
-
   localStorage.setItem('user', JSON.stringify(user));
 }
 
