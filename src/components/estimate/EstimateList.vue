@@ -17,6 +17,8 @@
       </div>
     </div>
 
+    <div class="mr-3 w-[1px] h-[32px] bg-[#ddd]"></div>
+
     <div class="mr-10">
       <p class="text-midGreen font-medium text-[14px]">시공</p>
       <div class="flex-column justify-start items-center font-medium text-[16px]">
