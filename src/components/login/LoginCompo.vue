@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 bg-neutral text-center text-sans">
+  <div class="mt-5 text-center text-sans">
     <div class="relative my-100 max-w-auto m-0 p-0 min-h-[220px]">
       <div class="flex flex-col items-center">
         <h1 class="font-bold text-3xl py-8 self-center">로그인</h1>
@@ -11,8 +11,6 @@
           <div class="inputAccount flex flex-col gap-5">
             <!-- 아이디 -->
             <div class="inputEmail m-0 p-0 align-baseline">
-              <p v-if="errors.total" class="text-red text-[12px] mt-2">{{ errors.total }}</p>
-
               <label for="email" class="block text-sm font-medium mb-2">ID</label>
               <div class="relative flex">
                 <input
@@ -22,7 +20,6 @@
                   placeholder="example@gmail.com"
                   class="p-3 rounded border-1 border-solid text-base w-full h-12 resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                 />
-                <p v-if="errors.email" class="text-red text-[12px] mt-2">{{ errors.email }}</p>
               </div>
             </div>
             <!-- 비밀번호 -->
@@ -33,10 +30,9 @@
                   type="password"
                   v-model="password"
                   autofocus
-                  placeholder="example1234"
+                  placeholder="패스워드를 입력해주세요."
                   class="p-3 rounded border-1 border-solid text-base w-full resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                 />
-                <p v-if="errors.password" class="text-red text-[12px] mt-2">{{ errors.password }}</p>
               </div>
             </div>
             <!-- 버튼 -->
@@ -48,6 +44,8 @@
               이메일 로그인
             </button>
           </div>
+          <p v-if="errorMessage" class="text-red text-[12px] mt-2">{{ errorMessage }}</p>
+
           <!-- 위 버튼과 다른 기능을 하다보니 div를 나눔 -->
           <div class="findOrsignup flex gap-5 justify-center items-center mt-6 mb-10">
             <a href="" class="findEmailBtn hover:text-midGreen text-[#737373] text-sm py-1 cursor-pointer"
@@ -62,28 +60,30 @@
               >비밀번호 찾기</a
             >
           </div>
+
           <!-- 소셜로그인 -->
           <div class="flex flex-col gap-3 mt-4 mb-3">
             <button
               type="button"
               class="naverLoginBtn font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 py-3 text-base rounded-s w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
-              <img
-                alt="네이버 로고"
-                loading="lazy"
-                width="20"
-                height="20"
-                decoding="async"
-                data-nimg="1"
-                class="css-1oxvs31 e1rypd771"
-                style="color: transparent"
-                srcset="
-                  https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=32&amp;q=75 1x,
-                  https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75 2x
-                "
-                src="https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75"
-              />
-              <a data-v-12dd5d6d="" href="http://localhost:8080/oauth2/authorization/naver">네이버로 시작</a>
+              <a data-v-12dd5d6d="" href="http://localhost:8080/oauth2/authorization/naver" class="inline-flex"
+                ><img
+                  alt="네이버 로고"
+                  loading="lazy"
+                  width="20"
+                  height="20"
+                  decoding="async"
+                  data-nimg="1"
+                  class="css-1oxvs31 e1rypd771"
+                  style="color: transparent"
+                  srcset="
+                    https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=32&amp;q=75 1x,
+                    https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75 2x
+                  "
+                  src="https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75"
+                />네이버로 시작</a
+              >
             </button>
             <button
               type="button"
@@ -121,7 +121,7 @@ export default {
     return {
       email: '',
       password: '',
-      errors: {},
+      errorMessage: '',
     };
   },
   methods: {
@@ -129,26 +129,22 @@ export default {
       // 이메일 형식 검증
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!this.email) {
-        this.errors.email = '이메일을 입력해주세요.';
+        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
       } else if (!emailPattern.test(this.email)) {
-        this.errors.email = '유효한 이메일 형식을 입력해주세요.';
-      } else {
-        delete this.errors.email;
+        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
       }
     },
 
     checkPassword() {
       // 비밀번호 검증
       if (!this.password) {
-        this.errors.password = '비밀번호를 입력해주세요.';
-      } else if (this.password.length < 6) {
-        this.errors.password = '비밀번호는 최소 6자 이상이어야 합니다.';
-      } else {
-        delete this.errors.password;
+        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
+      } else if (this.password.length < 10) {
+        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
       }
     },
 
-    async loginForm() {
+    loginForm() {
       // 이메일과 비밀번호 검증
       this.checkEmail();
       this.checkPassword();
@@ -157,7 +153,7 @@ export default {
     async loginAccount() {
       // 에러가 없을 경우 로그인 시도
       const userStore = useUserStore();
-      if (Object.keys(this.errors).length === 0) {
+      if (this.errorMessage) {
         const loginData = {
           email: this.email,
           password: this.password,
@@ -171,12 +167,12 @@ export default {
         } catch (error) {
           console.log(error);
           console.error('로그인 오류:', error);
-          if (error.code == 401) {
-            this.errors.total = '아이디 또는 패스워드를 확인해 주세요.';
+          if (error.status == 401) {
+            this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
           }
         }
       } else {
-        this.errors.total = '아이디 또는 패스워드를 확인해 주세요.';
+        this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
       }
     },
   },

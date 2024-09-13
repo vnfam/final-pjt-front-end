@@ -103,19 +103,6 @@ export default {
           } catch (error) {
             console.log(error);
           }
-
-          // 고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
-          // (다음 목차에서 설명합니다)
-          // const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
-          //   method: 'POST',
-          //   headers: { 'Content-Type': 'application/json' },
-          //   // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
-          //   body: JSON.stringify({
-          //     imp_uid: response.imp_uid,
-          //     merchant_uid: response.merchant_uid,
-          //     // 주문 정보...
-          //   }),
-          // });
         }
       );
     },
