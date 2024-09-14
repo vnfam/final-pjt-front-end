@@ -18,6 +18,7 @@ import UserRequestListCompo from '@/components/mypage/user/UserRequestListCompo.
 import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
+import VerifyCompo from '@/components/login/VerifyCompo.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -41,6 +42,7 @@ export default [
   { path: '/company/:id', component: CompanyDetail },
   { path: '/portfolio/create', component: CreatePortfolio },
   { path: '/estimate/list', component: EstimateList },
+  { path: '/verify-email', component: VerifyCompo },
   {
     path: '/mypage/user',
     component: UserPageCompo,
