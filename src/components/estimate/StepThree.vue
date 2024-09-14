@@ -70,7 +70,6 @@ export default {
         this.$emit('updateFormData', { schedule: this.schedule });
         this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepFour'); // 다음 단계로 이동
-        console.log(this.schedule);
       }
     },
 
