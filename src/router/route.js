@@ -19,6 +19,9 @@ import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
+import AdminPage from '@/components/mypage/admin/AdminPage.vue';
+import AdminAccountManagement from '@/components/mypage/admin/AdminAccountManagement.vue';
+import AdminMembershipsManagement from '@/components/mypage/admin/AdminMembershipsManagement.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -36,6 +39,14 @@ export default [
       { path: 'stepThree', component: StepThree },
       { path: 'stepFour', component: StepFour },
       { path: 'stepFive', component: StepFive },
+    ],
+  },
+  {
+    path: '/admin',
+    component: AdminPage,
+    children: [
+      { path: '/admin/accounts', component: AdminAccountManagement },
+      { path: '/admin/memberships', component: AdminMembershipsManagement },
     ],
   },
   { path: '/payment', component: PaymentCompo },
