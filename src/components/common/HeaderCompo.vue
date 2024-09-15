@@ -18,7 +18,6 @@
         >
           시공후기
         </p>
-        =======
         <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공후기</p>
         <p
           v-if="role === 'COMPANY'"
