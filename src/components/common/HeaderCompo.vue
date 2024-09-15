@@ -4,6 +4,7 @@
       <img @click="$router.push('/')" class="w-[90px] cursor-pointer mr-8" src="@/assets/logo.png" alt="로고" />
       <div class="flex">
         <p
+          @click="$router.push('/')"
           class="cursor-pointer mr-7 text-[16px] font-semibold"
           :class="{ 'text-midGreen font-bold': isHomePage, 'hover:text-midGreen': !isHomePage }"
         >
@@ -11,34 +12,94 @@
         </p>
         <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공사례</p>
         <p
-        @click="$router.push('/review/:id')"
-        class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
-        :class="{ 'text-midGreen font-bold': isReviewPage, 'hover:text-midGreen': !isReviewPage }"
-        >시공후기</p>
+          @click="$router.push('/review/:id')"
+          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
+          :class="{ 'text-midGreen font-bold': isReviewPage, 'hover:text-midGreen': !isReviewPage }"
+        >
+          시공후기
+        </p>
+        =======
+        <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공후기</p>
+        <p
+          v-if="role === 'COMPANY'"
+          @click="$router.push('/estimate/list')"
+          class="cursor-pointer text-[16px] font-semibold mr-8"
+          :class="{ 'text-midGreen': isEstimateListPage, 'hover:text-midGreen': !isEstimateListPage }"
+        >
+          시공요청 조회
+        </p>
       </div>
     </div>
 
     <div class="flex">
-      <p
-        @click="$router.push('/login')"
-        class="cursor-pointer text-[16px] font-semibold mr-8"
-        :class="{ 'text-midGreen': isLoginPage, 'hover:text-midGreen': !isLoginPage }"
-      >
-        로그인
-      </p>
-      <p
-        @click="$router.push('/memberSignup')"
-        class="cursor-pointer text-[16px] font-semibold"
-        :class="{ 'text-midGreen': isSignupPage, 'hover:text-midGreen': !isSignupPage }"
-      >
-        회원가입
-      </p>
+      <div class="flex justify-between items-center" v-if="isLogin">
+        <p
+          v-if="role === 'USER'"
+          @click="$router.push('/requestEstimate')"
+          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
+          :class="{ 'text-midGreen font-bold': isRequestEstimatePage, 'hover:text-midGreen': !isRequestEstimatePage }"
+        >
+          견적 요청
+        </p>
+        <p
+          v-if="role === 'COMPANY'"
+          @click="$router.push('/portfolio/create')"
+          class="cursor-pointer text-[16px] font-semibold mr-8"
+          :class="{ 'text-midGreen': isCreatePortfolioPage, 'hover:text-midGreen': !isCreatePortfolioPage }"
+        >
+          시공사례 작성
+        </p>
+
+        <p class="cursor-pointer text-[16px] font-bold mr-8 hover:text-midGreen">{{ nickName }} 님</p>
+        <p @click="handleLogout" class="cursor-pointer text-[16px] font-semibold mr-8 hover:text-midGreen">로그아웃</p>
+      </div>
+
+      <div class="flex justify-between items-center" v-else>
+        <p
+          @click="$router.push('/login')"
+          class="cursor-pointer text-[16px] font-semibold mr-8"
+          :class="{ 'text-midGreen': isLoginPage, 'hover:text-midGreen': !isLoginPage }"
+        >
+          로그인
+        </p>
+        <p
+          @click="$router.push('/memberSignup')"
+          class="cursor-pointer text-[16px] font-semibold"
+          :class="{ 'text-midGreen': isSignupPage, 'hover:text-midGreen': !isSignupPage }"
+        >
+          회원가입
+        </p>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
+import { useUserStore } from '@/stores/userStore';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 export default {
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+
+    const isLogin = computed(() => userStore.isLogin);
+    const role = computed(() => userStore.role);
+    const nickName = computed(() => userStore.nickName);
+
+    const handleLogout = () => {
+      userStore.logout();
+      router.push('/');
+    };
+
+    return {
+      nickName,
+      isLogin,
+      role,
+      handleLogout,
+    };
+  },
   computed: {
     isHomePage() {
       return this.$route.path === '/';
@@ -51,6 +112,17 @@ export default {
     },
     isReviewPage() {
       return this.$route.path === '/review/:id';
+    },
+
+    isEstimateListPage() {
+      return this.$route.path === '/estimate/list';
+    },
+
+    isCreatePortfolioPage() {
+      return this.$route.path === '/portfolio/create';
+    },
+    isRequestEstimatePage() {
+      return this.$route.path === '/requestEstimate';
     },
   },
 };
