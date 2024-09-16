@@ -14,14 +14,14 @@
     "@fortawesome/vue-fontawesome": "3",
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
+    "dompurify": "^3.1.6",
     "pinia": "^2.2.2",
     "pinia-plugin-persistedstate": "^4.0.0",
     "pnpm": "^9.9.0",
     "quill": "^2.0.2",
     "swiper": "7",
     "vue": "^3.4.38",
-    "vue-router": "^4.4.3",
-    "vue3-quill": "^0.3.1"
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
