@@ -12,7 +12,6 @@ import StepThree from '@/components/estimate/StepThree.vue';
 import StepFour from '@/components/estimate/StepFour.vue';
 import StepFive from '@/components/estimate/StepFive.vue';
 import PaymentCompo from '@/components/payment/PaymentCompo.vue';
-import ReviewCard from '@/components/review/ReviewCard.vue';
 import UserBaseInfo from '@/components/mypage/user/UserBaseInfo.vue';
 import UserPageCompo from '@/components/mypage/user/UserPageCompo.vue';
 import UserRequestListCompo from '@/components/mypage/user/UserRequestListCompo.vue';
@@ -20,6 +19,9 @@ import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
+import ReviewDetail from '@/components/review/ReviewDetail.vue';
+import ReviewList from '@/components/review/ReviewList.vue';
+import CreateReview from '@/components/review/CreateReview.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -41,7 +43,6 @@ export default [
   },
   { path: '/payment', component: PaymentCompo },
   { path: '/company/:id', component: CompanyDetail },
-  { path: '/review/:id', component: ReviewCard },
   { path: '/portfolio/create', component: CreatePortfolio },
   { path: '/estimate/list', component: EstimateList },
   { path: '/verify-email', component: VerifyCompo },
@@ -71,4 +72,7 @@ export default [
       },
     ],
   },
+  { path: '/review/:id', component: ReviewDetail },
+  { path: '/reviews', component: ReviewList },
+  { path: '/review/create', component: CreateReview },
 ];
