@@ -8,7 +8,7 @@
           @submit.prevent="loginAccount"
           class="text-xl bg-[#F9FAFB] p-10 rounded-md border-solid border-2 border-indigo-600 mb-7"
         >
-          <div class="inputAccount flex flex-col gap-5">
+          <div class="inputAccount flex flex-col w-80 gap-5">
             <!-- 아이디 -->
             <div class="inputEmail m-0 p-0 align-baseline">
               <label for="email" class="block text-sm font-medium mb-2">ID</label>
@@ -30,15 +30,7 @@
                   type="password"
                   v-model="password"
                   autofocus
-                  placeholder="example1234"
-                  class="p-3 rounded border-1 border-solid text-base w-full resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-                />
-                <p v-if="errors.password" class="text-red text-[12px] mt-2">{{ errors.password }}</p>
-                <input
-                  type="password"
-                  v-model="password"
-                  autofocus
-                  placeholder="패스워드를 입력해주세요."
+                  placeholder="비밀번호를 입력해주세요."
                   class="p-3 rounded border-1 border-solid text-base w-full resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                 />
               </div>
@@ -61,10 +53,6 @@
             >
             <div class="w-px min-h-3 bg-[#E1E1E1]"></div>
             <a href="" class="findPasswordBtn hover:text-midGreen text-[#737373] text-sm py-1 cursor-pointer"
-              >비밀번호 찾기</a
-            >
-            <div class="w-px min-h-3 bg-[#E1E1E1]"></div>
-            <a href="" class="signupBtn hover:text-midGreen text-[#737373] text-sm py-1 cursor-pointer"
               >비밀번호 찾기</a
             >
           </div>
@@ -135,7 +123,7 @@ export default {
   methods: {
     checkEmail() {
       // 이메일 형식 검증
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$';
       console.log('이메일: ' + this.email);
       if (this.email.length != 0 && emailPattern.test(this.email)) {
         return true;

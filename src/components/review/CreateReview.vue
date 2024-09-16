@@ -22,7 +22,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <quill-editor v-model:value="content" :content="content" :options="editorOptions" class="custom-quill-editor" />
+        <QuillEditor ref="quillEditor" v-model="content" :options="editorOptions" />
       </div>
 
       <!-- 업체 정보 -->
@@ -146,14 +146,30 @@
 <script>
 import axios from 'axios';
 import { useUserStore } from '@/stores/userStore';
+import { QuillEditor } from '@vueup/vue-quill';
 
 export default {
   data() {
     return {
       title: '',
       content: '',
+      imagesToUpload: [],
       editorOptions: {
         placeholder: '내용을 입력해주세요.',
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+              ['blockquote', 'code-block'],
+              ['link', 'image', 'video', 'formula'],
+
+              ['clean'], // remove formatting button
+            ],
+            handlers: {
+              image: this.imageHandler,
+            },
+          },
+        },
       },
       companyName: '',
       rating: '',
@@ -174,6 +190,10 @@ export default {
       return this.selectedTypes.length === this.constructionTypes.length;
     },
   },
+  components: {
+    QuillEditor,
+  },
+
   methods: {
     // 시공 기간이 조건에 맞지 않게 설정될 경우 endDate를 빈 값으로 초기화
     validateDates() {
@@ -245,6 +265,61 @@ export default {
         console.error(error);
         alert('후기 작성에 실패하였습니다.');
       }
+    },
+
+    imageHandler(value) {
+      console.log(value);
+      console.log('이미지 핸들러 호출.');
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+        const file = input.files[0];
+        console.log(file);
+
+        if (!file) {
+          console.log('파일이 선택되지 않음.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const editor = this.$refs.quillEditor.getQuill();
+          const range = editor.getSelection();
+          editor.insertEmbed(range.index, 'image', e.target.result);
+
+          console.log(range);
+          this.imagesToUpload.push({ file, placeholder: e.target.result });
+          console.log(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      };
+    },
+
+    async saveContent() {
+      for (let image of this.imagesToUpload) {
+        try {
+          const formData = new FormData();
+          formData.append('file', image.file);
+
+          const response = await axios.post('http://localhost:8080/reviews', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          const imageUrl = response.data.url;
+
+          this.content = this.content.replace(image.placeholder, imageUrl);
+        } catch (error) {
+          console.error('Image upload failed:', error);
+        }
+      }
+
+      this.imagesToUpload = [];
+
+      console.log('Final content:', this.content);
     },
   },
 };

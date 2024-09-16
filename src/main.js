@@ -6,7 +6,6 @@ import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { quillEditor } from 'vue3-quill';
 import 'quill/dist/quill.snow.css';
 
 import { createPinia } from 'pinia';
@@ -19,9 +18,7 @@ const pinia = createPinia();
 pinia.use(createPersistedState());
 
 app.use(router);
-app.use(quillEditor);
 app.use(pinia);
-
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
 
