@@ -78,7 +78,6 @@ export default {
         this.$emit('updateFormData', { budget: this.budget });
         this.$emit('nextStep');
         this.$router.push('/requestEstimate/stepFive'); // 다음 단계로 이동
-        console.log(this.budget);
       }
     },
 

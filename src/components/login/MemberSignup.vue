@@ -155,7 +155,8 @@ export default {
           params: { email: this.email },
         });
         console.log(response.data.duplicated);
-        if (response.data.duplicated) { // 객체로 전달되기 때문에
+        if (response.data.duplicated) {
+          // 객체로 전달되기 때문에
           this.errors.email = '이미 사용 중인 이메일입니다.';
         } else {
           delete this.errors.email;
@@ -184,7 +185,7 @@ export default {
       } else if (this.password.length < 10 || this.password.length > 16) {
         this.errors.password = '비밀번호는 10~16자로 입력해 주세요.';
       } else if (!regex.test(this.password)) {
-         this.errors.password = '비밀번호는 영문, 숫자. 특수문자를 포함해서 입력해주세요'; 
+        this.errors.password = '비밀번호는 영문, 숫자. 특수문자를 포함해서 입력해주세요';
       } else {
         delete this.errors.password;
       }
@@ -195,7 +196,7 @@ export default {
     },
     checkPasswordsMatch() {
       if (!this.errors.password && this.confirmPassword === this.password) {
-        if(!this.password) {
+        if (!this.password) {
           this.passwordsMatch = false;
         } else {
           this.passwordsMatch = true;
@@ -251,7 +252,6 @@ export default {
       console.log('email validate success');
     },
     async insertMember() {
-
       this.validateForm();
 
       if (Object.keys(this.errors).length === 0) {
@@ -260,9 +260,9 @@ export default {
           password: this.confirmPassword,
           name: this.name,
           nickName: this.nickName,
-          phoneNumber: this.phoneNumber
+          phoneNumber: this.phoneNumber,
         };
-        
+
         console.log(memberData);
 
         // 서버로 POST 요청
@@ -270,7 +270,8 @@ export default {
           const response = await axios.post('/api/member', memberData);
           console.log(response);
           console.log(response.data);
-          alert('회원 등록이 완료되었습니다.');
+          alert('입력하신 이메일로 인증 메시지가 전송되었습니다. 확인해주세요.');
+          this.$router.push('/login');
         } catch (error) {
           console.error(error);
           alert('회원 등록에 실패했습니다.');
@@ -278,7 +279,7 @@ export default {
       } else {
         alert('입력한 정보를 확인해 주세요.');
       }
-    }
+    },
   },
 };
 </script>

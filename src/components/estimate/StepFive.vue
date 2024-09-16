@@ -59,8 +59,8 @@
 
 <script>
 import { useUserStore } from '@/stores/userStore';
-import axios from 'axios';
 import { mapState } from 'pinia';
+import authInstance from '@/utils/axiosUtils';
 
 export default {
   props: ['step', 'formData'],
@@ -161,12 +161,8 @@ export default {
         }
 
         // 서버로 폼 데이터를 전송
-        axios
-          .post('http://localhost:8080/api/estimate/request', this.formData, {
-            headers: {
-              Authorization: this.token,
-            },
-          })
+        authInstance
+          .post('/api/estimate/request', this.formData)
           .then((response) => {
             alert('견적 요청이 완료되었습니다.');
             this.$router.push('/');
