@@ -19,6 +19,8 @@ import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
+import PortfolioDetail from '@/components/portfolio/PortfolioDetail.vue';
+import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 import ReviewDetail from '@/components/review/ReviewDetail.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
 import CreateReview from '@/components/review/CreateReview.vue';
@@ -44,6 +46,9 @@ export default [
   { path: '/payment', component: PaymentCompo },
   { path: '/company/:id', component: CompanyDetail },
   { path: '/portfolio/create', component: CreatePortfolio },
+  { path: '/portfolio', component: PortfolioList },
+  { path: '/portfolio/:id', component: PortfolioDetail },
+
   { path: '/estimate/list', component: EstimateList },
   { path: '/verify-email', component: VerifyCompo },
   {

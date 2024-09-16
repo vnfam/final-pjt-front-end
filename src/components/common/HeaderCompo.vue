@@ -10,6 +10,13 @@
         >
           리모델링파트너
         </p>
+        <p
+          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
+          :class="{ 'text-midGreen font-bold': isPortfolioPage, 'hover:text-midGreen': !isPortfolioPage }"
+          @click="$router.push('/portfolio')"
+        >
+          시공사례
+        </p>
         <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공사례</p>
         <p
           @click="$router.push('/reviews')"
@@ -107,6 +114,9 @@ export default {
     },
     isSignupPage() {
       return this.$route.path === '/memberSignup' || this.$route.path === '/companySignup';
+    },
+    isPortfolioPage() {
+      return this.$route.path === '/portfolio';
     },
     isReviewPage() {
       return this.$route.path === '/reviews';

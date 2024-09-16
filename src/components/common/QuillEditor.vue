@@ -70,7 +70,7 @@ export default {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-          // Quill 에디터의 선택 범위를 가져옵니다.
+          // Quill 에디터의 선택 범위 가져옴
           const range = this.quill.getSelection();
 
           // 선택 범위가 없을 경우 에디터 끝에 이미지를 삽입
@@ -89,7 +89,7 @@ export default {
             range: range ? { index: range.index, length: 1 } : { index: this.quill.getLength(), length: 0 },
           });
 
-          // 서버로 이미지를 업로드하고 Base64 이미지를 URL로 교체합니다.
+          // 서버로 이미지를 업로드하고 Base64 이미지를 URL로 교체
           this.uploadImages();
         };
 
@@ -111,7 +111,7 @@ export default {
             },
           });
 
-          const imageUrl = response.data.path;
+          const imageUrl = 'http://localhost:8080' + response.data.path;
           console.log(imageUrl);
           uploadedUrls.push(imageUrl);
 
