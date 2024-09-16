@@ -21,7 +21,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <quill-editor ref="quillEditor" v-model:value="content" :options="editorOptions" class="custom-quill-editor" />
+        <QuillEditor ref="quillEditor" v-model:modelValue="content" placeholder="내용을 입력해 주세요" required />
       </div>
 
       <div class="flex justify-between items-center mb-[12px]">
@@ -120,8 +120,10 @@
 <script>
 import axios from 'axios';
 import { useUserStore } from '@/stores/userStore';
+import QuillEditor from '@/components/common/QuillEditor.vue';
 
 export default {
+  components: { QuillEditor },
   data() {
     return {
       title: '',
@@ -135,41 +137,13 @@ export default {
       selectedTypes: [],
       buildingTypes: [],
       selectedBuildingType: '',
-      imageUrl: '',
-      editorOptions: {
-        placeholder: '내용을 입력해주세요..',
-        modules: {
-          toolbar: {
-            container: [
-              ['bold', 'italic', 'underline'],
-              [{ header: 1 }, { header: 2 }],
-              [{ list: 'ordered' }, { list: 'bullet' }],
-              ['link', 'image'],
-              ['clean'],
-            ],
-            handlers: {
-              image: this.handleImageUpload, // 이미지 업로드 핸들러 추가
-            },
-          },
-        },
-      },
     };
   },
   mounted() {
     this.getConstructionType();
     this.getBuildingType();
-
-    // // Quill 인스턴스 초기화 여부 확인
-    // this.$nextTick(() => {
-    //   if (this.$refs.quillEditor && this.$refs.quillEditor.quill) {
-    //     console.log('Quill instance initialized');
-    //   } else {
-    //     console.error('Quill instance failed to initialize');
-    //   }
-    // });
   },
   methods: {
-    // 건물 종류 조회
     async getBuildingType() {
       try {
         const response = await axios.get('/api/buildingType');
@@ -178,8 +152,6 @@ export default {
         console.error(error);
       }
     },
-
-    // 시공 종류 조회
     async getConstructionType() {
       try {
         const response = await axios.get('/api/constructionType');
@@ -188,45 +160,6 @@ export default {
         console.error(error);
       }
     },
-
-    // 이미지 업로드 핸들러
-    handleImageUpload() {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
-
-      input.onchange = async () => {
-        const file = input.files[0];
-        const formData = new FormData();
-        formData.append('image', file);
-
-        try {
-          const response = await axios.post('/api/uploads', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-
-          const imageUrl = response.data.path;
-          console.log(imageUrl);
-          const quillEditor = this.$refs.quill;
-
-          // Quill 포커스를 잃었을 때 다시 포커스 주기
-          const range = quillEditor.getSelection(); // 포커스 이후에 선택 범위 가져오기
-
-          if (range) {
-            quillEditor.insertEmbed(range.index, 'image', imageUrl);
-          } else {
-            quillEditor.insertEmbed(quillEditor.getLength(), 'image', imageUrl);
-          }
-        } catch (error) {
-          console.error('Image upload failed:', error);
-        }
-      };
-    },
-
-    // 시공 사례 작성
     async insertPortfolio() {
       const userStore = useUserStore();
       const token = userStore.accessToken;
