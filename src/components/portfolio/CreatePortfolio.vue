@@ -21,7 +21,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <quill-editor v-model:value="content" :content="content" :options="editorOptions" class="custom-quill-editor" />
+        <quill-editor ref="quillEditor" v-model:value="content" :options="editorOptions" class="custom-quill-editor" />
       </div>
 
       <div class="flex justify-between items-center mb-[12px]">
@@ -102,12 +102,6 @@
 
       <div class="mb-[12px]">
         <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
-        <!-- 전체 선택 체크박스 -->
-        <div class="mt-2 mb-3 flex items-center">
-          <input type="checkbox" @change="toggleAllConstructionTypes" :checked="isAllSelected" class="mr-2" />
-          <span class="text-[14px]">전체 선택</span>
-        </div>
-        <!-- 개별 시공 종류 체크박스 -->
         <div class="mt-2 flex flex-wrap gap-2">
           <div v-for="type in constructionTypes" :key="type.id" class="flex items-center">
             <input type="checkbox" :value="type.id" v-model="selectedTypes" class="mr-2" />
@@ -141,23 +135,38 @@ export default {
       selectedTypes: [],
       buildingTypes: [],
       selectedBuildingType: '',
+      imageUrl: '',
       editorOptions: {
         placeholder: '내용을 입력해주세요..',
-        // modules: {
-        //   toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['image', 'code-block']],
-        // },
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline'],
+              [{ header: 1 }, { header: 2 }],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              ['link', 'image'],
+              ['clean'],
+            ],
+            handlers: {
+              image: this.handleImageUpload, // 이미지 업로드 핸들러 추가
+            },
+          },
+        },
       },
     };
   },
   mounted() {
     this.getConstructionType();
     this.getBuildingType();
-  },
-  computed: {
-    // 전체 선택 여부 계산
-    isAllSelected() {
-      return this.selectedTypes.length === this.constructionTypes.length;
-    },
+
+    // // Quill 인스턴스 초기화 여부 확인
+    // this.$nextTick(() => {
+    //   if (this.$refs.quillEditor && this.$refs.quillEditor.quill) {
+    //     console.log('Quill instance initialized');
+    //   } else {
+    //     console.error('Quill instance failed to initialize');
+    //   }
+    // });
   },
   methods: {
     // 건물 종류 조회
@@ -174,19 +183,47 @@ export default {
     async getConstructionType() {
       try {
         const response = await axios.get('/api/constructionType');
-        this.constructionTypes = response.data; // 시공 종류 데이터 저장
+        this.constructionTypes = response.data;
       } catch (error) {
         console.error(error);
       }
     },
 
-    // 시공 종류 전체 선택/해제
-    toggleAllConstructionTypes() {
-      if (this.isAllSelected) {
-        this.selectedTypes = [];
-      } else {
-        this.selectedTypes = this.constructionTypes.map((type) => type.id);
-      }
+    // 이미지 업로드 핸들러
+    handleImageUpload() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+        const file = input.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+          const response = await axios.post('/api/uploads', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+
+          const imageUrl = response.data.path;
+          console.log(imageUrl);
+          const quillEditor = this.$refs.quill;
+
+          // Quill 포커스를 잃었을 때 다시 포커스 주기
+          const range = quillEditor.getSelection(); // 포커스 이후에 선택 범위 가져오기
+
+          if (range) {
+            quillEditor.insertEmbed(range.index, 'image', imageUrl);
+          } else {
+            quillEditor.insertEmbed(quillEditor.getLength(), 'image', imageUrl);
+          }
+        } catch (error) {
+          console.error('Image upload failed:', error);
+        }
+      };
     },
 
     // 시공 사례 작성
