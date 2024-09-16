@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+let retry = false;
 const authInstance = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
@@ -42,7 +42,8 @@ authInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (originalRequest._retry) {
+    if (retry) {
+      retry = false;
       return Promise.reject(error);
     }
 
@@ -50,7 +51,7 @@ authInstance.interceptors.response.use(
     console.log(originalRequest);
     console.log(error);
 
-    originalRequest._retry = true;
+    retry = true;
     try {
       console.log('재발급 요청');
       const res = await axios.post(
@@ -62,6 +63,7 @@ authInstance.interceptors.response.use(
       );
       const accessToken = res.data.data;
       setAccessToken(accessToken);
+      retry = false;
       return authInstance(originalRequest);
     } catch (refreshError) {
       console.log(refreshError);
