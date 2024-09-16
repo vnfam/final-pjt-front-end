@@ -22,7 +22,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <QuillEditor ref="quillEditor" v-model="content" :options="editorOptions" />
+        <QuillEditor ref="quillEditor" contentType="html" v-model:content="content" :options="editorOptions" />
       </div>
 
       <!-- 업체 정보 -->
@@ -114,7 +114,7 @@
         <label for="buildingTypes" class="text-[14px] font-normal mb-4">건물 종류</label>
         <div class="mt-2 flex flex-wrap gap-2">
           <div v-for="type in buildingTypes" :key="type.id" class="flex items-center">
-            <input type="radio" :value="type.id" v-model="selectedBuildingType" class="mr-2" />
+            <input type="radio" :value="type.id" v-model="selectedBuildingType" name="buildingType" class="mr-2" />
             <span class="text-[14px]">{{ type.name }}</span>
           </div>
         </div>
@@ -239,28 +239,32 @@ export default {
       const userStore = useUserStore();
       const token = userStore.accessToken;
       console.log(this.content);
-      const reviewRequest = {
+      const reviewRequestData = {
         title: this.title,
-        content: this.content,
         companyName: this.companyName,
         rating: this.rating,
-        startDate: this.startDate,
-        endDate: this.endDate,
+        workStartDate: this.startDate,
+        workEndDate: this.endDate,
         totalPrice: this.totalPrice,
         buildingTypeId: this.selectedBuildingType,
         constructionService: this.selectedTypes,
       };
 
       try {
-        const response = await axios.post('/api/review/create', reviewRequest, {
+        const reviewRequest = await axios.post('/api/reviews', reviewRequestData, {
           headers: {
             Authorization: token,
             'Content-Type': 'application/json',
           },
         });
         alert('후기가 작성되었습니다.');
-        const reviewId = response.data;
+        // 1. 게시글 중 크기가 작은 일부만 등록한다.
+        const reviewId = reviewRequest.data.reviewId;
+
         console.log(reviewId);
+        // 2. 게시글의 이미지 전체를 등록한다.
+
+        await this.uploadRemainContents(reviewId);
       } catch (error) {
         console.error(error);
         alert('후기 작성에 실패하였습니다.');
@@ -298,28 +302,34 @@ export default {
       };
     },
 
-    async saveContent() {
+    async uploadRemainContents(reviewId) {
       for (let image of this.imagesToUpload) {
         try {
           const formData = new FormData();
           formData.append('file', image.file);
-
-          const response = await axios.post('http://localhost:8080/reviews', formData, {
+          const imageUpladRequest = await axios.post(`http://localhost:8080/api/reviews/${reviewId}/images`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          const imageUrl = response.data.url;
-
+          const imageUrl = imageUpladRequest.data;
           this.content = this.content.replace(image.placeholder, imageUrl);
         } catch (error) {
-          console.error('Image upload failed:', error);
+          console.error('Image upload fa  iled:', error);
         }
       }
 
-      this.imagesToUpload = [];
+      const response = await axios.patch(`http://localhost:8080/api/reviews/${reviewId}`, {
+        content: this.content,
+      });
 
       console.log('Final content:', this.content);
+
+      const registerResult = response.data;
+      if (registerResult) {
+        alert('등록 성공!');
+        this.s$router.push(`/reviews/${reviewId}`);
+      }
     },
   },
 };
