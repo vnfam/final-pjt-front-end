@@ -123,7 +123,7 @@ export default {
   methods: {
     checkEmail() {
       // 이메일 형식 검증
-      const emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$';
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       console.log('이메일: ' + this.email);
       if (this.email.length != 0 && emailPattern.test(this.email)) {
         return true;
@@ -172,7 +172,7 @@ export default {
       } catch (error) {
         console.log(error);
         console.error('로그인 오류:', error);
-        if (error.status == 401) {
+        if (error.status == 401 || error.status == 500) {
           this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';
         }
       }
