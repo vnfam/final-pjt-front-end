@@ -19,6 +19,7 @@ import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
+import StepSix from '@/components/estimate/StepSix.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -36,6 +37,7 @@ export default [
       { path: 'stepThree', component: StepThree },
       { path: 'stepFour', component: StepFour },
       { path: 'stepFive', component: StepFive },
+      { path: 'stepSix', component: StepSix },
     ],
   },
   { path: '/payment', component: PaymentCompo },
