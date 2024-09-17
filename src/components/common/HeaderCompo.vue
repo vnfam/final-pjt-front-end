@@ -17,7 +17,6 @@
         >
           시공사례
         </p>
-        <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공사례</p>
         <p
           @click="$router.push('/reviews')"
           class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
@@ -121,7 +120,6 @@ export default {
     isReviewPage() {
       return this.$route.path === '/reviews';
     },
-
     isEstimateListPage() {
       return this.$route.path === '/estimate/list';
     },
