@@ -24,7 +24,6 @@
         >
           시공후기
         </p>
-
         <p
           v-if="role === 'COMPANY'"
           @click="$router.push('/estimate/list')"
