@@ -33,6 +33,7 @@ export default {
   },
   mounted() {
     this.fetchCompanies();
+    this.fetchReviews();
   },
   methods: {
     async fetchCompanies() {
@@ -41,6 +42,14 @@ export default {
         this.companies = response.data;
       } catch (error) {
         console.error('Error fetching company data: ', error);
+      }
+    },
+    async fetchReviews() {
+      try {
+        const response = await axios.get('/api/review/list');
+        this.reviews = response.data;
+      } catch (error) {
+        console.error('Error fetching review data: ', error);
       }
     },
   },
