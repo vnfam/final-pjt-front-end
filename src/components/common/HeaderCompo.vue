@@ -114,21 +114,12 @@ export default {
     isSignupPage() {
       return this.$route.path === '/memberSignup' || this.$route.path === '/companySignup';
     },
-<<<<<<< HEAD
-    isPortfolioPage() {
-      return this.$route.path === '/portfolio';
-    },
-    isReviewPage() {
-      return this.$route.path === '/reviews';
-    },
-=======
     isReviewPage() {
       return this.$route.path === '/reviews';
     },
     isPortfolioPage() {
       return this.$route.path === '/portfolio';
     },
->>>>>>> 55e2084a7d765d39a3d629f082d7fa33369d9be3
     isEstimateListPage() {
       return this.$route.path === '/estimate/list';
     },
