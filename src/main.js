@@ -6,7 +6,8 @@ import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css'; // Quill 스타일 추가
+
 
 import { createPinia } from 'pinia';
 import { createPersistedState } from 'pinia-plugin-persistedstate';

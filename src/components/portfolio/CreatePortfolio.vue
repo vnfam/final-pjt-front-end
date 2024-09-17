@@ -21,7 +21,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <quill-editor v-model:value="content" :content="content" :options="editorOptions" class="custom-quill-editor" />
+        <QuillEditor ref="quillEditor" v-model:modelValue="content" placeholder="내용을 입력해 주세요" required />
       </div>
 
       <div class="flex justify-between items-center mb-[12px]">
@@ -102,12 +102,6 @@
 
       <div class="mb-[12px]">
         <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
-        <!-- 전체 선택 체크박스 -->
-        <div class="mt-2 mb-3 flex items-center">
-          <input type="checkbox" @change="toggleAllConstructionTypes" :checked="isAllSelected" class="mr-2" />
-          <span class="text-[14px]">전체 선택</span>
-        </div>
-        <!-- 개별 시공 종류 체크박스 -->
         <div class="mt-2 flex flex-wrap gap-2">
           <div v-for="type in constructionTypes" :key="type.id" class="flex items-center">
             <input type="checkbox" :value="type.id" v-model="selectedTypes" class="mr-2" />
@@ -126,8 +120,10 @@
 <script>
 import axios from 'axios';
 import { useUserStore } from '@/stores/userStore';
+import QuillEditor from '@/components/common/QuillEditor.vue';
 
 export default {
+  components: { QuillEditor },
   data() {
     return {
       title: '',
@@ -141,26 +137,13 @@ export default {
       selectedTypes: [],
       buildingTypes: [],
       selectedBuildingType: '',
-      editorOptions: {
-        placeholder: '내용을 입력해주세요..',
-        // modules: {
-        //   toolbar: [[{ header: [1, 2, false] }], ['bold', 'italic', 'underline'], ['image', 'code-block']],
-        // },
-      },
     };
   },
   mounted() {
     this.getConstructionType();
     this.getBuildingType();
   },
-  computed: {
-    // 전체 선택 여부 계산
-    isAllSelected() {
-      return this.selectedTypes.length === this.constructionTypes.length;
-    },
-  },
   methods: {
-    // 건물 종류 조회
     async getBuildingType() {
       try {
         const response = await axios.get('/api/buildingType');
@@ -169,27 +152,14 @@ export default {
         console.error(error);
       }
     },
-
-    // 시공 종류 조회
     async getConstructionType() {
       try {
         const response = await axios.get('/api/constructionType');
-        this.constructionTypes = response.data; // 시공 종류 데이터 저장
+        this.constructionTypes = response.data;
       } catch (error) {
         console.error(error);
       }
     },
-
-    // 시공 종류 전체 선택/해제
-    toggleAllConstructionTypes() {
-      if (this.isAllSelected) {
-        this.selectedTypes = [];
-      } else {
-        this.selectedTypes = this.constructionTypes.map((type) => type.id);
-      }
-    },
-
-    // 시공 사례 작성
     async insertPortfolio() {
       const userStore = useUserStore();
       const token = userStore.accessToken;
