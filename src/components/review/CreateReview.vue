@@ -84,10 +84,10 @@
 
       <div class="mb-[12px] flex items-center justify-between">
         <div class="w-[50%] pr-2">
-          <label for="projectArea" class="text-[14px] font-normal mb-4">면적</label>
+          <label for="floor" class="text-[14px] font-normal mb-4">면적</label>
           <div class="mt-2 flex justify-between items-center">
             <input
-              v-model="projectArea"
+              v-model="floor"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
               type="number"
               placeholder="시공 면적을 입력해주세요."
@@ -173,6 +173,7 @@ export default {
       },
       companyName: '',
       rating: '',
+      floor: '',
       // startDate: '',
       // endDate: '',
       startDate: new Date().toISOString().slice(0, 10),
@@ -328,7 +329,7 @@ export default {
       const registerResult = response.data;
       if (registerResult) {
         alert('등록 성공!');
-        this.s$router.push(`/reviews/${reviewId}`);
+        this.$router.push(`/reviews/${reviewId}`);
       }
     },
   },

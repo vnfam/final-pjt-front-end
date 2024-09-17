@@ -19,11 +19,11 @@ import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
-import PortfolioDetail from '@/components/portfolio/PortfolioDetail.vue';
-import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 import ReviewDetail from '@/components/review/ReviewDetail.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
 import CreateReview from '@/components/review/CreateReview.vue';
+import PortfolioDetail from '@/components/portfolio/PortfolioDetail.vue';
+import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 
 export default [
   { path: '/', component: HomeCompo },
