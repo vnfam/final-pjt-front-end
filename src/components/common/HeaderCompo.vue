@@ -17,7 +17,14 @@
         >
           시공사례
         </p>
-        <p class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen">시공후기</p>
+        <p
+          @click="$router.push('/reviews')"
+          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
+          :class="{ 'text-midGreen font-bold': isReviewPage, 'hover:text-midGreen': !isReviewPage }"
+        >
+          시공후기
+        </p>
+
         <p
           v-if="role === 'COMPANY'"
           @click="$router.push('/estimate/list')"
@@ -107,6 +114,9 @@ export default {
     },
     isSignupPage() {
       return this.$route.path === '/memberSignup' || this.$route.path === '/companySignup';
+    },
+    isReviewPage() {
+      return this.$route.path === '/reviews';
     },
     isPortfolioPage() {
       return this.$route.path === '/portfolio';
