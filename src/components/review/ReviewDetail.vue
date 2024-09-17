@@ -77,8 +77,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper';
+import axios from 'axios';
 
 export default {
+  async mounted() {
+    const reviewId = this.$route.params.id;
+    const detail = await axios.get(`http://localhost:8080/api/reviews/${reviewId}`);
+    console.log(detail);
+  },
+
   data() {
     return {
       review: {
