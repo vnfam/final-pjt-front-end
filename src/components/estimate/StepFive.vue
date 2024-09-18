@@ -15,7 +15,7 @@
       id="wrap"
       ref="wrap"
       class="border border-gray-300 h-72 overflow-hidden relative mx-auto"
-      style="display:none"
+      style="display: none"
     >
       <img
         src="//t1.daumcdn.net/postcode/resource/images/close.png"
@@ -165,7 +165,7 @@ export default {
           .post('/api/estimate/request', this.formData)
           .then((response) => {
             alert('견적 요청이 완료되었습니다.');
-            this.$router.push('/');
+            this.$router.push('/requestEstimate/stepSix');
             console.log(response);
           })
           .catch((error) => {
