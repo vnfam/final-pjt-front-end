@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ReviewCard from './ReviewCard.vue';
 
 export default {
@@ -27,6 +28,12 @@ export default {
       //   reviews: [],
     };
   },
+
+  async mounted() {
+    const reviewList = await axios.get('http://localhost:8080/api/reviews');
+    console.log(reviewList.data);
+  },
+
   components: {
     ReviewCard,
   },
