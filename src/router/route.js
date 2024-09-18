@@ -19,6 +19,10 @@ import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
+import StepSix from '@/components/estimate/StepSix.vue';
+import ReviewDetail from '@/components/review/ReviewDetail.vue';
+import ReviewList from '@/components/review/ReviewList.vue';
+import CreateReview from '@/components/review/CreateReview.vue';
 import PortfolioDetail from '@/components/portfolio/PortfolioDetail.vue';
 import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 
@@ -38,6 +42,7 @@ export default [
       { path: 'stepThree', component: StepThree },
       { path: 'stepFour', component: StepFour },
       { path: 'stepFive', component: StepFive },
+      { path: 'stepSix', component: StepSix },
     ],
   },
   { path: '/payment', component: PaymentCompo },
@@ -74,4 +79,7 @@ export default [
       },
     ],
   },
+  { path: '/reviews/:id', component: ReviewDetail },
+  { path: '/reviews', component: ReviewList },
+  { path: '/reviews/create', component: CreateReview },
 ];

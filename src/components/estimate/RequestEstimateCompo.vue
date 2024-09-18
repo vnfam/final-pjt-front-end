@@ -3,29 +3,27 @@
     <h1>견적 요청</h1>
     <div class="max-w-xl mx-auto bg-gray-100 p-8 rounded-lg">
       <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
-        <div 
-          class="h-2 bg-primary rounded-full"
-          :style="{ width: progressWidth + '%' }"
-        ></div>
+        <div class="h-2 bg-primary rounded-full" :style="{ width: progressWidth + '%' }"></div>
       </div>
-        <router-view 
-          :step="step" 
-          :progress-width="progressWidth" 
-          :formData="formData" 
-          @nextStep="nextStep" 
-          @prevStep="prevStep" 
-          @updateFormData="updateFormData">
-        </router-view> 
+      <router-view
+        :step="step"
+        :progress-width="progressWidth"
+        :formData="formData"
+        @nextStep="nextStep"
+        @prevStep="prevStep"
+        @updateFormData="updateFormData"
+      >
+      </router-view>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       step: 1, // 현재 스텝을 중앙에서 관리
+      estimateRequestId: null, // 새로운 필드로 견적 요청 ID 관리
       formData: {
         buildingTypeId: '', // Step 1 데이터
         floor: '',
@@ -36,7 +34,8 @@ export default {
         detailedAddress: '', // Step 5 상세 주소
         measureDate: '', // Step 5 실측 가능일
       },
-      initialFormData: { // 초기 상태를 별도로 저장
+      initialFormData: {
+        // 초기 상태를 별도로 저장
         buildingTypeId: '',
         floor: '',
         constructionTypeIds: [],
@@ -73,7 +72,7 @@ export default {
     updateFormData(newData) {
       this.formData = { ...this.formData, ...newData };
     },
-    
+
     // formData 초기화 및 stepOne으로 이동
     resetToStepOne() {
       this.step = 1;
@@ -84,8 +83,8 @@ export default {
 
   mounted() {
     // 최신 표준을 사용해 새로고침을 감지
-    const navigationEntries = performance.getEntriesByType("navigation");
-    if (navigationEntries.length > 0 && navigationEntries[0].type === "reload") {
+    const navigationEntries = performance.getEntriesByType('navigation');
+    if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
       this.resetToStepOne(); // 새로고침 시 stepOne으로 이동 및 데이터 초기화
     }
   },
@@ -94,10 +93,10 @@ export default {
 
 <style scoped>
 .bg-primary {
-  background-color: #0A3A5E;
+  background-color: #0a3a5e;
 }
 .bg-primary-dark {
-  background-color: #06263F;
+  background-color: #06263f;
 }
 div > div {
   transition: width 1s ease;

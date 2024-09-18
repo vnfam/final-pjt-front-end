@@ -19,7 +19,6 @@ pinia.use(createPersistedState());
 
 app.use(router);
 app.use(pinia);
-
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
 
