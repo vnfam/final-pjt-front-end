@@ -39,12 +39,11 @@
         <p><strong>Address:</strong> {{ estimate.constructionAddress }}</p>
         <p><strong>Floor:</strong> {{ estimate.floor }}</p>
         <div class="text-right">
-          <button class="mr-4 bg-white rounded-xl py-2 px-4" @click="cancelEstimate(estimate.estimateRequestId)">
+          <button class="mr-4 bg-white rounded-xl py-2 px-4">
             거절
           </button>
           <button
             class="bg-midGreen text-white rounded-xl py-2 px-4"
-            @click="approvalEstimate(estimate.estimateRequestId)"
           >
             승인
           </button>
@@ -70,34 +69,10 @@ export default {
   methods: {
     async fetchEstimates() {
       try {
-        const response = await authInstance.get('/api/estimates/list');
-        this.estimates = response.data.data; // API의 응답 데이터에 맞춰 수정
+        const response = await authInstance.get('/api/estimate/requests');
+        this.estimates = response.data; // 응답 데이터에서 견적 목록에 접근
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
-      }
-    },
-
-    async cancelEstimate(estimateRequestId) {
-      const comfirmed = confirm('정말로 취소하시겠습니까?');
-      if (comfirmed) {
-        try {
-          await authInstance.post(`/api/estimates/cancel/${estimateRequestId}`);
-          // 취소 후 견적 리스트를 다시 가져와서 화면 갱신
-          this.fetchEstimates();
-        } catch (error) {
-          console.error('견적 취소에 실패했습니다.', error);
-        }
-      }
-    },
-
-    async approvalEstimate(estimateRequestId) {
-      try {
-        alert('승인되었습니다.');
-        await authInstance.post(`/api/estimates/approval/${estimateRequestId}`);
-        // 취소 후 견적 리스트를 다시 가져와서 화면 갱신
-        this.fetchEstimates();
-      } catch (error) {
-        console.error('견적 승인에 실패했습니다.', error);
       }
     },
   },
