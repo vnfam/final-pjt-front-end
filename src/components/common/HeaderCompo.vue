@@ -43,7 +43,15 @@
           class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
           :class="{ 'text-midGreen font-bold': isRequestEstimatePage, 'hover:text-midGreen': !isRequestEstimatePage }"
         >
-          견적 요청
+          견적요청
+        </p>
+        <p
+          v-if="role === 'USER'"
+          @click="$router.push('/reviews/create')"
+          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
+          :class="{ 'text-midGreen font-bold': isReviewCreatePage, 'hover:text-midGreen': !isReviewCreatePage }"
+        >
+          후기작성
         </p>
         <p
           v-if="role === 'COMPANY'"
@@ -129,6 +137,9 @@ export default {
     },
     isRequestEstimatePage() {
       return this.$route.path === '/requestEstimate';
+    },
+    isReviewCreatePage() {
+      return this.$route.path === '/reviews/create';
     },
   },
 };

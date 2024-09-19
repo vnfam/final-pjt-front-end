@@ -184,8 +184,8 @@ export default {
           },
         });
         alert('시공 사례가 작성되었습니다.');
-        const portfolioId = response.data;
-        console.log(portfolioId);
+        const portfolioId = response.data.id;
+        this.$router.push(`/portfolio/${portfolioId}`);
       } catch (error) {
         console.error(error);
         alert('시공 사례 작성에 실패하였습니다.');
