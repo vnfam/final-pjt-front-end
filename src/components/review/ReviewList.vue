@@ -1,14 +1,14 @@
 <template>
   <div class="py-5">
-    <p>
+    <p v-if="reviews && reviews.length">
       총
-      <strong>{{ n }} 개의 고객 후기</strong>
+      <strong>{{ reviews.length }} 개의 고객 후기</strong>
     </p>
+    <p v-else>고객 후기가 없습니다.</p>
   </div>
 
   <div class="flex flex-col">
-    <ReviewCard v-for="n in 5" :key="n"></ReviewCard>
-    <!-- <ReviewCard v-for="review in reviews" :key="review.id" :review="review"></ReviewCard> -->
+    <ReviewCard v-for="review in reviews" :key="review.id" :review="review"></ReviewCard>
     <div class="flex justify-center">
       <button class="py-4 px-20 my-10 font-size border-4">더보기</button>
     </div>
@@ -22,16 +22,15 @@ import ReviewCard from './ReviewCard.vue';
 export default {
   data() {
     return {
-      start: 0,
-      size: 5,
-      n: 0,
-      //   reviews: [],
+      reviews: [],
     };
   },
 
   async mounted() {
     const reviewList = await axios.get('http://localhost:8080/api/reviews');
+    this.reviews = reviewList.data;
     console.log(reviewList.data);
+    console.log(this.reviews);
   },
 
   components: {
