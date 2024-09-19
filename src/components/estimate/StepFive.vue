@@ -162,7 +162,7 @@ export default {
 
         // 서버로 폼 데이터를 전송
         authInstance
-          .post('/api/estimate/request', this.formData)
+          .post('/api/estimaterequests', this.formData)
           .then((response) => {
             alert('견적 요청이 완료되었습니다.');
             this.$router.push('/requestEstimate/stepSix');
