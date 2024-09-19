@@ -13,12 +13,12 @@
         <p class="text-4xl font-semibold text-gray-900"><span class="text-[26px]">월 </span>{{ membership.price }}원</p>
 
         <!-- 멤버십 설명 -->
-        <div v-if="membership.type === 'BASIC'" class="mt-4">
+        <div v-if="membership.type === 'BASIC'" class="my-8">
           <p class="text-gray-600 mb-2 font-medium">가장 기본적인 멤버십</p>
           <p class="text-gray-600 mb-2 font-medium">고객들의 견적 요청서 조회 가능</p>
           <p class="text-gray-600 font-medium">견적 요청 작성 가능</p>
         </div>
-        <div v-else-if="membership.type === 'PREMIUM'" class="mt-4">
+        <div v-else-if="membership.type === 'PREMIUM'" class="my-8">
           <p class="text-gray-600 mb-2 font-medium">광고 혜택이 주어지는 멤버십</p>
           <p class="text-gray-600 mb-2 font-medium">배너 광고 제공</p>
           <p class="text-gray-600 font-medium">업체 추천 시 페이지 상단에 위치</p>
@@ -52,7 +52,7 @@
 
     <!-- 환불 정책 모달 -->
     <div v-if="showPolicyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-20">
-      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+      <div class="bg-white py-20 rounded-lg shadow-lg text-center">
         <h3 class="text-xl font-bold">환불 정책</h3>
         <p class="mt-4 text-gray-600">
           결제 후 7일 이내에 환불 요청 시 전액 환불이 가능합니다. 그 이후 환불은 불가합니다.
