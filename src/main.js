@@ -6,12 +6,14 @@ import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 import 'quill/dist/quill.snow.css'; // Quill 스타일 추가
 
 import { createPinia } from 'pinia';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
 library.add(fas);
+library.add(far);
 
 const app = createApp(App);
 const pinia = createPinia();
