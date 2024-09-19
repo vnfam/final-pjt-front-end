@@ -25,6 +25,12 @@ import ReviewList from '@/components/review/ReviewList.vue';
 import CreateReview from '@/components/review/CreateReview.vue';
 import PortfolioDetail from '@/components/portfolio/PortfolioDetail.vue';
 import PortfolioList from '@/components/portfolio/PortfolioList.vue';
+import CompanyPageCompo from '@/components/mypage/company/CompanyPageCompo.vue';
+import CompanyBaseInfo from '@/components/mypage/company/CompanyBaseInfo.vue';
+import CompanyRequestListCompo from '@/components/mypage/company/CompanyRequestListCompo.vue';
+import CompanyPortfolioList from '@/components/mypage/company/portfolio/CompanyPortfolioList.vue';
+import SentRequests from '@/components/mypage/company/SentRequests.vue';
+import ReceivedRequests from '@/components/mypage/company/ReceivedRequests.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -77,6 +83,35 @@ export default [
         path: 'bookmark',
         component: UserBookMark,
       },
+    ],
+  },
+  {
+    path: '/mypage/company',
+    component: CompanyPageCompo,
+    redirect: '/mypage/company/info',
+    children: [
+      {
+        path: 'info',
+        component: CompanyBaseInfo,
+      },
+
+      {
+        path: 'requestlist',
+        component: CompanyRequestListCompo,
+      },
+
+      {
+        path: 'portfoliolist',
+        component: CompanyPortfolioList,
+      },
+      {
+        path: 'sentrequest',
+        component: SentRequests,
+      },
+      {
+        path: 'receivedrequest',
+        component: ReceivedRequests,
+      }
     ],
   },
   { path: '/reviews/:id', component: ReviewDetail },

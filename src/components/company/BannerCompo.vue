@@ -1,5 +1,5 @@
 <template>
-  <div class="my-carousel mt-4">
+  <div class="my-carousel mt-[150px]">
     <swiper
       :modules="[Navigation, Pagination, Autoplay]"
       :navigation="true"
