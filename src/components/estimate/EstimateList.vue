@@ -30,13 +30,13 @@
     <h3 class="font-medium text-[18px] mb-4">견적 요청 목록</h3>
     <ul>
       <li v-for="(estimate, index) in estimates" :key="index" class="bg-gray-100 mb-4 p-4 shadow rounded">
-        <p><strong>Requested by:</strong> {{ estimate.username }}</p>
-        <p><strong>Request Date:</strong> {{ estimate.requestDate }}</p>
-        <p><strong>Building Type:</strong> {{ estimate.buildingType }}</p>
+        <p><strong>Requested by:</strong> {{ estimate.nickName }}</p>
+        <p><strong>Request Date:</strong> {{ estimate.regDate }}</p>
+        <p><strong>Building Type:</strong> {{ estimate.buildingTypeName }}</p>
         <p><strong>Construction Types:</strong> {{ estimate.constructionTypes.join(', ') }}</p>
         <p><strong>Budget:</strong> {{ estimate.budget }}</p>
         <p><strong>Schedule:</strong> {{ estimate.schedule }}</p>
-        <p><strong>Address:</strong> {{ estimate.constructionAddress }}</p>
+        <p><strong>Address:</strong> {{ estimate.fullAddress }}</p>
         <p><strong>Floor:</strong> {{ estimate.floor }}</p>
         <div class="text-right">
           <button class="mr-4 bg-white rounded-xl py-2 px-4">
@@ -71,6 +71,7 @@ export default {
       try {
         const response = await authInstance.get('/api/estimate/requests');
         this.estimates = response.data; // 응답 데이터에서 견적 목록에 접근
+        console.log(response.data);
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
       }
