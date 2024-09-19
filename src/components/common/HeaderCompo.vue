@@ -62,7 +62,7 @@
           시공사례 작성
         </p>
 
-        <p class="cursor-pointer text-[16px] font-bold mr-8 hover:text-midGreen">{{ nickName }} 님</p>
+        <p @click="goToMyPage" class="cursor-pointer text-[16px] font-bold mr-8 hover:text-midGreen">{{ nickName }} 님</p>
         <p @click="handleLogout" class="cursor-pointer text-[16px] font-semibold mr-8 hover:text-midGreen">로그아웃</p>
       </div>
 
@@ -100,6 +100,15 @@ export default {
     const role = computed(() => userStore.role);
     const nickName = computed(() => userStore.nickName);
 
+    // New method to navigate based on role
+    const goToMyPage = () => {
+      if (role.value === 'USER') {
+        router.push('/mypage/user');
+      } else if (role.value === 'COMPANY') {
+        router.push('/mypage/company');
+      }
+    };
+
     const handleLogout = () => {
       userStore.logout();
       router.push('/');
@@ -110,6 +119,7 @@ export default {
       isLogin,
       role,
       handleLogout,
+      goToMyPage,
     };
   },
   computed: {
