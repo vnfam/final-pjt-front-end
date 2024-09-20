@@ -27,7 +27,6 @@ import PortfolioDetail from '@/components/portfolio/PortfolioDetail.vue';
 import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 import CompanyPageCompo from '@/components/mypage/company/CompanyPageCompo.vue';
 import CompanyBaseInfo from '@/components/mypage/company/CompanyBaseInfo.vue';
-import CompanyRequestListCompo from '@/components/mypage/company/CompanyRequestListCompo.vue';
 import CompanyPortfolioList from '@/components/mypage/company/portfolio/CompanyPortfolioList.vue';
 import SentRequests from '@/components/mypage/company/SentRequests.vue';
 import ReceivedRequests from '@/components/mypage/company/ReceivedRequests.vue';
@@ -93,11 +92,6 @@ export default [
       {
         path: 'info',
         component: CompanyBaseInfo,
-      },
-
-      {
-        path: 'requestlist',
-        component: CompanyRequestListCompo,
       },
 
       {
