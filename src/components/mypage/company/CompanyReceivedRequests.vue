@@ -25,6 +25,30 @@
         </li>
       </ul>
     </div>
+    <!-- 모달 -->
+    <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
+        <h2 class="text-lg font-semibold mb-4">견적 보내기</h2>
+        
+        <!-- 각 시공 타입별 입력 필드 -->
+        <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
+          <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
+          <input
+            type="text"
+            :id="'constructionType-' + index"
+            v-model="constructionTypeInputs[index]"
+            class="w-full border border-gray-300 p-2 rounded"
+            placeholder="해당 시공 타입의 금액을 입력하세요"
+          />
+        </div>
+
+        <!-- 모달 액션 -->
+        <div class="mt-4 flex justify-end">
+          <button class="bg-gray-300 text-black rounded-lg py-2 px-4 mr-2" @click="closeModal">취소</button>
+          <button class="bg-midGreen text-white rounded-lg py-2 px-4" @click="submitEstimate">보내기</button>
+        </div>
+      </div>
+    </div>
   </template>
   
   <script>
@@ -35,10 +59,14 @@
       return {
         selectedRegion: '서울 강남구',
         estimates: [],
+        showModal: false, // 모달 표시 여부를 제어하는 변수
+        selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
+        constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
+        estimateDetails: [],
       };
     },
     created() {
-      this.fetchEstimates();
+      this.fetchEstimates();  // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
     },
     methods: {
       async fetchEstimates() {

@@ -65,6 +65,7 @@ export default {
       showModal: false, // 모달 표시 여부를 제어하는 변수
       selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
       constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
+      estimateDetails: [],
     };
   },
   created() {
@@ -86,18 +87,20 @@ export default {
     async openModal(estimate) {
       this.selectedEstimate = estimate; // 선택된 견적 정보를 저장
       this.constructionTypeInputs = estimate.constructionTypes.map(() => ''); // 각 시공 타입에 대한 입력 필드 초기화
-
+      // typeIds
       try {
         // 선택된 견적의 상세 정보를 API로부터 가져옴
         const response = await authInstance.get(`/api/estimaterequests/${estimate.requestId}/write`);
-        const estimateDetails = response.data;
+        this.estimateDetails = response.data; // 2 list
 
         // 여기서 constructionTypeId를 받은 후 119번째 줄
 
         // 가져온 데이터를 입력 필드에 설정
-        estimateDetails.forEach((detail, index) => {
+        this.estimateDetails.forEach((detail, index) => {
           this.constructionTypeInputs[index] = detail.estimatedPrice || ''; // 가격이 있으면 설정, 없으면 빈 문자열
         });
+
+        console.log(this.estimateDetails);
 
         this.showModal = true; // 데이터를 다 가져온 후 모달을 표시
       } catch (error) {
@@ -114,11 +117,14 @@ export default {
     async submitEstimate() {
       try {
         // 시공 타입별 입력 금액 데이터를 서버로 전송할 형식으로 변환
-        const constructionPrices = this.constructionTypeInputs.map((price, index) => ({
-          constructionType: this.selectedEstimate.constructionTypes[index], // 시공 타입
+        const constructionPrices = {};
+        console.log(this.estimateDetails);
+        this.constructionTypeInputs.forEach((price, index) => {
+          constructionPrices[`${this.estimateDetails[index].estimateConstructionTypeId}`] = price;// 시공 타입
+          console.log(price);
           // 여기서 사용
-          price, // 입력된 금액
-        }));
+        });
+
         console.log(constructionPrices);
 
         // 서버로 POST 요청 전송
