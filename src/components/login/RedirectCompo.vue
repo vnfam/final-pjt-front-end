@@ -3,23 +3,9 @@ import { useUserStore } from '@/stores/userStore';
 
 export default {
   mounted() {
-    const accessToken = this.$route.query.authroziation;
-    const nickName = this.$route.query.nickName;
+    const accessToken = this.$route.query.authorization;
+    const nickName = decodeURIComponent(this.$route.query.nickName);
     const role = this.$route.query.role;
-
-    console.log(accessToken);
-    console.log(document.cookie);
-    const success = document.cookie
-      .split('; ')
-      .filter((cookie) => cookie.split('=')[0] == 'success')[0]
-      .split('=')[1];
-
-    console.log(success);
-
-    const data = this.decodeBase64(success);
-    console.log(data);
-    console.log(data.nickName);
-    console.log(data.role);
 
     if (accessToken) {
       console.log('accessToken = ', accessToken);
@@ -30,22 +16,6 @@ export default {
 
     this.$router.push('/');
   },
-
-  //   accessToken
-  // :
-  // "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUB0ZXN0LmNvbSIsImlhdCI6MTcyNjgwMTgwOCwiZXhwIjoxNzI2ODAzNjA4fQ.fepfT1L-HzDjS27NW5qhkYNT_twCB0wn4ulboT8q_bA"
-  // isAdmin
-  // :
-  // false
-  // isLogin
-  // :
-  // true
-  // nickName
-  // :
-  // "testNickName1"
-  // role
-  // :
-  // "USER"
 
   methods: {
     decodeBase64(encodedString) {
