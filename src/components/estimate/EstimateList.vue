@@ -91,9 +91,7 @@ export default {
       try {
         // 선택된 견적의 상세 정보를 API로부터 가져옴
         const response = await authInstance.get(`/api/estimaterequests/${estimate.requestId}/write`);
-        this.estimateDetails = response.data; // 2 list
-
-        // 여기서 constructionTypeId를 받은 후 119번째 줄
+        this.estimateDetails = response.data;
 
         // 가져온 데이터를 입력 필드에 설정
         this.estimateDetails.forEach((detail, index) => {
@@ -122,7 +120,6 @@ export default {
         this.constructionTypeInputs.forEach((price, index) => {
           constructionPrices[`${this.estimateDetails[index].estimateConstructionTypeId}`] = price;// 시공 타입
           console.log(price);
-          // 여기서 사용
         });
 
         console.log(constructionPrices);
@@ -141,3 +138,5 @@ export default {
   },
 };
 </script>
+<style scoped>
+</style>
