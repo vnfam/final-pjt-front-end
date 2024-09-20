@@ -1,55 +1,56 @@
 <template>
-  <div class="p-4 flex items-center justify-start shadow">
-    <div class="mr-10">
-      <p class="text-midGreen font-medium text-[14px]">지역</p>
-      <div class="flex-column justify-start items-center font-medium text-[16px]">
-        <font-awesome-icon class="mr-2" :icon="['fas', 'location-dot']" />
-        <span>{{ selectedRegion }}</span>
-      </div>
-    </div>
-
-    <div class="mr-3 w-[1px] h-[32px] bg-[#ddd]"></div>
-
-    <div class="mr-10">
-      <p class="text-midGreen font-medium text-[14px]">유형</p>
-      <div class="flex-column justify-start items-center font-medium text-[16px]">
-        <span>주거 인테리어</span>
-      </div>
-    </div>
-
-    <div class="mr-3 w-[1px] h-[32px] bg-[#ddd]"></div>
-
-    <div class="mr-10">
-      <p class="text-midGreen font-medium text-[14px]">시공</p>
-      <div class="flex-column justify-start items-center font-medium text-[16px]">
-        <span>종합시공</span>
-      </div>
-    </div>
-  </div>
   <div>
-    <h3 class="font-medium text-[18px] mb-4">견적 요청 목록</h3>
-    <ul>
-      <li v-for="(estimate, index) in estimates" :key="index" class="bg-gray-100 mb-4 p-4 shadow rounded">
-        <p><strong>Requested by:</strong> {{ estimate.nickName }}</p>
-        <p><strong>Request Date:</strong> {{ estimate.regDate }}</p>
-        <p><strong>Building Type:</strong> {{ estimate.buildingTypeName }}</p>
-        <p><strong>Construction Types:</strong> {{ estimate.constructionTypes.join(', ') }}</p>
-        <p><strong>Budget:</strong> {{ estimate.budget }}</p>
-        <p><strong>Schedule:</strong> {{ estimate.schedule }}</p>
-        <p><strong>Address:</strong> {{ estimate.fullAddress }}</p>
-        <p><strong>Floor:</strong> {{ estimate.floor }}</p>
-        <div class="text-right">
-          <button class="mr-4 bg-white rounded-xl py-2 px-4">
-            거절
-          </button>
-          <button
-            class="bg-midGreen text-white rounded-xl py-2 px-4"
-          >
-            승인
-          </button>
+    <div class="p-4 flex items-center justify-start shadow">
+      <h3 class="font-medium text-[18px]">견적 요청 목록</h3>
+    </div>
+
+    <div>
+      <ul>
+        <li v-for="(estimate, index) in estimates" :key="index" class="bg-gray-100 mb-4 p-4 shadow rounded">
+          <p><strong>Requested by:</strong> {{ estimate.nickName }}</p>
+          <p><strong>Request Date:</strong> {{ estimate.regDate }}</p>
+          <p><strong>Building Type:</strong> {{ estimate.buildingTypeName }}</p>
+          <p><strong>Construction Types:</strong> {{ estimate.constructionTypes.join(', ') }}</p>
+          <p><strong>Budget:</strong> {{ estimate.budget }}</p>
+          <p><strong>Schedule:</strong> {{ estimate.schedule }}</p>
+          <p><strong>Address:</strong> {{ estimate.fullAddress }}</p>
+          <p><strong>Floor:</strong> {{ estimate.floor }}</p>
+          <div class="text-right">
+            <button
+              class="bg-midGreen text-white rounded-xl py-2 px-4"
+              @click="openModal(estimate)"
+            >
+              견적 보내기
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 모달 -->
+    <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
+        <h2 class="text-lg font-semibold mb-4">견적 보내기</h2>
+        
+        <!-- 각 시공 타입별 입력 필드 -->
+        <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
+          <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
+          <input
+            type="text"
+            :id="'constructionType-' + index"
+            v-model="constructionTypeInputs[index]"
+            class="w-full border border-gray-300 p-2 rounded"
+            placeholder="해당 시공 타입의 금액을 입력하세요"
+          />
         </div>
-      </li>
-    </ul>
+
+        <!-- 모달 액션 -->
+        <div class="mt-4 flex justify-end">
+          <button class="bg-gray-300 text-black rounded-lg py-2 px-4 mr-2" @click="closeModal">취소</button>
+          <button class="bg-midGreen text-white rounded-lg py-2 px-4" @click="submitEstimate">보내기</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,27 +60,78 @@ import authInstance from '@/utils/axiosUtils';
 export default {
   data() {
     return {
-      selectedRegion: '서울 강남구',
-      estimates: [],
+      selectedRegion: '서울 강남구', // 선택된 지역 (임의의 기본 값)
+      estimates: [], // 견적 요청 목록을 저장하는 배열
+      showModal: false, // 모달 표시 여부를 제어하는 변수
+      selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
+      constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
     };
   },
   created() {
-    this.fetchEstimates();
+    this.fetchEstimates(); // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
   },
   methods: {
+    // 견적 요청 목록을 API로부터 가져오는 함수
     async fetchEstimates() {
       try {
-        const response = await authInstance.get('/api/estimate/requests');
-        this.estimates = response.data; // 응답 데이터에서 견적 목록에 접근
+        const response = await authInstance.get('/api/estimaterequests');
+        this.estimates = response.data; // 가져온 데이터를 estimates 배열에 저장
         console.log(response.data);
       } catch (error) {
-        console.error('견적 리스트를 가져오는데 실패했습니다.', error);
+        console.error('견적 리스트를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
+      }
+    },
+    
+    // "견적 보내기" 버튼 클릭 시 모달을 열고 견적 정보를 보여주는 함수
+    async openModal(estimate) {
+      this.selectedEstimate = estimate; // 선택된 견적 정보를 저장
+      this.constructionTypeInputs = estimate.constructionTypes.map(() => ''); // 각 시공 타입에 대한 입력 필드 초기화
+
+      try {
+        // 선택된 견적의 상세 정보를 API로부터 가져옴
+        const response = await authInstance.get(`/api/estimaterequests/${estimate.requestId}/write`);
+        const estimateDetails = response.data;
+
+        // 여기서 constructionTypeId를 받은 후 119번째 줄
+
+        // 가져온 데이터를 입력 필드에 설정
+        estimateDetails.forEach((detail, index) => {
+          this.constructionTypeInputs[index] = detail.estimatedPrice || ''; // 가격이 있으면 설정, 없으면 빈 문자열
+        });
+
+        this.showModal = true; // 데이터를 다 가져온 후 모달을 표시
+      } catch (error) {
+        console.error('견적 상세 정보를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
+      }
+    },
+
+    // 모달을 닫는 함수
+    closeModal() {
+      this.showModal = false; // 모달을 숨김
+    },
+    
+    // 견적 금액을 제출하는 함수
+    async submitEstimate() {
+      try {
+        // 시공 타입별 입력 금액 데이터를 서버로 전송할 형식으로 변환
+        const constructionPrices = this.constructionTypeInputs.map((price, index) => ({
+          constructionType: this.selectedEstimate.constructionTypes[index], // 시공 타입
+          // 여기서 사용
+          price, // 입력된 금액
+        }));
+        console.log(constructionPrices);
+
+        // 서버로 POST 요청 전송
+        await authInstance.post(`/api/estimaterequests/${this.selectedEstimate.requestId}/write`, {
+          constructionPrices // 전송할 데이터
+        });
+
+        console.log('견적 금액이 성공적으로 제출되었습니다.');
+        this.closeModal(); // 전송 후 모달 닫기
+      } catch (error) {
+        console.error('견적 금액을 제출하는 데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
       }
     },
   },
 };
 </script>
-
-<style scoped>
-/* 스타일은 필요에 따라 추가 */
-</style>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>견적 요청</h1>
     <div class="max-w-xl mx-auto bg-gray-100 p-8 rounded-lg">
       <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
         <div class="h-2 bg-primary rounded-full" :style="{ width: progressWidth + '%' }"></div>
