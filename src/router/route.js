@@ -26,6 +26,11 @@ import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 import CompanyPageCompo from '@/components/mypage/company/CompanyPageCompo.vue';
 import CompanyBaseInfo from '@/components/mypage/company/CompanyBaseInfo.vue';
 import CompanyPortfolioList from '@/components/mypage/company/portfolio/CompanyPortfolioList.vue';
+import AdminPageCompo from '@/components/admin/AdminPageCompo.vue';
+import CompanyMembershipList from '@/components/admin/company/CompanyMembershipList.vue';
+import CompanyMembershtipDetail from '@/components/admin/company/CompanyMembershtipDetail.vue';
+import CompanyPortfolioManagement from '@/components/admin/company/CompanyPortfolioManagement.vue';
+import MemberReviewManagement from '@/components/admin/member/MemberReviewManagement.vue';
 import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
 import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
@@ -103,4 +108,39 @@ export default [
   { path: '/reviews/:id', component: ReviewDetail },
   { path: '/reviews', component: ReviewList },
   { path: '/reviews/create', component: CreateReview },
+  {
+    path: '/mypage/admin',
+    component: AdminPageCompo,
+    redirect: '/mypage/admin/companyMembershipList',
+    children: [
+      {
+        path: 'companyMembershipList',
+        component: CompanyMembershipList,
+      },
+      {
+        path: 'companyMembershtipDetail',
+        component: CompanyMembershtipDetail,
+      },
+      {
+        path: 'companyPortfolioManagement',
+        component: CompanyPortfolioManagement,
+      },
+      {
+        path: 'memberReviewManagement',
+        component: MemberReviewManagement,
+      },
+      //   {
+      //     path: 'plateformEventManagement',
+      //     component: PlateformEventManagement,
+      //   },
+      //   {
+      //     path: 'plateformFAQManagement',
+      //     component: PlateformFAQManagement,
+      //   },
+      //   {
+      //     path: 'plateformAskManagement',
+      //     component: PlateformAskManagement,
+      //   },
+    ],
+  },
 ];
