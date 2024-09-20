@@ -8,34 +8,56 @@
       </div>
 
       <div class="grid grid-cols-2 gap-6 mb-6">
-        <div>
-          <h2 class="text-lg font-semibold">시공면적:</h2>
+        <div class="flex items-center">
+          <h2 class="text-lg font-semibold">시공면적:&nbsp;</h2>
           <p class="text-gray-600">{{ portfolio.projectArea }}평</p>
         </div>
-        <div>
+        <div class="flex items-center">
           <h2 class="text-lg font-semibold">예산:</h2>
           <p class="text-gray-600">{{ portfolio.projectBudget.toLocaleString() }} 만원</p>
         </div>
-        <div>
-          <h2 class="text-lg font-semibold">시공지역:</h2>
+        <div class="flex items-center">
+          <h2 class="text-lg font-semibold">시공지역:&nbsp;</h2>
           <p class="text-gray-600">{{ portfolio.projectLocation }}</p>
         </div>
         <div>
-          <h2 class="text-lg font-semibold">빌딩 타입:</h2>
+          <h2 class="text-lg font-semibold">빌딩 타입:&nbsp;</h2>
           <p class="text-gray-600">{{ portfolio.buildingType }}</p>
         </div>
       </div>
 
-      <div class="mb-6">
-        <h2 class="text-lg font-semibold">시공 기간:</h2>
+      <div class="mb-6 flex items-center">
+        <h2 class="text-lg font-semibold">시공 기간:&nbsp;</h2>
         <p class="text-gray-600">{{ formatDate(portfolio.startDate) }} ~ {{ formatDate(portfolio.endDate) }}</p>
       </div>
 
       <div class="mb-6">
-        <h2 class="text-lg font-semibold">시공 서비스:</h2>
+        <h2 class="text-lg font-semibold">시공 서비스:&nbsp;</h2>
         <ul class="list-disc ml-6 text-gray-600">
           <li v-for="(service, index) in portfolio.services" :key="index">{{ service }}</li>
         </ul>
+      </div>
+
+      <hr />
+
+      <div
+        class="flex pt-6 gap-10 cursor-pointer hover:bg-gray-300"
+        @click="this.$router.push(`/company/${portfolio.companyId}`)"
+      >
+        <div class="mb-6 flex items-center">
+          <h2 class="text-lg font-semibold">업체 이름:&nbsp;</h2>
+          <p class="text-gray-600">{{ portfolio.companyName }}</p>
+        </div>
+
+        <div class="mb-6 flex items-center">
+          <h2 class="text-lg font-semibold">업체 주소:&nbsp;</h2>
+          <p class="text-gray-600">{{ portfolio.companyAddress }}</p>
+        </div>
+
+        <div class="mb-6 flex items-center">
+          <h2 class="text-lg font-semibold">업체 번호:&nbsp;</h2>
+          <p class="text-gray-600">{{ portfolio.companyPhone }}</p>
+        </div>
       </div>
     </div>
 
