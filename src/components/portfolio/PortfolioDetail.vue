@@ -44,6 +44,11 @@
         class="flex pt-6 gap-10 cursor-pointer hover:bg-gray-300"
         @click="this.$router.push(`/company/${portfolio.companyId}`)"
       >
+        <div class="mb-6 w-20 h-20 rounded-full border-solid border-[1px] border-gray-200">
+          <img v-if="portfolio.companyLogo" :src="portfolio.companyLogo" alt="업체 로고" />
+          <img v-else src="@/assets/logo.png" alt="대체 이미지" />
+        </div>
+
         <div class="mb-6 flex items-center">
           <h2 class="text-lg font-semibold">업체 이름:&nbsp;</h2>
           <p class="text-gray-600">{{ portfolio.companyName }}</p>
