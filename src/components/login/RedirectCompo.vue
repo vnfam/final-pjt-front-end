@@ -4,6 +4,9 @@ import { useUserStore } from '@/stores/userStore';
 export default {
   mounted() {
     const accessToken = this.$route.query.authroziation;
+    const nickName = this.$route.query.nickName;
+    const role = this.$route.query.role;
+
     console.log(accessToken);
     console.log(document.cookie);
     const success = document.cookie
@@ -23,7 +26,7 @@ export default {
     }
     const store = useUserStore();
 
-    store.login(data.nickName, accessToken, data.role);
+    store.login(nickName, accessToken, role);
 
     this.$router.push('/');
   },
