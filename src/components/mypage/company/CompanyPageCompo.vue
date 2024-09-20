@@ -65,9 +65,9 @@
 
 <script>
 import CompanyBaseInfo from './CompanyBaseInfo.vue';
-import ReceivedRequests from './ReceivedRequests.vue';
+import ReceivedRequests from './CompanyReceivedRequests.vue';
 import CompanyPortfolioList from './portfolio/CompanyPortfolioList.vue';
-import SentRequests from './SentRequests.vue';
+import SentRequests from './CompanySentRequests.vue';
 
 export default {
   data() {
