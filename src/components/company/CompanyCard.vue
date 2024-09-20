@@ -1,7 +1,7 @@
 <template>
   <div
     @click="goToDetailPage"
-    class="w-[353px] h-[354px] border-solid border-[1px] border-[#eee] rounded-[8px] cursor-pointer border-box hover:shadow-md"
+    class="w-[353px] h-[354px] border-solid border-[1px] border-[#eee] rounded-[8px] transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
   >
     <div class="w-100 h-[198px] border-solid border-b-[1px] border-[#eee]">
       <img
@@ -23,7 +23,7 @@
         >
       </div>
       <div class="mb-2 h-[40px]">
-        <p class="text-[14px] font-normal text-[#555] leading-[20px] tracking-[-0.5px]">
+        <p class="text-[14px] font-normal text-[#555] leading-[20px] tracking-[-0.5px] truncate">
           {{ company.companyDesc }}
         </p>
       </div>
