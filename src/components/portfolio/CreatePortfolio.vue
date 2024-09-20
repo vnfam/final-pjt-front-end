@@ -21,7 +21,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <QuillEditor ref="quillEditor" v-model:modelValue="content" placeholder="내용을 입력해 주세요" required />
+        <QuillEditor ref="quillEditor" v-model:modelValue="content" required />
       </div>
 
       <div class="flex justify-between items-center mb-[12px]">
@@ -32,6 +32,7 @@
               v-model="startDate"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="date"
+              :max="today"
               required
             />
           </div>
@@ -43,6 +44,8 @@
               v-model="endDate"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="date"
+              :min="startDate"
+              :max="today"
               required
             />
           </div>
@@ -78,14 +81,36 @@
       </div>
 
       <div class="mb-[12px]">
-        <label for="projectLocation" class="text-[14px] font-normal mb-4">시공지역</label>
-        <div class="mt-2 flex justify-between items-center">
+        <label for="projectLocation" class="text-[14px] font-normal mb-4">시공 지역 </label>
+        <div class="flex items-center justify-between">
           <input
+            placeholder="시공 지역을 입력해주세요."
             v-model="projectLocation"
-            class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+            class="w-full mt-2 mr-2 h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
             type="text"
-            placeholder="시공지역을 입력해주세요."
+            readonly
             required
+          />
+          <button
+            type="button"
+            @click="searchAddress"
+            class="mt-2 px-3 py-2 bg-gray-600 text-white rounded-lg text-[16px] whitespace-nowrap"
+          >
+            주소 검색
+          </button>
+        </div>
+        <!-- Daum 우편번호 서비스 Wrap -->
+        <div
+          id="wrap"
+          ref="wrap"
+          class="border border-gray-300 h-72 overflow-hidden relative mx-auto"
+          style="display: none"
+        >
+          <img
+            src="//t1.daumcdn.net/postcode/resource/images/close.png"
+            class="absolute right-0 top-0 z-10 cursor-pointer"
+            @click="foldDaumPostcode"
+            alt="접기 버튼"
           />
         </div>
       </div>
@@ -137,13 +162,74 @@ export default {
       selectedTypes: [],
       buildingTypes: [],
       selectedBuildingType: '',
+      today: '',
     };
   },
   mounted() {
+    // 현재 날짜 저장하여 시작날짜와 종료날짜 유효성 검사
+    const today = new Date().toISOString().split('T')[0];
+    this.today = today;
+
     this.getConstructionType();
     this.getBuildingType();
   },
   methods: {
+    // 주소 검색
+    searchAddress() {
+      this.openDaumPostcode();
+    },
+    // Daum 우편번호 서비스 열기
+    openDaumPostcode() {
+      const currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          let addr = '';
+          let extraAddr = '';
+
+          // 사용자가 도로명 주소를 선택한 경우
+          if (data.userSelectedType === 'R') {
+            addr = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택한 경우
+            addr = data.jibunAddress;
+          }
+
+          // 도로명 주소 선택 시 참고항목 추가
+          if (data.userSelectedType === 'R') {
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              extraAddr += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              extraAddr += extraAddr !== '' ? ', ' + data.buildingName : data.buildingName;
+            }
+            if (extraAddr !== '') {
+              extraAddr = ' (' + extraAddr + ')';
+            }
+          }
+
+          // 선택한 주소를 주소 필드에 입력
+          this.projectLocation = addr + extraAddr;
+
+          // 우편번호 검색 창 닫기
+          this.$refs.wrap.style.display = 'none';
+          document.body.scrollTop = currentScroll;
+        },
+        // 창의 크기가 변경될 때 처리
+        onresize: (size) => {
+          this.$refs.wrap.style.height = size.height + 'px';
+        },
+        width: '100%',
+        height: '100%',
+      }).embed(this.$refs.wrap);
+
+      // 우편번호 검색 창 표시
+      this.$refs.wrap.style.display = 'block';
+    },
+    // 우편번호 검색 창 접기
+    foldDaumPostcode() {
+      this.$refs.wrap.style.display = 'none';
+    },
+
     async getBuildingType() {
       try {
         const response = await axios.get('/api/buildingType');

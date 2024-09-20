@@ -14,8 +14,6 @@ import StepFive from '@/components/estimate/StepFive.vue';
 import PaymentCompo from '@/components/payment/PaymentCompo.vue';
 import UserBaseInfo from '@/components/mypage/user/UserBaseInfo.vue';
 import UserPageCompo from '@/components/mypage/user/UserPageCompo.vue';
-import UserRequestListCompo from '@/components/mypage/user/UserRequestListCompo.vue';
-import UserBookMark from '@/components/mypage/user/UserBookMark.vue';
 import UserReviewList from '@/components/mypage/user/review/UserReviewList.vue';
 import EstimateList from '@/components/estimate/EstimateList.vue';
 import VerifyCompo from '@/components/login/VerifyCompo.vue';
@@ -28,13 +26,14 @@ import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 import CompanyPageCompo from '@/components/mypage/company/CompanyPageCompo.vue';
 import CompanyBaseInfo from '@/components/mypage/company/CompanyBaseInfo.vue';
 import CompanyPortfolioList from '@/components/mypage/company/portfolio/CompanyPortfolioList.vue';
-import SentRequests from '@/components/mypage/company/SentRequests.vue';
-import ReceivedRequests from '@/components/mypage/company/ReceivedRequests.vue';
 import AdminPageCompo from '@/components/admin/AdminPageCompo.vue';
 import CompanyMembershipList from '@/components/admin/company/CompanyMembershipList.vue';
 import CompanyMembershtipDetail from '@/components/admin/company/CompanyMembershtipDetail.vue';
 import CompanyPortfolioManagement from '@/components/admin/company/CompanyPortfolioManagement.vue';
 import MemberReviewManagement from '@/components/admin/member/MemberReviewManagement.vue';
+import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
+import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
+import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -74,18 +73,12 @@ export default [
       },
 
       {
-        path: 'requestlist',
-        component: UserRequestListCompo,
+        path: 'usersentrequest',
+        component: UserSaveRequests,
       },
-
       {
         path: 'reviewlist',
         component: UserReviewList,
-      },
-
-      {
-        path: 'bookmark',
-        component: UserBookMark,
       },
     ],
   },
@@ -98,18 +91,17 @@ export default [
         path: 'info',
         component: CompanyBaseInfo,
       },
-
-      {
-        path: 'portfoliolist',
-        component: CompanyPortfolioList,
-      },
       {
         path: 'sentrequest',
-        component: SentRequests,
+        component: CompanySentRequests,
       },
       {
         path: 'receivedrequest',
-        component: ReceivedRequests,
+        component: CompanyReceivedRequests,
+      },
+      {
+        path: 'portfoliolist',
+        component: CompanyPortfolioList,
       },
     ],
   },
