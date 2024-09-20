@@ -144,6 +144,7 @@
               @blur="validatePublishDate"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="date"
+              :max="today"
               required
             />
           </div>
@@ -154,14 +155,46 @@
           <span class="text-[10px] text-[#bbb] leading-[14px]">(상세 주소까지 작성)</span>
           <div class="mt-2 flex justify-between items-center">
             <input
+              placeholder="업체 주소를 입력해주세요."
               v-model="address"
               @blur="validateAddress"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="text"
+              readonly
               required
             />
           </div>
+          <!-- Daum 우편번호 서비스 Wrap -->
+          <div
+            id="wrap"
+            ref="wrap"
+            class="border border-gray-300 h-72 overflow-hidden relative mx-auto"
+            style="display: none"
+          >
+            <img
+              src="//t1.daumcdn.net/postcode/resource/images/close.png"
+              class="absolute right-0 top-0 z-10 cursor-pointer"
+              @click="foldDaumPostcode"
+              alt="접기 버튼"
+            />
+          </div>
+
+          <input
+            type="text"
+            placeholder="(선택) 지역과 상세주소를 입력해주세요."
+            class="flex-grow w-full h-[52px] text-[14px] font-normal mt-2 p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+            v-model="detailedAddress"
+            ref="detailedAddress"
+          />
           <p v-if="errors.address" class="text-red text-[12px] mt-2">{{ errors.address }}</p>
+
+          <button
+            type="button"
+            @click="searchAddress"
+            class="mt-2 px-3 py-2 bg-gray-600 text-white rounded-lg text-[16px]"
+          >
+            주소 검색
+          </button>
         </div>
 
         <div class="mb-[12px]">
@@ -230,6 +263,7 @@ export default {
       address: '',
       constructionTypes: [], // 시공 종류 데이터 배열
       selectedTypes: [], // 선택된 시공 종류 배열
+      today: '',
 
       errors: {},
       emailVerified: false,
@@ -255,9 +289,77 @@ export default {
     },
   },
   mounted() {
+    // 현재 날짜를 저장하여 개업날짜는 오늘 또는 미래의 날짜만 선택 가능하도록 설정
+    const today = new Date().toISOString().split('T')[0];
+    this.today = today;
+
     this.getConstructionType();
   },
   methods: {
+    // 주소 검색
+    searchAddress() {
+      this.openDaumPostcode();
+    },
+    // Daum 우편번호 서비스 열기
+    openDaumPostcode() {
+      const currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          let addr = '';
+          let extraAddr = '';
+
+          // 사용자가 도로명 주소를 선택한 경우
+          if (data.userSelectedType === 'R') {
+            addr = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택한 경우
+            addr = data.jibunAddress;
+          }
+
+          // 도로명 주소 선택 시 참고항목 추가
+          if (data.userSelectedType === 'R') {
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              extraAddr += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              extraAddr += extraAddr !== '' ? ', ' + data.buildingName : data.buildingName;
+            }
+            if (extraAddr !== '') {
+              extraAddr = ' (' + extraAddr + ')';
+            }
+          }
+
+          // 선택한 주소를 주소 필드에 입력
+          this.address = addr + extraAddr;
+
+          // 주소가 선택되었으므로 에러 메시지 제거
+          delete this.errors.address;
+
+          // 상세 주소 입력 필드에 포커스 이동
+          this.$nextTick(() => {
+            this.$refs.detailedAddress.focus();
+          });
+
+          // 우편번호 검색 창 닫기
+          this.$refs.wrap.style.display = 'none';
+          document.body.scrollTop = currentScroll;
+        },
+        // 창의 크기가 변경될 때 처리
+        onresize: (size) => {
+          this.$refs.wrap.style.height = size.height + 'px';
+        },
+        width: '100%',
+        height: '100%',
+      }).embed(this.$refs.wrap);
+
+      // 우편번호 검색 창 표시
+      this.$refs.wrap.style.display = 'block';
+    },
+    // 우편번호 검색 창 접기
+    foldDaumPostcode() {
+      this.$refs.wrap.style.display = 'none';
+    },
+
     // 이메일 중복 확인
     async verifyEmail() {
       try {
