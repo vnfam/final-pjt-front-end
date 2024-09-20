@@ -21,7 +21,7 @@
 
       <div class="mb-[12px]">
         <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <QuillEditor ref="quillEditor" v-model:modelValue="content" placeholder="내용을 입력해 주세요" required />
+        <QuillEditor ref="quillEditor" v-model:modelValue="content" required />
       </div>
 
       <div class="flex justify-between items-center mb-[12px]">
@@ -32,6 +32,7 @@
               v-model="startDate"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="date"
+              :max="today"
               required
             />
           </div>
@@ -43,6 +44,8 @@
               v-model="endDate"
               class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
               type="date"
+              :min="startDate"
+              :max="today"
               required
             />
           </div>
@@ -137,9 +140,14 @@ export default {
       selectedTypes: [],
       buildingTypes: [],
       selectedBuildingType: '',
+      today: '',
     };
   },
   mounted() {
+    // 현재 날짜 저장하여 시작날짜와 종료날짜 유효성 검사
+    const today = new Date().toISOString().split('T')[0];
+    this.today = today;
+
     this.getConstructionType();
     this.getBuildingType();
   },
