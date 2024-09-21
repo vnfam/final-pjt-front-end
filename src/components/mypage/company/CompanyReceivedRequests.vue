@@ -1,7 +1,7 @@
 <template>
     <div>
       <h3 class="font-medium text-[18px] mb-4">견적 요청 목록</h3>
-      <ul>
+      <ul class="flex">
         <li v-for="(estimate, index) in estimates" :key="index" class="bg-gray-100 mb-4 p-4 shadow rounded">
           <p><strong>Requested by:</strong> {{ estimate.nickName }}</p>
           <p><strong>Request Date:</strong> {{ estimate.regDate }}</p>
@@ -63,6 +63,8 @@
         selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
         constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
         estimateDetails: [],
+        test: [],
+        test2: [],
       };
     },
     created() {
@@ -73,6 +75,8 @@
         try {
           const response = await authInstance.get('/api/estimaterequests/received');
           this.estimates = response.data; // API의 응답 데이터에 맞춰 수정
+          console.log('여기');
+          console.log(this.estimates);
         } catch (error) {
           console.error('견적 리스트를 가져오는데 실패했습니다.', error);
         }
@@ -99,6 +103,24 @@
         } catch (error) {
           console.error('견적 상세 정보를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
         }
+
+        try {
+          const response = await authInstance.get(`/api/estimaterequests/${estimate.requestId}/estimates`);
+          this.test = response.data;
+          console.log(this.test);
+        } catch (error) {
+          console.error('에러', error);
+        }
+
+        // 여기서부터 확인 해야 함
+        // try {
+        //   const response = await authInstance.get(`/api/estimaterequests/${estimate.requestId}/estimates/${}`);
+        //   this.test2 = response.data;
+        //   console.log(this.test2);
+        // } catch (error) {
+        //   console.error('에러', error);
+        // }
+        
       },
 
       // 모달을 닫는 함수
