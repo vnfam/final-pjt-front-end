@@ -93,7 +93,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .flyoutMenu {
   border: 1px solid #ccc;
 }
