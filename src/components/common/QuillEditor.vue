@@ -58,6 +58,7 @@ export default {
       this.$emit('update:modelValue', currentContent);
     });
   },
+
   methods: {
     handleImageAdded() {
       const input = document.createElement('input');

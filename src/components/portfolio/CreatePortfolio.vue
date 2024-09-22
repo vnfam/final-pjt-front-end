@@ -215,6 +215,7 @@ export default {
         console.error(error);
       }
     },
+
     async getConstructionType() {
       try {
         const response = await axios.get('/api/constructionType');
@@ -223,6 +224,7 @@ export default {
         console.error(error);
       }
     },
+
     async insertPortfolio() {
       const userStore = useUserStore();
       const token = userStore.accessToken;
