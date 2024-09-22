@@ -9,7 +9,7 @@
           <li class="mb-2">
             <button
               @click="activeTab = 'info'"
-              :class="{'bg-gray-200': activeTab === 'info'}"
+              :class="{ 'bg-gray-200': activeTab === 'info' }"
               class="block p-2 rounded hover:bg-gray-200 w-full text-left"
             >
               기본정보
@@ -17,27 +17,31 @@
           </li>
           <!-- 견적내역 -->
           <li class="mb-2">
-            <button
-              @click="toggleRequestList"
-              class="block w-full text-left p-2 rounded hover:bg-gray-200"
-            >
+            <button @click="toggleRequestList" class="block w-full text-left p-2 rounded hover:bg-gray-200">
               견적내역
             </button>
             <!-- 보낸 요청, 받은 요청 토글 버튼 -->
             <div v-if="showRequestOptions" class="ml-4 mt-2">
               <button
                 @click="activeTab = 'sent'"
-                :class="{'bg-gray-200': activeTab === 'sent'}"
+                :class="{ 'bg-gray-200': activeTab === 'sent' }"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100"
               >
-                견적 요청 목록
+                견적 요청 목록(이름 변경 필요)
+              </button>
+              <button
+                @click="activeTab = 'ongoing'"
+                :class="{ 'bg-gray-200': activeTab === 'ongoing' }"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+              >
+                진행 중인 시공(이름 변경 필요)
               </button>
             </div>
           </li>
           <li class="mb-2">
             <button
               @click="activeTab = 'reviewlist'"
-              :class="{'bg-gray-200': activeTab === 'reviewlist'}"
+              :class="{ 'bg-gray-200': activeTab === 'reviewlist' }"
               class="block p-2 rounded hover:bg-gray-200 w-full text-left"
             >
               후기내역
@@ -58,6 +62,7 @@
 import UserSaveRequests from './UserSaveRequests.vue';
 import UserReviewList from './review/UserReviewList.vue';
 import UserBaseInfo from './UserBaseInfo.vue';
+import UserOnGoingRequests from './UserOnGoingRequests.vue';
 
 export default {
   data() {
@@ -74,6 +79,8 @@ export default {
           return UserBaseInfo;
         case 'sent':
           return UserSaveRequests;
+        case 'ongoing':
+          return UserOnGoingRequests;
         case 'reviewlist':
           return UserReviewList;
         default:

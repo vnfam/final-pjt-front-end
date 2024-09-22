@@ -63,7 +63,7 @@
               type="button"
               class="naverLoginBtn font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 py-3 text-base rounded-s w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
-              <a data-v-12dd5d6d="" href="http://localhost:8080/oauth2/authorization/naver" class="inline-flex"
+              <a href="http://localhost:8080/oauth2/authorization/naver" class="inline-flex"
                 ><img
                   alt="네이버 로고"
                   loading="lazy"
@@ -85,22 +85,24 @@
               type="button"
               class="kakaoLoginBtn font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 py-3 text-base rounded-s w-full bg-[#fee500] border-[#fee500] text-black flex items-center justify-center"
             >
-              <img
-                alt="카카오 로고"
-                loading="lazy"
-                width="20"
-                height="20"
-                decoding="async"
-                data-nimg="1"
-                class="css-1oxvs31 e1q08h1"
-                style="color: transparent"
-                srcset="
-                  https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=32&amp;q=75 1x,
-                  https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=48&amp;q=75 2x
-                "
-                src="https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=48&amp;q=75"
-              />
-              <span>카카오로 시작</span>
+              <a href="http://localhost:8080/oauth2/authorization/kakao" class="inline-flex">
+                <img
+                  alt="카카오 로고"
+                  loading="lazy"
+                  width="20"
+                  height="20"
+                  decoding="async"
+                  data-nimg="1"
+                  class="css-1oxvs31 e1q08h1"
+                  style="color: transparent"
+                  srcset="
+                    https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=32&amp;q=75 1x,
+                    https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=48&amp;q=75 2x
+                  "
+                  src="https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=48&amp;q=75"
+                />
+                <span>카카오로 시작</span>
+              </a>
             </button>
           </div>
         </form>
