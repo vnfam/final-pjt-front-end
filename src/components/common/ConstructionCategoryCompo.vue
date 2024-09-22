@@ -17,22 +17,41 @@
         <!-- Listbox Options with Checkboxes -->
         <transition class="z-10">
           <ListboxOptions
-            class="absolute mt-1 max-h-[300px] w-full overflow-auto rounded-md bg-white py-1 shadow-lg sm:text-sm"
+            class="absolute mt-1 max-h-[300px] w-full overflow-auto rounded-md bg-white pl-2 py-1 shadow-lg sm:text-sm"
           >
             <!-- 전체 선택 체크박스 -->
-            <div class="flex items-center py-2 pl-3 pr-4 pb-3 border-b-[1px] cursor-pointer">
-              <input type="checkbox" @change="toggleAllServices" :checked="isAllSelected" class="mr-2" />
-              <span>전체 선택</span>
+            <div
+              class="flex items-center py-3 pl-3 pr-4 pb-3 border-b-[1px] border-gray-100 cursor-pointer"
+              @click="toggleAllServices"
+            >
+              <input
+                type="checkbox"
+                @change="toggleAllServices"
+                :checked="isAllSelected"
+                class="mr-3 custom-checkbox"
+                :class="{ 'checked-checkbox': selectedServices.length === services.length }"
+              />
+              <span class="font-medium" :class="{ 'text-midGreen': selectedServices.length === services.length }"
+                >전체 선택</span
+              >
             </div>
 
             <!-- 개별 시공 서비스 체크박스 -->
             <div
               v-for="service in services"
               :key="service.id"
-              class="flex items-center py-[10px] pl-3 pr-4 cursor-pointer hover:text-midGreen hover:color-midGreen"
+              class="flex items-center py-3 pl-3 pr-4 cursor-pointer hover:text-midGreen hover:color-midGreen"
+              @click="toggleService(service.id)"
+              :class="{ 'text-midGreen': selectedServices.includes(service.id) }"
             >
-              <input type="checkbox" :value="service.id" v-model="selectedServices" class="mr-2" />
-              <span>{{ service.name }}</span>
+              <input
+                type="checkbox"
+                :value="service.id"
+                v-model="selectedServices"
+                class="mr-3 custom-checkbox"
+                :class="{ 'checked-checkbox': selectedServices.includes(service.id) }"
+              />
+              <span class="font-medium">{{ service.name }}</span>
             </div>
           </ListboxOptions>
         </transition>
@@ -67,17 +86,17 @@ export default {
       emit('services-selected', { services: [] }); // 초기화된 서비스를 부모로 전달
     };
 
-    // 시공 서비스 목록을 가져오는 함수
+    // 서비스 목록 가져오기
     const fetchServices = async () => {
       try {
         const response = await axios.get('/api/constructionType');
-        services.value = response.data; // 서비스 종류 데이터 저장
+        services.value = response.data; // 서비스 데이터 설정
       } catch (error) {
         console.error('Error fetching services:', error);
       }
     };
 
-    // 선택된 시공 서비스 이름
+    // 선택된 서비스 이름 계산
     const selectedServiceNames = computed(() => {
       return selectedServices.value.map((id) => {
         const service = services.value.find((s) => s.id === id);
@@ -93,21 +112,31 @@ export default {
     // 전체 선택/해제 기능
     const toggleAllServices = () => {
       if (isAllSelected.value) {
-        selectedServices.value = []; // 모든 서비스 선택 해제
+        selectedServices.value = []; // 선택 해제
       } else {
         selectedServices.value = services.value.map((service) => service.id); // 모든 서비스 선택
       }
     };
 
-    // 서비스 선택이 변경될 때마다 부모 컴포넌트로 알림
+    // 개별 서비스 선택 토글
+    const toggleService = (serviceId) => {
+      const index = selectedServices.value.indexOf(serviceId);
+      if (index > -1) {
+        selectedServices.value.splice(index, 1);
+      } else {
+        selectedServices.value.push(serviceId);
+      }
+    };
+
+    // 서비스 선택이 변경될 때 부모 컴포넌트로 알림
     watch(selectedServices, (newVal) => {
       emit('services-selected', { services: newVal });
     });
 
-    // 컴포넌트가 마운트될 때 서비스 목록을 가져옴
+    // 컴포넌트가 마운트될 때 서비스 목록 가져오기
     onMounted(() => {
       fetchServices();
-      selectedServices.value = [...props.selectedServicesProp]; // 부모에서 전달된 선택된 서비스 설정
+      selectedServices.value = [...props.selectedServicesProp];
     });
 
     return {
@@ -116,10 +145,22 @@ export default {
       isAllSelected,
       toggleAllServices,
       selectedServiceNames,
+      toggleService,
       resetSelection,
     };
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 체크박스 크기 조정 */
+.custom-checkbox {
+  transform: scale(1.4);
+  accent-color: gray;
+}
+
+/* 체크된 체크박스 스타일 */
+.checked-checkbox {
+  accent-color: #388e3c;
+}
+</style>

@@ -15,10 +15,10 @@
       </div>
 
       <div class="bg-gray-50 py-6 px-6">
-        <h2 class="text-2xl font-bold mb-4">프로젝트 정보</h2>
+        <h2 class="text-2xl font-bold mb-4">시공 정보</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
           <div class="flex items-center">
-            <h3 class="text-lg font-semibold text-gray-700">시공면적:</h3>
+            <h3 class="text-lg font-semibold text-gray-700">시공 면적:</h3>
             <p class="text-gray-600 ml-2">{{ portfolio.projectArea }}평</p>
           </div>
           <div class="flex items-center">
@@ -33,7 +33,7 @@
 
         <div class="grid grid-cols-1 gap-4">
           <div class="flex items-center">
-            <h3 class="text-lg font-semibold text-gray-700">시공지역:</h3>
+            <h3 class="text-lg font-semibold text-gray-700">시공 지역:</h3>
             <p class="text-gray-600 ml-2">{{ portfolio.projectLocation }}</p>
           </div>
           <div class="flex items-center">
@@ -116,6 +116,7 @@ export default {
       try {
         const response = await axios.get(`/api/portfolio/${id}`);
         this.portfolio = response.data;
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching portfolio data: ', error);
       }
