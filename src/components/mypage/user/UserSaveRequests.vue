@@ -34,7 +34,7 @@
             <div
               v-for="(estimate, estimateIndex) in estimateRequest.estimates"
               :key="estimateIndex"
-              class="border border-gray-300 rounded-lg px-4 bg-white transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
+              class="border border-gray-300 rounded-lg pb-4 px-4 bg-white transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
               @click="estimateDetail(estimateRequest, estimate)"
             >
               <div class="w-full h-[125px] flex justify-center items-center border-b">
@@ -184,9 +184,13 @@ export default {
 
     const reject = async (estimate, requestId) => {
       try {
+        const isConfirm = confirm('정말로 거절하시겠습니까?');
+        if (!isConfirm) {
+          return;
+        }
         await authInstance.post(`/api/estimaterequests/${requestId}/estimates/${estimate.estimateId}/reject`);
-        confirm('정말로 거절하시겠습니까?');
         closeModal;
+        window.location.reload();
       } catch (error) {
         console.log('거절 실패했습니다.', error);
       }
