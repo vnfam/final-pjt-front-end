@@ -168,7 +168,12 @@ export default {
 
       // 서버 요청
       try {
-        const response = await axios.post(`http://localhost:8080/form/login`, loginData);
+        const response = await axios.post(`http://localhost:8080/form/login`, loginData, {
+          withCredentials: true,
+        });
+
+        console.log(response.headers.get('Authorization'));
+
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
         this.$router.push('/');
       } catch (error) {

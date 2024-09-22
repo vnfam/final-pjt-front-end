@@ -42,14 +42,18 @@ authInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (originalRequest._retry) {
+    if (error.status != 401 || error.status != 403) {
+      console.log('서버 예외');
       return Promise.reject(error);
     }
 
-    console.log('액세스 토큰 만료 가능성 있음 ' + originalRequest);
-    console.log(originalRequest);
-    console.log(error);
+    if (originalRequest._retry) {
+      console.log('이미 재요청 시도를 진행함');
+      return Promise.reject(error);
+    }
 
+    if (originalRequest) console.log('액세스 토큰 만료 가능성 있음 ' + originalRequest);
+    console.log(originalRequest);
     originalRequest._retry = true;
     try {
       console.log('재발급 요청');
@@ -62,6 +66,12 @@ authInstance.interceptors.response.use(
       );
       const accessToken = res.data.data;
       setAccessToken(accessToken);
+
+      originalRequest.Authorization = accessToken;
+
+      console.log('발급 이후의 요청');
+      console.log(originalRequest);
+
       return authInstance(originalRequest);
     } catch (refreshError) {
       console.log(refreshError);
@@ -72,7 +82,7 @@ authInstance.interceptors.response.use(
 
 function setAccessToken(accessToken) {
   const user = JSON.parse(localStorage.getItem('user'));
-  user.accessToken = accessToken;
+  user.accessToken = accessToken == undefined ? '' : accessToken;
   localStorage.setItem('user', JSON.stringify(user));
 }
 
