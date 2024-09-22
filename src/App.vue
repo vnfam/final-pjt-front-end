@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen">
-    <div class="w-[1100px] mx-auto">
+  <div>
+    <div class="w-[1100px] mx-auto height pb-20">
       <header-compo></header-compo>
       <div class="mt-[85px]">
         <router-view></router-view>
@@ -26,4 +26,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.height {
+  min-height: calc(100vh - 276px);
+}
+</style>
