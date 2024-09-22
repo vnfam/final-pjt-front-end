@@ -1,34 +1,96 @@
 <template>
   <div>
     <h3 class="font-medium text-[18px] mb-4">견적 요청 목록</h3>
-    <ul>
-      <li v-for="(estimate, index) in estimates" :key="index" class="bg-gray-100 mb-4 p-4 shadow rounded">
-        <p><strong>Requested by:</strong> {{ estimate.nickName }}</p>
-        <p><strong>Request Date:</strong> {{ estimate.regDate }}</p>
-        <p><strong>Building Type:</strong> {{ estimate.buildingTypeName }}</p>
-        <p><strong>Construction Types:</strong> {{ estimate.constructionTypes.join(', ') }}</p>
-        <p><strong>Budget:</strong> {{ estimate.budget }}</p>
-        <p><strong>Schedule:</strong> {{ estimate.schedule }}</p>
-        <p><strong>Address:</strong> {{ estimate.fullAddress }}</p>
-        <p><strong>Floor:</strong> {{ estimate.floor }}</p>
-        <div class="text-right">
-          <button class="mr-4 bg-white rounded-xl py-2 px-4">
-            취소
-          </button>
-          <button
-            class="bg-midGreen text-white rounded-xl py-2 px-4"
-            @click="openModal"
-          >
-            상세 보기
-          </button>
+
+    <!-- 토글 리스트 -->
+    <ul class="list-none p-0">
+      <li
+        v-for="(estimateRequest, index) in estimateRequests"
+        :key="index"
+        class="border border-gray-300 p-4 mb-2 rounded-lg"
+      >
+        <div class="flex justify-between items-center">
+          <div>
+            <span>{{ '요청 ' + (index + 1) }}</span>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-gray-500">{{
+              '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
+            }}</span>
+            <button @click="toggle(estimateRequest, index)">
+              <span v-if="isOpen[index]">▲</span>
+              <span v-else>▼</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 카드 형식으로 보여주는 부분 -->
+        <div v-if="isOpen[index]" class="bg-gray-100 mt-2 p-4 shadow rounded">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              v-for="(estimate, estimateIndex) in estimateRequest.estimates"
+              :key="estimateIndex"
+              class="pt-0 border border-gray-300 rounded-lg p-4 bg-white transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
+              @click="estimateDetail(estimateRequest, estimate)"
+            >
+              <div class="w-full h-[125px] flex justify-center items-center border-b">
+                <img
+                  :src="estimate.companyLogoUrl ? estimate.companyLogoUrl : require('@/assets/logo.png')"
+                  alt="로고"
+                  class="w-[100px] h-[100px] object-contain"
+                />
+              </div>
+              <div class="">
+                <p class="my-2 font-semibold">{{ estimate.companyName }}</p>
+                <div class="flex justify-between">
+                  <p class="text-xs text-gray-500">{{ estimate.completeEstimateCount }}건의 공사</p>
+                  <p class="text-xs text-midGreen">
+                    <font-awesome-icon icon="star" />
+                    <span class="ml-1">{{ estimate.rating }}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="text-right mt-4">
+                <p class="font-semibold">예상 금액: {{ estimate.totalPrice }}만원</p>
+              </div>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
   </div>
+
   <!-- 모달 -->
   <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
       <h2 class="text-lg font-semibold mb-4">상세 보기</h2>
+
+      <!-- 모달 내용 -->
+      <div v-if="selectedEstimate">
+        <div class="flex items-center mb-4">
+          <img
+            :src="selectedEstimate.companyLogoUrl ? selectedEstimate.companyLogoUrl : require('@/assets/logo.png')"
+            alt="Company Logo"
+            class="w-[100px] h-[100px] object-contain mr-4"
+          />
+          <div>
+            <p class="font-semibold">{{ selectedEstimate.companyName }}</p>
+            <p class="text-gray-500">{{ '평점: ' + selectedEstimate.rating }}</p>
+          </div>
+        </div>
+
+        <!-- Construction prices -->
+        <div class="mb-4">
+          <h3 class="font-semibold">공사 항목별 가격</h3>
+          <ul>
+            <li v-for="(price, constructionType) in selectedEstimate.constructionPrices" :key="constructionType">
+              {{ constructionType }}: {{ price }} 만원
+            </li>
+          </ul>
+        </div>
+
+        <div class="font-semibold text-right">총 가격: {{ selectedEstimate.totalPrice }} 만원</div>
+      </div>
 
       <!-- 모달 액션 -->
       <div class="mt-4 flex justify-end">
@@ -40,62 +102,85 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import authInstance from '@/utils/axiosUtils';
 
 export default {
-  data() {
-    return {
-      selectedRegion: '서울 강남구',
-      estimates: [],
-      showModal: false, // 모달 표시 여부를 제어하는 변수
-      selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
-      constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
-      estimateDetails: [],
-    };
-  },
-  created() {
-    this.fetchEstimates();  // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
-  },
-  methods: {
-    async fetchEstimates() {
+  setup() {
+    const estimateRequests = ref([]); // 견적 요청 목록
+    const showModal = ref(false); // 모달 상태
+    const selectedEstimate = ref({}); // 선택된 견적 정보
+    const isOpen = ref([]); // 각 항목의 토글 상태를 저장
+
+    // 견적 요청 목록 가져오기
+    const fetchEstimateRequests = async () => {
       try {
         const response = await authInstance.get('/api/estimaterequests/users');
-        this.estimates = response.data; // API의 응답 데이터에 맞춰 수정
+        estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
+      } catch (error) {
+        console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
+      }
+    };
+
+    // 토글 기능
+    const toggle = async (estimateRequest, index) => {
+      try {
+        if (!estimateRequest.estimates) {
+          const response = await authInstance.get(`/api/estimaterequests/${estimateRequest.requestId}/estimates`);
+          estimateRequest.estimates = response.data; // 각 요청별로 견적 목록 저장
+        }
+        console.log(estimateRequest.estimates);
+        console.log(estimateRequest.estimates[0].estimateId);
+        isOpen.value[index] = !isOpen.value[index]; // 토글 상태 변경
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
       }
-    },
-    // // "상세 보기" 버튼 클릭 시 모달을 열고 견적 정보를 보여주는 함수
-    // async openModal(estimate) {
-    //   this.selectedEstimate = estimate; // 선택된 견적 정보를 저장
-    //   this.constructionTypeInputs = estimate.constructionTypes.map(() => ''); // 각 시공 타입에 대한 입력 필드 초기화
-    //   // typeIds
-    //   try {
-    //     // 선택된 견적의 상세 정보를 API로부터 가져옴
-    //     const response = await authInstance.get(`/api/estimaterequests/${estimate.requestId}/write`);
-    //     this.estimateDetails = response.data;
+    };
 
-    //     // 가져온 데이터를 입력 필드에 설정
-    //     this.estimateDetails.forEach((detail, index) => {
-    //       this.constructionTypeInputs[index] = detail.estimatedPrice || ''; // 가격이 있으면 설정, 없으면 빈 문자열
-    //     });
+    const estimateDetail = async (estimateRequest, estimate) => {
+      try {
+        if (estimate && estimate.estimateId) {
+          const response = await authInstance.get(
+            `/api/estimaterequests/${estimateRequest.requestId}/estimates/${estimate.estimateId}`
+          );
+          console.log(response);
+          console.log(response.data);
+          // 모달을 열고 해당 견적 상세 정보를 표시
+          openModal(response.data);
+        } else {
+          console.error('유효한 estimateId를 찾을 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('상세 견적을 가져오는데 실패했습니다.', error);
+      }
+    };
 
-    //     console.log(this.estimateDetails);
+    // 모달 열기
+    const openModal = (estimateData) => {
+      selectedEstimate.value = estimateData;
+      showModal.value = true;
+    };
 
-    //     this.showModal = true; // 데이터를 다 가져온 후 모달을 표시
-    //   } catch (error) {
-    //     console.error('견적 상세 정보를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
-    //   }
-    // },
+    // 모달 닫기
+    const closeModal = () => {
+      showModal.value = false;
+    };
 
-    // // 모달을 닫는 함수
-    // closeModal() {
-    //   this.showModal = false; // 모달을 숨김
-    // },
+    // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
+    fetchEstimateRequests();
+
+    return {
+      estimateRequests,
+      showModal,
+      selectedEstimate,
+      isOpen,
+      toggle,
+      openModal,
+      closeModal,
+      estimateDetail,
+    };
   },
 };
 </script>
 
-<style scoped>
-/* 스타일은 필요에 따라 추가 */
-</style>
+<style scoped></style>

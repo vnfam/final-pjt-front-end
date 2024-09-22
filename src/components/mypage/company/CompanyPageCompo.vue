@@ -1,8 +1,8 @@
 <template>
-  <div class="container mx-auto p-6">
+  <div class="container p-6 max-w-full">
     <!-- Sidebar -->
-    <div class="flex max-w-7xl">
-      <div class="basis-1/4 bg-white shadow-md rounded-lg p-4">
+    <div class="flex">
+      <div class="basis-1/5 bg-white shadow-md rounded-lg p-4">
         <h2 class="text-lg font-semibold mb-4">마이페이지</h2>
         <ul class="text-gray-800">
           <!-- 기본정보 -->
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Main Content Area -->
-      <div class="basis-3/4 bg-white shadow-2xl rounded-lg p-6 ml-4">
+      <div class="basis-4/5 bg-white shadow-2xl rounded-lg p-6 ml-4">
         <!-- 동적 컴포넌트 렌더링 -->
         <component :is="activeComponent"></component>
       </div>
