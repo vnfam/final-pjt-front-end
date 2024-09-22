@@ -1,45 +1,48 @@
 <template>
   <!-- 전체 리뷰 공간 -->
-  <div class="flex border-b-4 cursor-pointer" @click="goToDetailPage">
-    <div class="flex basis-3/4 flex-col w-full mr-20">
-      <div>
-        <h2 class="text-2xl font-bold">{{ review.title }}</h2>
+  <div class="flex border-b cursor-pointer px-3 py-6 transition duration-300" @click="goToDetailPage">
+    <div class="flex-1 flex flex-col pr-6">
+      <!-- 제목 -->
+      <h2 class="text-xl font-bold text-gray-900 mb-4">{{ review.title }}</h2>
+
+      <!-- 내용 미리보기 -->
+      <div class="text-gray-700 mb-4">
+        <p v-html="truncatedContent"></p>
       </div>
-      <div class="mt-5">
-        <h2 v-html="truncatedContent"></h2>
-        <!-- v-html 사용하면 태그 표시 안 보임 -->
-      </div>
+
+      <!-- 시공 정보 -->
       <div class="mt-3">
-        <ul class="flex">
-          <li class="px-3 ml-3 bg-gray-400 rounded-full">{{ review.buildingType }}</li>
-          <li class="px-3 ml-3 bg-gray-400 rounded-full">
+        <ul class="flex flex-wrap text-sm text-gray-700">
+          <li class="px-3 py-1 bg-gray-200 rounded-full mr-2">{{ review.buildingType }}</li>
+          <li class="px-3 py-1 bg-gray-200 rounded-full mr-2">
             <span v-for="(constructionType, index) in review.constructionTypes" :key="index">
               {{ constructionType }}<span v-if="index !== review.constructionTypes.length - 1">, </span>
             </span>
           </li>
-          <li class="px-3 ml-3 bg-gray-400 rounded-full">{{ review.floor }}평</li>
-          <li class="px-3 ml-3 bg-gray-400 rounded-full">{{ schedule }}</li>
+          <li class="px-3 py-1 bg-gray-200 rounded-full mr-2">{{ review.floor }}평</li>
+          <li class="px-3 py-1 bg-gray-200 rounded-full">{{ schedule }}</li>
         </ul>
       </div>
-      <div class="mt-3">
-        <ul class="flex cust">
-          <li class="px-3">
-            <font-awesome-icon class="text-midGreen" :icon="['fas', 'star']" />&nbsp;
-            {{ review.rating }}
-          </li>
-          <li class="px-3">{{ review.memberNickName }} 고객님</li>
-          <li class="px-3">{{ formattedRegDate }}</li>
-        </ul>
+
+      <!-- 별점 및 작성자 정보 -->
+      <div class="flex items-center mt-3 text-sm text-gray-600">
+        <font-awesome-icon class="text-midGreen mr-1" :icon="['fas', 'star']" />
+        <span class="mr-4">{{ review.rating }}</span>
+        <span class="mr-4">{{ review.memberNickName }} 고객님</span>
+        <span>{{ formattedRegDate }}</span>
       </div>
     </div>
-    <div class="basis-1/4">
+
+    <!-- 썸네일 이미지 -->
+    <div class="w-32 h-32 flex-shrink-0">
       <img
         :src="
           review.reviewImageResponses[0]
             ? review.reviewImageResponses[0].imageUrl
             : require('@/assets/replaceHouse.png')
         "
-        alt="AD Img"
+        alt="후기 이미지"
+        class="w-full h-full object-cover rounded-lg shadow-sm"
       />
     </div>
   </div>
@@ -73,7 +76,6 @@ export default {
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
 
-      // Return the formatted date as YYYY.MM.DD
       return `${year}.${month}.${day}`;
     },
 
@@ -106,12 +108,12 @@ export default {
 
   methods: {
     goToDetailPage() {
-      console.log(this.review);
-
       this.$router.push(`/reviews/${this.review.id}`);
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 기본적으로 Tailwind CSS를 활용한 스타일이 적용됨 */
+</style>

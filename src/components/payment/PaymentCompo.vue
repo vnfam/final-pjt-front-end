@@ -52,10 +52,11 @@
 
     <!-- 환불 정책 모달 -->
     <div v-if="showPolicyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-20">
-      <div class="bg-white py-20 rounded-lg shadow-lg text-center">
+      <div class="bg-white px-10 py-10 rounded-lg shadow-lg text-center">
         <h3 class="text-xl font-bold">환불 정책</h3>
         <p class="mt-4 text-gray-600">
-          결제 후 7일 이내에 환불 요청 시 전액 환불이 가능합니다. 그 이후 환불은 불가합니다.
+          결제 후 7일 이내에 환불 요청 시 전액 환불이 가능합니다.
+          <br />그 이후 환불은 불가합니다.
         </p>
         <button @click="closeRefundPolicy" class="mt-6 bg-midGreen text-white py-2 px-4 rounded">닫기</button>
       </div>

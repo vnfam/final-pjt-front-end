@@ -1,16 +1,26 @@
 <template>
   <div class="py-5">
-    <p v-if="reviews && reviews.length">
+    <p v-if="reviews && reviews.length" class="text-lg font-medium mb-6">
       총
-      <strong>{{ reviews.length }} 개의 고객 후기</strong>
+      <strong class="text-xl">{{ reviews.length }}개의 고객 후기</strong>
     </p>
-    <p v-else>고객 후기가 없습니다.</p>
+    <p v-else class="text-lg text-gray-500">고객 후기가 없습니다.</p>
   </div>
 
-  <div class="flex flex-col">
-    <ReviewCard v-for="review in reviews" :key="review.id" :review="review"></ReviewCard>
+  <div class="flex flex-col space-y-6">
+    <ReviewCard
+      v-for="review in reviews"
+      :key="review.id"
+      :review="review"
+      class="p-6 bg-white rounded-lg"
+    ></ReviewCard>
+
     <div class="flex justify-center">
-      <button class="py-4 px-20 my-10 font-size border-4">더보기</button>
+      <button
+        class="py-4 px-20 my-10 font-medium text-midGreen border-[1px] border-midGreen rounded hover:bg-midGreen hover:text-white transition duration-300"
+      >
+        더보기
+      </button>
     </div>
   </div>
 </template>
@@ -29,19 +39,11 @@ export default {
   async mounted() {
     const reviewList = await axios.get('http://localhost:8080/api/reviews');
     this.reviews = reviewList.data;
-    console.log(reviewList.data);
     console.log(this.reviews);
   },
 
   components: {
     ReviewCard,
-  },
-
-  methods: {
-    goToDetailPage(id) {
-      console.log(id);
-      this.$router.push(`/reviews/${id}`);
-    },
   },
 };
 </script>
