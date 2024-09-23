@@ -1,82 +1,86 @@
 <template>
-  <div class="h-full">
-    <div>
-      <h2 class="text-2xl font-semibold px-14 pt-10">관리자페이지</h2>
-    </div>
-    <div class="flex">
-      <!-- 메뉴바 -->
-      <div class="w-1/4 px-12 my-20 border-r-4 border-indigo-500 text-xl">
-        <ul class="flex-col">
-          <li class="mb-7 relative">
-            <button class="flyoutMenu bg-gray-200 rounded-md p-5 w-full cursor-pointer">업체 관리</button>
-            <!-- 소제목 메뉴 -->
-            <div
-              class="hover-menu absolute left-0 hidden bg-white border border-gray-300 shadow-lg py-5 px-2 z-10 none top-full w-full shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
+  <div class="container mx-auto p-6">
+    <!-- Sidebar -->
+    <div class="flex max-w-7xl">
+      <div class="basis-1/4 bg-white shadow-md rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-4">관리자페이지</h2>
+        <ul class="text-gray-800">
+          <!-- 업체 관리 -->
+          <li class="mb-2">
+            <button
+              @click="toggleMenu('companyManagement')"
+              class="block w-full text-left p-2 rounded hover:bg-gray-200"
             >
-              <ul class="list-none p-0 m-0">
-                <li class="mb-2">
-                  <router-link to="companyMembershipList" activeClass="bg-gray-200" class="w-full text-left"
-                    >멤버십 관리</router-link
-                  >
-                  <!-- <button class="w-full text-left">멤버십 관리</button> -->
-                </li>
-                <li>
-                  <router-link to="companyPortfolioManagement" activeClass="bg-gray-200" class="w-full text-left"
-                    >시공 사례 관리</router-link
-                  >
-                  <!-- <button class="w-full text-left">시공 사례 관리</button> -->
-                </li>
-              </ul>
+              업체관리
+            </button>
+            <!-- 멤버십, 시공사례 관리 토글 버튼 -->
+            <div v-if="activeMenu === 'companyManagement'" class="ml-4 mt-2">
+              <router-link
+                to="adminCompanyMembershipList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >멤버십 관리</router-link
+              >
+              <router-link
+                to="adminCompanyPortfolioList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >시공 사례 관리</router-link
+              >
             </div>
           </li>
-          <li class="mb-7 relative">
-            <button class="flyoutMenu bg-gray-200 rounded-md p-5 w-full cursor-pointer">고객 관리</button>
-            <!-- 소제목 메뉴 -->
-            <div
-              class="hover-menu absolute left-0 hidden bg-white border border-gray-300 shadow-lg py-5 px-2 z-10 none top-full w-full shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
+          <!-- 고객 관리 -->
+          <li class="mb-2">
+            <button
+              @click="toggleMenu('customerManagement')"
+              class="block w-full text-left p-2 rounded hover:bg-gray-200"
             >
-              <ul class="list-none p-0 m-0">
-                <li>
-                  <router-link to="memberReviewManagement" activeClass="bg-gray-200" class="w-full text-left"
-                    >시공 후기 관리</router-link
-                  >
-                  <!-- <button class="w-full text-left">시공 후기 관리</button> -->
-                </li>
-              </ul>
+              고객관리
+            </button>
+            <!-- 시공후기 관리 토글 버튼 -->
+            <div v-if="activeMenu === 'customerManagement'" class="ml-4 mt-2">
+              <router-link
+                to="adminMemberReviewList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >시공 후기 관리</router-link
+              >
             </div>
           </li>
-          <li class="relative">
-            <button class="flyoutMenu bg-gray-200 rounded-md p-5 w-full cursor-pointer">플랫폼 관리</button>
-            <!-- 소제목 메뉴 -->
-            <div
-              class="hover-menu absolute left-0 hidden bg-white border border-gray-300 shadow-lg py-5 px-2 z-10 none top-full w-full shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
+          <!-- 플랫폼 관리 -->
+          <li class="mb-2">
+            <button
+              @click="toggleMenu('platformManagement')"
+              class="block w-full text-left p-2 rounded hover:bg-gray-200"
             >
-              <ul class="list-none p-0 m-0">
-                <li class="mb-2">
-                  <router-link to="plateformEventManagement" activeClass="bg-gray-200" class="w-full text-left"
-                    >공지 사항 관리</router-link
-                  >
-                  <!-- <button class="w-full text-left">공지 사항 관리</button> -->
-                </li>
-                <li class="mb-2">
-                  <router-link to="plateformFAQManagement" activeClass="bg-gray-200" class="w-full text-left"
-                    >FAQ 관리</router-link
-                  >
-                  <!-- <button class="w-full text-left">FAQ 관리</button> -->
-                </li>
-                <li>
-                  <router-link to="plateformAskManagement" activeClass="bg-gray-200" class="w-full text-left"
-                    >1:1 문의 관리</router-link
-                  >
-                  <!-- <button class="w-full text-left">1:1 문의 관리</button> -->
-                </li>
-              </ul>
+              플랫폼관리
+            </button>
+            <!-- 공지사항, FAQ, 1:1 문의 관리 토글 버튼 -->
+            <div v-if="activeMenu === 'platformManagement'" class="ml-4 mt-2">
+              <router-link
+                to="plateformEventList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >공지사항 관리</router-link
+              >
+              <router-link
+                to="plateformFAQList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >FAQ 관리</router-link
+              >
+              <router-link
+                to="plateformAskList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >문의 관리</router-link
+              >
             </div>
           </li>
         </ul>
       </div>
       <!-- 메뉴에 따른 내용 -->
-      <div class="w-3/4 mx-10 my-20 rounded-md border-solid border-2 border-indigo-600 p-10 text-xl">
+      <div class="basis-3/4 bg-gray-100 shadow-2xl rounded-lg p-6 ml-4">
         <router-view></router-view>
       </div>
     </div>
@@ -87,33 +91,15 @@
 export default {
   data() {
     return {
-      isActive: true,
+      activeMenu: '',
     };
+  },
+  methods: {
+    toggleMenu(menuName) {
+      this.activeMenu = this.activeMenu === menuName ? '' : menuName;
+    },
   },
 };
 </script>
 
-<style scoped>
-.flyoutMenu {
-  border: 1px solid #ccc;
-}
-
-.hover-menu {
-  border: 1px solid #ccc;
-}
-
-.hover-menu li {
-  /* 굳이 하나하나 넣기 그래서 */
-  padding: 10px;
-  background-color: white;
-}
-
-.flyoutMenu:hover + .hover-menu,
-.hover-menu:hover {
-  display: block;
-}
-
-.hover-menu li:hover {
-  background-color: #f1f1f1;
-}
-</style>
+<style></style>
