@@ -1,38 +1,31 @@
 <template>
   <div class="w-full mx-auto">
-    <p class="text-2xl font-semibold text-center pb-4">시공 후기 작성</p>
+    <p class="text-2xl font-semibold text-center pb-6">시공 후기 작성</p>
 
     <form
       @submit.prevent="insertReview"
-      class="w-[800px] mb-2 overflow-x-hidden overflow-y-scroll px-10 pt-2 pb-4 pb-20 mx-auto"
+      class="max-w-[720px] mx-auto bg-white p-6 border-[1px] border-gray-300 rounded-lg"
     >
       <!-- 기본 리뷰 입력 -->
       <div class="mb-[12px]">
-        <label for="title" class="text-[14px] font-normal mb-4">제목</label>
-        <div class="mt-2 flex justify-between items-center">
-          <input
-            v-model="title"
-            class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-            type="text"
-            placeholder="제목을 입력해주세요."
-            required
-          />
-        </div>
-      </div>
-
-      <div class="mb-[12px]">
-        <label for="content" class="text-[14px] font-normal mb-4">내용</label>
-        <QuillEditor ref="quillEditor" contentType="html" v-model:content="content" :options="editorOptions" />
+        <label for="title" class="block text-sm font-medium mb-2">제목</label>
+        <input
+          v-model="title"
+          class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
+          type="text"
+          placeholder="제목을 입력해주세요."
+          required
+        />
       </div>
 
       <!-- 업체 정보 -->
       <div class="mb-[12px] flex items-center justify-between">
         <div class="w-[50%] pr-2">
-          <label for="companyName" class="text-[14px] font-normal mb-4">업체명</label>
+          <label for="companyName" class="block text-sm font-medium mb-2">업체명</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="companyName"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
               type="text"
               placeholder="업체명을 입력해주세요."
               required
@@ -41,11 +34,11 @@
         </div>
 
         <div class="w-[50%] pl-2">
-          <label for="rating" class="text-[14px] font-normal mb-4">별점</label>
+          <label for="rating" class="block text-sm font-medium mb-2">별점</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="rating"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
               type="number"
               placeholder="별점을 입력해주세요."
               required
@@ -56,12 +49,12 @@
 
       <div class="flex justify-between items-center mb-[12px]">
         <div class="w-[50%] pr-2">
-          <label for="startDate" class="text-[14px] font-normal mb-4">시작날짜</label>
+          <label for="startDate" class="block text-sm font-medium mb-2">시작날짜</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="startDate"
               @input="validateDates"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
               type="date"
               required
             />
@@ -69,12 +62,12 @@
         </div>
 
         <div class="w-[50%] pl-2">
-          <label for="endDate" class="text-[14px] font-normal mb-4">종료날짜</label>
+          <label for="endDate" class="block text-sm font-medium mb-2">종료날짜</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="endDate"
               @input="validateDates"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
               type="date"
               required
             />
@@ -84,11 +77,11 @@
 
       <div class="mb-[12px] flex items-center justify-between">
         <div class="w-[50%] pr-2">
-          <label for="floor" class="text-[14px] font-normal mb-4">면적</label>
+          <label for="floor" class="block text-sm font-medium mb-2">면적</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="floor"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
               type="number"
               placeholder="시공 면적을 입력해주세요."
               required
@@ -97,11 +90,11 @@
         </div>
 
         <div class="w-[50%] pl-2">
-          <label for="totalPrice" class="text-[14px] font-normal mb-4">시공 금액</label>
+          <label for="totalPrice" class="block text-sm font-medium mb-2">시공 금액</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="totalPrice"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
               type="number"
               placeholder="시공 금액을 입력해주세요."
               required
@@ -111,7 +104,7 @@
       </div>
 
       <div class="mb-[12px]">
-        <label for="buildingTypes" class="text-[14px] font-normal mb-4">건물 종류</label>
+        <label for="buildingTypes" class="block text-sm font-medium mb-2">건물 종류</label>
         <div class="mt-2 flex flex-wrap gap-2">
           <div v-for="type in buildingTypes" :key="type.buildingTypeId" class="flex items-center">
             <input
@@ -119,7 +112,7 @@
               :value="type.buildingTypeId"
               v-model="selectedBuildingType"
               name="buildingType"
-              class="mr-2"
+              class="mr-2 accent-midGreen"
             />
             <span class="text-[14px]">{{ type.buildingTypeName }}</span>
           </div>
@@ -127,19 +120,34 @@
       </div>
 
       <div class="mb-[12px]">
-        <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
+        <label for="constructionTypes" class="block text-sm font-medium mb-2">시공 종류</label>
         <!-- 전체 선택 체크박스 -->
         <div class="mt-2 mb-3 flex items-center">
-          <input type="checkbox" @change="toggleAllConstructionTypes" :checked="isAllSelected" class="mr-2" />
+          <input
+            type="checkbox"
+            @change="toggleAllConstructionTypes"
+            :checked="isAllSelected"
+            class="mr-2 accent-midGreen"
+          />
           <span class="text-[14px]">전체 선택</span>
         </div>
         <!-- 개별 시공 종류 체크박스 -->
         <div class="mt-2 flex flex-wrap gap-2">
           <div v-for="type in constructionTypes" :key="type.constructionId" class="flex items-center">
-            <input type="checkbox" :value="type.constructionId" v-model="selectedConstructionTypes" class="mr-2" />
+            <input
+              type="checkbox"
+              :value="type.constructionId"
+              v-model="selectedConstructionTypes"
+              class="mr-2 accent-midGreen"
+            />
             <span class="text-[14px]">{{ type.constructionName }}</span>
           </div>
         </div>
+      </div>
+
+      <div class="mb-[12px]">
+        <label for="content" class="block text-sm font-medium mb-2">내용</label>
+        <QuillEditor ref="quillEditor" contentType="html" v-model:content="content" :options="editorOptions" />
       </div>
 
       <button class="bg-midGreen text-white w-full h-[52px] mx-auto rounded-[4px] text-[16px] mt-[24px]" type="submit">

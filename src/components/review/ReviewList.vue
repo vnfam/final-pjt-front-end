@@ -4,7 +4,8 @@
       총
       <strong class="text-xl">{{ reviews.length }}개의 고객 후기</strong>
     </p>
-    <p v-else class="text-lg text-gray-500">고객 후기가 없습니다.</p>
+
+    <p v-else class="pt-20 text-center text-gray-600 text-lg font-medium">고객 후기가 없습니다.</p>
   </div>
 
   <div class="flex flex-col space-y-6">
