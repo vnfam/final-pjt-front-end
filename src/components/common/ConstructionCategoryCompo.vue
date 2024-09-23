@@ -78,6 +78,11 @@ export default {
     const services = ref([]);
     const selectedServices = ref([]);
 
+    const resetSelection = () => {
+      selectedServices.value = [];
+      emit('services-selected', { services: [] }); // 초기화된 서비스를 부모로 전달
+    };
+
     // 서비스 목록 가져오기
     const fetchServices = async () => {
       try {
@@ -138,6 +143,7 @@ export default {
       toggleAllServices,
       selectedServiceNames,
       toggleService,
+      resetSelection,
     };
   },
 };
