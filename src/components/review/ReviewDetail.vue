@@ -91,8 +91,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper';
-import axios from 'axios';
-import { useUserStore } from '@/stores/userStore';
+import authInstance from '@/utils/axiosUtils';
 
 export default {
   data() {
@@ -140,12 +139,8 @@ export default {
   },
 
   async mounted() {
-    const userStore = useUserStore();
-    const token = userStore.accessToken;
     const reviewId = this.$route.params.id;
-    const reviewDetailRequest = await axios.get(`http://localhost:8080/api/reviews/${reviewId}`, {
-      headers: { Authorization: token },
-    });
+    const reviewDetailRequest = await authInstance.get(`/api/reviews/${reviewId}`);
     this.reviewDetail = reviewDetailRequest.data;
   },
 

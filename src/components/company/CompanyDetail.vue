@@ -1,9 +1,9 @@
 <template>
-  <div v-if="company" class="mx-auto p-4">
+  <div v-if="company" class="max-w-4xl mx-auto p-6">
     <!-- 업체 정보 -->
-    <div class="flex items-center mb-6">
+    <div class="flex items-center mb-8">
       <!-- 업체 로고 -->
-      <div class="w-32 h-32 bg-gray-200 rounded-lg overflow-hidden mr-4">
+      <div class="w-32 h-32 bg-gray-200 rounded-lg overflow-hidden mr-6">
         <img
           v-if="company.companyLogoUrl"
           :src="company.companyLogoUrl"
@@ -14,27 +14,27 @@
       </div>
       <!-- 업체 기본 정보 -->
       <div>
-        <h2 class="text-2xl font-bold">{{ company.companyName }}</h2>
-        <p class="text-gray-600">대표자: {{ company.owner }}</p>
-        <p class="text-gray-600">사업자번호: {{ company.companyNumber }}</p>
-        <p class="text-gray-600">개업일: {{ formatDate(company.publishDate) }}</p>
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ company.companyName }}</h2>
+        <p class="text-gray-700 mb-1"><strong>대표자:</strong> {{ company.owner }}</p>
+        <p class="text-gray-700 mb-1"><strong>사업자번호:</strong> {{ company.companyNumber }}</p>
+        <p class="text-gray-700"><strong>개업일:</strong> {{ formatDate(company.publishDate) }}</p>
       </div>
     </div>
 
     <!-- 업체 설명 -->
-    <div class="bg-gray-50 p-4 rounded-lg mb-6">
-      <h3 class="text-xl font-semibold mb-2">업체 소개</h3>
-      <p>{{ company.companyDesc }}</p>
+    <div class="bg-gray-50 p-6 rounded-lg mb-8">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">업체 소개</h3>
+      <p class="text-gray-700 leading-relaxed">{{ company.companyDesc }}</p>
     </div>
 
     <!-- 업체 서비스 -->
-    <div class="bg-white p-4 rounded-lg mb-6">
-      <h3 class="text-xl font-semibold mb-2">시공 서비스</h3>
+    <div class="bg-white p-6 rounded-lg mb-8 shadow-sm">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">시공 서비스</h3>
       <ul class="flex flex-wrap gap-2">
         <li
           v-for="(service, index) in company.services"
           :key="index"
-          class="bg-gray-100 text-sm px-3 py-1 rounded-full"
+          class="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-full"
         >
           {{ service }}
         </li>
@@ -42,25 +42,47 @@
     </div>
 
     <!-- 업체 추가 정보 -->
-    <div class="bg-gray-50 p-4 rounded-lg">
-      <h3 class="text-xl font-semibold mb-2">기타 정보</h3>
-      <p class="text-gray-600"><strong>주소:</strong> {{ company.address }}</p>
-      <p class="text-gray-600"><strong>연락처:</strong> {{ formatPhoneNumber(company.phoneNumber) }}</p>
-      <p class="text-gray-600"><strong>평점:</strong> {{ company.rating }} / 5.0</p>
+    <div class="bg-gray-50 p-6 rounded-lg mb-12">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">기타 정보</h3>
+      <p class="text-gray-700 mb-2"><strong>주소:</strong> {{ company.address }}</p>
+      <p class="text-gray-700 mb-2"><strong>연락처:</strong> {{ formatPhoneNumber(company.phoneNumber) }}</p>
+      <p class="text-gray-700"><strong>평점:</strong> {{ company.rating }} / 5.0</p>
+    </div>
+
+    <!-- 업체 시공 사례 -->
+    <div class="p-6 border-t border-gray-200">
+      <h3 class="text-2xl font-semibold text-gray-900 mb-6">업체 시공 사례</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <CompanyPortfolioCard v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio" />
+      </div>
+    </div>
+
+    <!-- 업체 시공 후기 -->
+    <div class="p-6">
+      <h3 class="text-2xl font-semibold text-gray-900 mb-6">업체 시공 후기</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <CompanyReviewCard v-for="review in reviews" :key="review.id" :review="review" />
+      </div>
     </div>
   </div>
   <div v-else>
-    <p>Loading...</p>
+    <p class="text-center text-gray-700">Loading...</p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import CompanyPortfolioCard from './CompanyPortfolioCard.vue';
+import CompanyReviewCard from './CompanyReviewCard.vue';
 
 export default {
+  components: { CompanyPortfolioCard, CompanyReviewCard },
+
   data() {
     return {
       company: null,
+      portfolios: [],
+      reviews: [],
     };
   },
   mounted() {
@@ -72,8 +94,9 @@ export default {
       try {
         const response = await axios.get(`/api/company/${companyId}`);
         this.company = response.data;
-
-        console.log(response.data);
+        this.portfolios = this.company.responses.list;
+        this.reviews = this.company.reviews.list;
+        console.log(this.reviews);
       } catch (error) {
         console.error('Error fetching company data:', error);
       }

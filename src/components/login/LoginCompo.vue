@@ -18,7 +18,7 @@
                   v-model="email"
                   autofocus
                   placeholder="example@gmail.com"
-                  class="p-3 rounded border-1 border-solid text-base w-full h-12 resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                  class="p-3 rounded border-1 border-solid text-base w-full h-12 resize-none focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:invalid:border-midGreen focus:invalid:ring-midGreen"
                 />
               </div>
             </div>
@@ -31,7 +31,7 @@
                   v-model="password"
                   autofocus
                   placeholder="비밀번호를 입력해주세요."
-                  class="p-3 rounded border-1 border-solid text-base w-full resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                  class="p-3 rounded border-1 border-solid text-base w-full resize-none focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-midgreen invalid:text-midGreen focus:invalid:border-midGreen focus:invalid:ring-midGreen"
                 />
               </div>
             </div>
