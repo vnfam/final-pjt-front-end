@@ -126,7 +126,10 @@ export default {
         }
       }
 
-      this.$emit('insert-images', portfolioId, afterUpdate);
+      const updateResult = await new Promise((resolve, reject) =>
+        this.$emit('insert-images', portfolioId, afterUpdate, resolve, reject)
+      );
+      console.log(updateResult);
       this.pendingImages = [];
     },
   },

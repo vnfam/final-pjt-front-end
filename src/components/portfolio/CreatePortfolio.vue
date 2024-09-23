@@ -165,7 +165,7 @@ export default {
       this.openDaumPostcode();
     },
 
-    async afterUploadImages(portfolioId, afterUpdateContent) {
+    async afterUploadImages(portfolioId, afterUpdateContent, resolve, reject) {
       console.log('이미지 삽입 후 내용');
       console.log(afterUpdateContent);
 
@@ -184,14 +184,18 @@ export default {
         buildingTypeId: this.selectedBuildingType,
       };
 
-      const response = await axios.patch(`/api/portfolio/${portfolioId}`, portfolioRequest, {
-        headers: {
-          Authorization: token,
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        const response = await axios.patch(`/api/portfolio/${portfolioId}`, portfolioRequest, {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+          },
+        });
 
-      console.log(response);
+        return resolve(response);
+      } catch (error) {
+        reject(error);
+      }
     },
 
     openDaumPostcode() {
