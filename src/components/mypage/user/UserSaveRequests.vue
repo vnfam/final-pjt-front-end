@@ -133,7 +133,11 @@ export default {
     // 견적 요청 목록 가져오기
     const fetchEstimateRequests = async () => {
       try {
-        const response = await authInstance.get('/api/estimaterequests/users');
+        const response = await authInstance.get('/api/estimaterequests/users', {
+          params: {
+            status: 'WAITING',
+          }
+        });
         estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
       } catch (error) {
         console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
@@ -144,7 +148,7 @@ export default {
     const toggle = async (estimateRequest, index) => {
       try {
         if (!estimateRequest.estimates) {
-          const response = await authInstance.get(`/api/estimaterequests/${estimateRequest.requestId}/estimates`);
+          const response = await authInstance.get(`/api/estimaterequests/${estimateRequest.requestId}/estimates/sent`);
           estimateRequest.estimates = response.data; // 각 요청별로 견적 목록 저장
         }
         console.log(estimateRequest.estimates);
