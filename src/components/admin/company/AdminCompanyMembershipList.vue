@@ -5,12 +5,24 @@
       <h2 class="font-semibold text-xl mb-4">멤버십 관리</h2>
       <ul class="flex gap-4">
         <li>
-          <label for="" class="font-medium">현재 총 가입자수</label>
-          <p class="text-red">4명</p>
+          <label for="" class="font-medium">총 가입자수</label>
+          <p class="text-red">3명</p>
         </li>
         <li>
           <label for="" class="font-medium">신규 가입자수</label>
-          <p class="text-red">1명</p>
+          <p class="text-red">3명</p>
+        </li>
+        <li>
+          <label for="" class="font-medium">총 가입비</label>
+          <p class="text-red">350원</p>
+        </li>
+        <li>
+          <label for="" class="font-medium">환불 처리수</label>
+          <p class="text-red">1개</p>
+        </li>
+        <li>
+          <label for="" class="font-medium">환불 처리금액</label>
+          <p class="text-red">150원</p>
         </li>
       </ul>
     </div>
