@@ -120,7 +120,7 @@
 
       <div class="mb-6">
         <label for="content" class="block text-sm font-medium mb-2">내용</label>
-        <QuillEditor ref="quillEditor" v-model:modelValue="content" required />
+        <QuillEditor ref="quillEditor" @insert-images="afterUploadImages" v-model:modelValue="content" required />
       </div>
 
       <button class="bg-midGreen text-white w-full h-[44px] rounded text-[16px] font-medium mt-6" type="submit">
@@ -164,6 +164,36 @@ export default {
     searchAddress() {
       this.openDaumPostcode();
     },
+
+    async afterUploadImages(portfolioId, afterUpdateContent) {
+      console.log('이미지 삽입 후 내용');
+      console.log(afterUpdateContent);
+
+      const userStore = useUserStore();
+      const token = userStore.accessToken;
+
+      const portfolioRequest = {
+        title: this.title,
+        content: afterUpdateContent,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        projectLocation: this.projectLocation,
+        projectArea: this.projectArea,
+        projectBudget: this.projectBudget,
+        constructionService: this.selectedTypes,
+        buildingTypeId: this.selectedBuildingType,
+      };
+
+      const response = await axios.patch(`/api/portfolio/${portfolioId}`, portfolioRequest, {
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(response);
+    },
+
     openDaumPostcode() {
       const currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
       new window.daum.Postcode({
@@ -203,6 +233,7 @@ export default {
 
       this.$refs.wrap.style.display = 'block';
     },
+
     foldDaumPostcode() {
       this.$refs.wrap.style.display = 'none';
     },
@@ -231,7 +262,7 @@ export default {
 
       const portfolioRequest = {
         title: this.title,
-        content: this.content,
+        content: '대체 예정',
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
@@ -250,6 +281,9 @@ export default {
         });
         alert('시공 사례가 작성되었습니다.');
         const portfolioId = response.data.id;
+        console.log('이미지 저장 호출');
+        await this.$refs.quillEditor.uploadImages(portfolioId);
+
         this.$router.push(`/portfolio/${portfolioId}`);
       } catch (error) {
         console.error(error);
