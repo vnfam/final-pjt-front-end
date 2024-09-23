@@ -18,13 +18,13 @@
               <router-link
                 to="adminCompanyMembershipList"
                 activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >멤버십 관리</router-link
               >
               <router-link
                 to="adminCompanyPortfolioList"
                 activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >시공 사례 관리</router-link
               >
             </div>
@@ -42,7 +42,7 @@
               <router-link
                 to="adminMemberReviewList"
                 activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >시공 후기 관리</router-link
               >
             </div>
@@ -60,19 +60,19 @@
               <router-link
                 to="plateformEventList"
                 activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >공지사항 관리</router-link
               >
               <router-link
                 to="plateformFAQList"
                 activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >FAQ 관리</router-link
               >
               <router-link
                 to="plateformAskList"
                 activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >문의 관리</router-link
               >
             </div>
