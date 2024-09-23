@@ -16,7 +16,7 @@
       class="p-6 bg-white rounded-lg"
     ></ReviewCard>
 
-    <div class="flex justify-center">
+    <div v-if="reviews.length > 0" class="flex justify-center">
       <button
         class="py-4 px-20 my-10 font-medium text-midGreen border-[1px] border-midGreen rounded hover:bg-midGreen hover:text-white transition duration-300"
       >

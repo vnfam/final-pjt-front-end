@@ -50,17 +50,17 @@
     </div>
 
     <!-- 업체 시공 사례 -->
-    <div class="p-6 border-t border-gray-200">
+    <div v-if="portfolios.length > 0" class="p-6 border-t border-gray-200">
       <h3 class="text-2xl font-semibold text-gray-900 mb-6">업체 시공 사례</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <CompanyPortfolioCard v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio" />
       </div>
     </div>
 
     <!-- 업체 시공 후기 -->
-    <div class="p-6">
+    <div v-if="reviews.length > 0" class="p-6">
       <h3 class="text-2xl font-semibold text-gray-900 mb-6">업체 시공 후기</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <CompanyReviewCard v-for="review in reviews" :key="review.id" :review="review" />
       </div>
     </div>

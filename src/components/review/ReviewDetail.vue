@@ -26,6 +26,18 @@
       />
     </div>
 
+    <!-- 리뷰 제목 및 수정, 삭제 버튼 -->
+    <div class="bg-white p-6 mb-8 border-b-[1px] border-gray-200 flex justify-between items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ reviewDetail.title }}</h2>
+        <div class="text-sm text-gray-400">{{ formattedRegDate }}</div>
+      </div>
+      <div class="flex gap-4">
+        <button @click="goToEditPage" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">수정</button>
+        <button @click="confirmDelete" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">삭제</button>
+      </div>
+    </div>
+
     <!-- 리뷰 제목 -->
     <div class="bg-white p-6 mb-8 border-b-[1px] border-gray-200">
       <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ reviewDetail.title }}</h2>
@@ -142,6 +154,28 @@ export default {
     const reviewId = this.$route.params.id;
     const reviewDetailRequest = await authInstance.get(`/api/reviews/${reviewId}`);
     this.reviewDetail = reviewDetailRequest.data;
+  },
+
+  methods: {
+    goToEditPage() {
+      this.$router.push(`/review/edit/${this.$route.params.id}`);
+    },
+    confirmDelete() {
+      if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+        this.deleteReview();
+      }
+    },
+    async deleteReview() {
+      const reviewId = this.$route.params.id;
+      console.log('delete review id: ', reviewId);
+      // try {
+      //   await authInstance.delete(`/api/reviews/${reviewId}`);
+      //   alert('리뷰가 삭제되었습니다.');
+      //   this.$router.push('/reviews');
+      // } catch (error) {
+      //   console.error('Error deleting review:', error);
+      // }
+    },
   },
 
   setup() {

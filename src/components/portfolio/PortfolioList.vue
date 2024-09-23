@@ -6,7 +6,7 @@
 
     <div v-else class="pt-20 text-center text-gray-600 text-lg font-medium">시공 사례가 없습니다.</div>
 
-    <div class="flex justify-center">
+    <div v-if="portfolios.length > 0" class="flex justify-center">
       <button
         class="py-4 px-20 my-10 font-medium text-midGreen border-[1px] border-midGreen rounded hover:bg-midGreen hover:text-white transition duration-300"
       >
