@@ -86,7 +86,11 @@ export default {
     // 견적 요청 목록을 API로부터 가져오는 함수
     async fetchEstimates() {
       try {
-        const response = await authInstance.get('/api/estimaterequests');
+        const response = await authInstance.get('/api/estimaterequests', {
+          params: {
+            status: 'WAITING',
+          }
+        });
         this.estimates = response.data; // 가져온 데이터를 estimates 배열에 저장
         console.log(response.data);
       } catch (error) {
