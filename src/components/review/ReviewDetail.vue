@@ -8,7 +8,7 @@
         :navigation="true"
         :pagination="{ clickable: true }"
         :loop="true"
-        class="w-[850px] h-[400px] rounded-lg overflow-hidden"
+        class="w-[850px] h-[400px] rounded-lg overflow-hidden custom-swiper"
       >
         <swiper-slide v-for="(image, index) in reviewDetail.reviewImageResponses" :key="index">
           <img
@@ -159,40 +159,8 @@ export default {
 </script>
 
 <style scoped>
-/* Swiper pagination and navigation styles */
 .custom-swiper {
-  --swiper-navigation-color: #4caf50; /* 화살표 색상을 midGreen으로 변경 */
-  --swiper-pagination-color: #4caf50; /* Pagination의 기본 색상 변경 */
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-  color: var(--swiper-navigation-color);
-  /* 화살표 크기 조정 */
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.7); /* 살짝 투명한 배경 추가 */
-  border-radius: 50%;
-}
-
-.swiper-pagination-bullet {
-  background-color: var(--swiper-pagination-color);
-  width: 12px;
-  height: 12px;
-  opacity: 1;
-  transition: background-color 0.3s ease;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #ff5722; /* 활성화된 pagination 색상을 주황색으로 변경 */
-  width: 14px;
-  height: 14px;
-}
-
-/* 화살표 hover 스타일 */
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  background: #4caf50; /* hover 시 배경색을 midGreen으로 변경 */
-  color: #fff;
+  --swiper-navigation-color: #eee;
+  --swiper-pagination-color: #eee;
 }
 </style>

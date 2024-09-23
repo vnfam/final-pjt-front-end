@@ -6,7 +6,7 @@
       :pagination="{ clickable: true }"
       :loop="true"
       :autoplay="{ delay: 3000, disableOnInteraction: false }"
-      class="h-[200px] rounded-[8px]"
+      class="h-[200px] rounded-[8px] custom-swiper"
     >
       <swiper-slide>
         <img
@@ -54,3 +54,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.custom-swiper {
+  --swiper-navigation-color: #eee;
+  --swiper-pagination-color: #eee;
+}
+</style>
