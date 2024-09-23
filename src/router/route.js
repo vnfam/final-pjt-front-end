@@ -26,11 +26,21 @@ import PortfolioList from '@/components/portfolio/PortfolioList.vue';
 import CompanyPageCompo from '@/components/mypage/company/CompanyPageCompo.vue';
 import CompanyBaseInfo from '@/components/mypage/company/CompanyBaseInfo.vue';
 import CompanyPortfolioList from '@/components/mypage/company/portfolio/CompanyPortfolioList.vue';
+
 import AdminPageCompo from '@/components/admin/AdminPageCompo.vue';
-import CompanyMembershipList from '@/components/admin/company/CompanyMembershipList.vue';
-import CompanyMembershtipDetail from '@/components/admin/company/CompanyMembershtipDetail.vue';
-import CompanyPortfolioManagement from '@/components/admin/company/CompanyPortfolioManagement.vue';
-import MemberReviewManagement from '@/components/admin/member/MemberReviewManagement.vue';
+import AdminCompanyMembershipList from '@/components/admin/company/AdminCompanyMembershipList.vue';
+import AdminCompanyMembershipDetail from '@/components/admin/company/AdminCompanyMembershipDetail.vue';
+import AdminCompanyPortfolioList from '@/components/admin/company/AdminCompanyPortfolioList.vue';
+import AdminCompanyPortfolioDetail from '@/components/admin/company/AdminCompanyPortfolioDetail.vue';
+import AdminMemberReviewList from '@/components/admin/member/AdminMemberReviewList.vue';
+import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReviewDetail.vue';
+import PlateformEventList from '@/components/admin/plateform/PlateformEventList.vue';
+import PlateformEventDetail from '@/components/admin/plateform/PlateformEventDetail.vue';
+import PlateformFAQList from '@/components/admin/plateform/PlateformFAQList.vue';
+import PlateformFAQDetail from '@/components/admin/plateform/PlateformFAQDetail.vue';
+import PlateformAskList from '@/components/admin/plateform/PlateformAskList.vue';
+import PlateformAskDetail from '@/components/admin/plateform/PlateformAskDetail.vue';
+
 import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
 import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
@@ -73,7 +83,7 @@ export default [
       },
 
       {
-        path: 'usersentrequest',
+        path: 'usersaverequest',
         component: UserSaveRequests,
       },
       {
@@ -111,36 +121,56 @@ export default [
   {
     path: '/mypage/admin',
     component: AdminPageCompo,
-    redirect: '/mypage/admin/companyMembershipList',
+    redirect: '/mypage/admin/adminCompanyMembershipList',
     children: [
       {
-        path: 'companyMembershipList',
-        component: CompanyMembershipList,
+        path: 'adminCompanyMembershipList',
+        component: AdminCompanyMembershipList,
       },
       {
-        path: 'companyMembershtipDetail',
-        component: CompanyMembershtipDetail,
+        path: 'adminCompanyMembershipDetail',
+        component: AdminCompanyMembershipDetail,
       },
       {
-        path: 'companyPortfolioManagement',
-        component: CompanyPortfolioManagement,
+        path: 'adminCompanyPortfolioList',
+        component: AdminCompanyPortfolioList,
       },
       {
-        path: 'memberReviewManagement',
-        component: MemberReviewManagement,
+        path: 'adminCompanyPortfolioDetail',
+        component: AdminCompanyPortfolioDetail,
       },
-      //   {
-      //     path: 'plateformEventManagement',
-      //     component: PlateformEventManagement,
-      //   },
-      //   {
-      //     path: 'plateformFAQManagement',
-      //     component: PlateformFAQManagement,
-      //   },
-      //   {
-      //     path: 'plateformAskManagement',
-      //     component: PlateformAskManagement,
-      //   },
+      {
+        path: 'adminMemberReviewList',
+        component: AdminMemberReviewList,
+      },
+      {
+        path: 'adminMemberReviewDetail',
+        component: AdminMemberReviewDetail,
+      },
+      {
+        path: 'plateformEventList',
+        component: PlateformEventList,
+      },
+      {
+        path: 'plateformEventDetail',
+        component: PlateformEventDetail,
+      },
+      {
+        path: 'plateformFAQList',
+        component: PlateformFAQList,
+      },
+      {
+        path: 'plateformFAQDetail',
+        component: PlateformFAQDetail,
+      },
+      {
+        path: 'plateformAskList',
+        component: PlateformAskList,
+      },
+      {
+        path: 'plateformAskDetail',
+        component: PlateformAskDetail,
+      },
     ],
   },
 ];
