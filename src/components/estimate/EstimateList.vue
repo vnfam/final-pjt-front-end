@@ -23,15 +23,8 @@
             >
               견적 보내기
             </button>
-            <button
-              v-else
-              class="bg-midGreen text-white rounded-xl py-2 px-4"
-            >
-              견적
-              1. 수정
-              2. 취소
-              3. 보기
-              중 어떤 것을 넣을지 생각해보기
+            <button v-else class="bg-midGreen text-white rounded-xl py-2 px-4">
+              견적 1. 수정 2. 취소 3. 보기 중 어떤 것을 넣을지 생각해보기
             </button>
           </div>
         </li>
@@ -42,7 +35,7 @@
     <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
         <h2 class="text-lg font-semibold mb-4">견적 보내기</h2>
-        
+
         <!-- 각 시공 타입별 입력 필드 -->
         <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
           <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
@@ -89,7 +82,7 @@ export default {
         const response = await authInstance.get('/api/estimaterequests', {
           params: {
             status: 'WAITING',
-          }
+          },
         });
         this.estimates = response.data; // 가져온 데이터를 estimates 배열에 저장
         console.log(response.data);
@@ -97,7 +90,7 @@ export default {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
       }
     },
-    
+
     // "견적 보내기" 버튼 클릭 시 모달을 열고 견적 정보를 보여주는 함수
     async openModal(estimate) {
       this.selectedEstimate = estimate; // 선택된 견적 정보를 저장
@@ -125,7 +118,7 @@ export default {
     closeModal() {
       this.showModal = false; // 모달을 숨김
     },
-    
+
     // 견적 금액을 제출하는 함수
     async submitEstimate() {
       const isConfirm = confirm('견적을 보내시겠습니까?');
@@ -137,7 +130,7 @@ export default {
         const constructionPrices = {};
         console.log(this.estimateDetails);
         this.constructionTypeInputs.forEach((price, index) => {
-          constructionPrices[`${this.estimateDetails[index].estimateConstructionTypeId}`] = price;// 시공 타입
+          constructionPrices[`${this.estimateDetails[index].estimateConstructionTypeId}`] = price; // 시공 타입
           console.log(price);
         });
 
@@ -145,7 +138,7 @@ export default {
 
         // 서버로 POST 요청 전송
         await authInstance.post(`/api/estimaterequests/${this.selectedEstimate.requestId}/write`, {
-          constructionPrices // 전송할 데이터
+          constructionPrices, // 전송할 데이터
         });
 
         console.log('견적 금액이 성공적으로 제출되었습니다.');
@@ -158,5 +151,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

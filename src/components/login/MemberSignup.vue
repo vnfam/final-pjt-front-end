@@ -150,6 +150,12 @@ export default {
   methods: {
     // 이메일 중복 확인
     async verifyEmail() {
+      this.validateEmail();
+
+      if (this.errors.email) {
+        return;
+      }
+
       try {
         const response = await axios.get('/api/member/check-email', {
           params: { email: this.email },

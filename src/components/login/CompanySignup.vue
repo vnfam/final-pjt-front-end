@@ -7,6 +7,23 @@
         @submit.prevent="validateForm"
         class="w-[500px] mb-2 overflow-x-hidden overflow-y-scroll px-10 pt-2 pb-4 pb-20 mx-auto"
       >
+        <div class="mb-[22px]">
+          <label class="text-[14px] font-normal">업체 로고</label>
+          <div class="mt-2 flex items-center space-x-4">
+            <!-- 미리보기 이미지 -->
+            <div v-if="previewImage" class="mt-2">
+              <img :src="previewImage" alt="로고 미리보기" class="w-[150px] h-[150px] object-cover rounded-lg border" />
+              <span v-if="selectedFileName" class="pl-2 mt-2 text-gray-600 font-[14px]">{{ selectedFileName }}</span>
+            </div>
+          </div>
+          <div class="mt-4">
+            <label for="fileInput" class="cursor-pointer text-[14px] bg-midGreen text-white px-4 py-3 rounded-md">
+              파일 선택
+            </label>
+            <input id="fileInput" type="file" accept="image/*" @change="onFileChange" class="hidden" />
+          </div>
+        </div>
+
         <div class="mb-[12px]">
           <label for="companyName" class="text-[14px] font-normal mb-4">업체 이름</label>
           <div class="mt-2 flex justify-between items-center">
@@ -192,7 +209,7 @@
             <button
               type="button"
               @click="searchAddress"
-              class="w-full mt-2 px-3 py-2 bg-midGreen text-white rounded-md text-[16px]"
+              class="w-full mt-2 py-3 bg-midGreen text-white rounded-md text-[14px]"
             >
               주소 검색
             </button>
@@ -242,8 +259,6 @@
           @click="insertCompany"
           type="submit"
           class="bg-midGreen text-white w-full h-[52px] rounded-[4px] text-[16px] mt-[24px]"
-          :disabled="!isFormValid"
-          :class="{ 'opacity-50 cursor=not-allowed': !isFormValid }"
         >
           등록하기
         </button>
@@ -276,6 +291,9 @@ export default {
       emailVerified: false,
       companyNumberVerified: false,
       passwordsMatch: false,
+      selectedFileName: '',
+      logoFile: null, // 로고 이미지 파일
+      previewImage: null, // 로고 이미지 미리보기 URL
     };
   },
   computed: {
@@ -299,10 +317,24 @@ export default {
     // 현재 날짜를 저장하여 개업날짜는 오늘 또는 미래의 날짜만 선택 가능하도록 설정
     const today = new Date().toISOString().split('T')[0];
     this.today = today;
-
     this.getConstructionType();
   },
   methods: {
+    // 파일 변경 시 로고 이미지 미리보기 설정
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        this.logoFile = file;
+        this.previewImage = URL.createObjectURL(file);
+        this.selectedFileName = file.name; // 선택한 파일 이름 저장
+      } else {
+        this.logoFile = null;
+        this.previewImage = null;
+        this.selectedFileName = ''; // 파일이 없으면 이름 초기화
+        alert('이미지 파일을 선택해주세요.');
+      }
+    },
+
     // 주소 검색
     searchAddress() {
       this.openDaumPostcode();
