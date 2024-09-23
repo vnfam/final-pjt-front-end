@@ -15,7 +15,7 @@
     <!-- 내용 영역 -->
     <div class="bg-white px-2 pt-2 pb-3 rounded-b-lg">
       <div class="mb-1">
-        <p class="text-base font-bold text-gray-900 leading-5 tracking-tight truncate">
+        <p class="text-md font-bold text-gray-900 leading-5 tracking-tight truncate">
           {{ portfolio.title }}
         </p>
       </div>

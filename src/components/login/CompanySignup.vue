@@ -13,7 +13,7 @@
             <input
               v-model="companyName"
               @blur="validateCompanyName"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="인테리어 업체 이름을 입력해 주세요."
               required
@@ -28,7 +28,7 @@
             <input
               v-model="companyNumber"
               @blur="validateCompanyNumber"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="사업자 번호를 입력해 주세요."
               required
@@ -50,7 +50,7 @@
             <input
               v-model="email"
               @blur="validateEmail"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="email"
               placeholder="이메일을 입력해 주세요."
               required
@@ -75,7 +75,7 @@
             <input
               v-model="password"
               @blur="validatePassword"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="password"
               placeholder="비밀번호를 입력해 주세요."
               required
@@ -90,7 +90,7 @@
             <input
               v-model="confirmPassword"
               @blur="validateConfirmPassword"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="password"
               placeholder="비밀번호를 한 번 더 입력해 주세요."
               required
@@ -111,7 +111,7 @@
             <input
               v-model="owner"
               @blur="validateOwner"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="대표자명을 입력해 주세요."
               required
@@ -127,7 +127,7 @@
             <input
               v-model="phoneNumber"
               @blur="validatePhone"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="휴대폰번호를 입력해 주세요."
               required
@@ -142,7 +142,7 @@
             <input
               v-model="publishDate"
               @blur="validatePublishDate"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="date"
               :max="today"
               required
@@ -158,7 +158,7 @@
               placeholder="업체 주소를 입력해주세요."
               v-model="address"
               @blur="validateAddress"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               readonly
               required
@@ -182,7 +182,7 @@
           <input
             type="text"
             placeholder="(선택) 지역과 상세주소를 입력해주세요."
-            class="flex-grow w-full h-[52px] text-[14px] font-normal mt-2 p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+            class="flex-grow w-full h-[52px] text-[14px] font-normal mt-2 p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
             v-model="detailedAddress"
             ref="detailedAddress"
           />
@@ -204,7 +204,7 @@
           <div class="mt-2 flex justify-between items-center">
             <textarea
               v-model="companyDesc"
-              class="flex-grow h-[82px] text-[14px] font-normal px-4 py-2 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[82px] text-[14px] font-normal px-4 py-2 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               required
             ></textarea>

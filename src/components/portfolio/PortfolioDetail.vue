@@ -132,14 +132,15 @@ export default {
     },
     async deletePortfolio() {
       const id = this.$route.params.id;
+      console.log('delete portfolio id: ', id);
 
-      try {
-        await axios.delete(`/api/portfolio/${id}`);
-        alert('포트폴리오가 삭제되었습니다.');
-        this.$router.push('/portfolios');
-      } catch (error) {
-        console.error('Error deleting portfolio: ', error);
-      }
+      // try {
+      //   await axios.delete(`/api/portfolio/${id}`);
+      //   alert('포트폴리오가 삭제되었습니다.');
+      //   this.$router.push('/portfolio');
+      // } catch (error) {
+      //   console.error('Error deleting portfolio: ', error);
+      // }
     },
     formatDate(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
