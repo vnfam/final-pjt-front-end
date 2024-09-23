@@ -22,7 +22,7 @@
       <h2 class="text-lg font-semibold text-gray-800 mb-2 truncate">{{ portfolio.title }}</h2>
       <!-- 프로젝트 면적 및 위치 -->
       <p class="text-sm text-gray-600 mb-1">
-        <span class="font-semibold">{{ portfolio.projectArea }}</span
+        <span class="font-semibold">{{ portfolio.floor }}</span
         >평
       </p>
       <p class="text-sm text-gray-600 mb-3 truncate">{{ portfolio.projectLocation }}</p>

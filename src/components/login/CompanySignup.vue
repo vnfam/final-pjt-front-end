@@ -188,13 +188,15 @@
           />
           <p v-if="errors.address" class="text-red text-[12px] mt-2">{{ errors.address }}</p>
 
-          <button
-            type="button"
-            @click="searchAddress"
-            class="mt-2 px-3 py-2 bg-gray-600 text-white rounded-lg text-[16px]"
-          >
-            주소 검색
-          </button>
+          <div class="pb-2">
+            <button
+              type="button"
+              @click="searchAddress"
+              class="w-full mt-2 px-3 py-2 bg-midGreen text-white rounded-md text-[16px]"
+            >
+              주소 검색
+            </button>
+          </div>
         </div>
 
         <div class="mb-[12px]">
@@ -367,10 +369,18 @@ export default {
 
     // 이메일 중복 확인
     async verifyEmail() {
+      this.validateEmail(); // 먼저 이메일 형식 유효성 검사
+
+      // 이메일 형식이 유효하지 않으면 중복 확인 요청을 보내지 않음
+      if (this.errors.email) {
+        return;
+      }
+
       try {
         const response = await axios.get('/api/company/check-email', {
           params: { email: this.email },
         });
+
         if (response.data) {
           this.errors.email = '이미 사용 중인 이메일입니다.';
         } else {
@@ -383,8 +393,25 @@ export default {
       }
     },
     verifyCompanyNumber() {
-      this.companyNumberVerified = true;
+      // 먼저 유효성 검사 수행
+      this.validateCompanyNumber();
+
+      // 유효성 검사를 통과하지 못한 경우 메시지를 표시하지 않음
+      if (this.errors.companyNumber) {
+        return;
+      }
+
+      // 유효성 검사 통과 후 사업자번호 확인
+      try {
+        // 여기서 실제 사업자번호 확인 로직을 추가할 수 있습니다.
+        this.companyNumberVerified = true;
+        delete this.errors.companyNumber;
+      } catch (error) {
+        console.error(error);
+        this.errors.companyNumber = '사업자 번호 확인에 실패했습니다.';
+      }
     },
+
     validateEmail() {
       this.emailVerified = false; // 이메일이 변경되면 중복 확인 상태를 초기화
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

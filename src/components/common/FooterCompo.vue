@@ -1,7 +1,7 @@
 <!-- Footer.vue -->
 <template>
   <footer class="bg-gray-800 text-white py-8">
-    <div class="container mx-auto px-4">
+    <div class="container max-w-[1100px] mx-auto px-4">
       <!-- 상단 섹션 -->
       <div class="flex flex-wrap justify-between items-start text-[14px]">
         <!-- 로고 및 회사 정보 -->

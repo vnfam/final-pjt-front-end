@@ -1,11 +1,18 @@
 <template>
   <div class="container mx-auto p-6">
     <div v-if="portfolio.title" class="bg-white rounded-lg border-gray-300 border-[1px]">
-      <div class="border-gray-300 border-b-[1px] p-6 rounded-t-lg">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-2">{{ portfolio.title }}</h1>
-        <div class="flex justify-end text-gray-500 text-sm mt-3">
-          <span>{{ formatDate(portfolio.createdAt) }}</span>
-          <span v-if="isUpdated">수정일: {{ formatDate(portfolio.updatedAt) }} (수정됨)</span>
+      <div class="border-gray-300 border-b-[1px] p-6 rounded-t-lg flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-extrabold text-gray-800 mb-2">{{ portfolio.title }}</h1>
+          <div class="text-gray-500 text-sm mt-3">
+            <span v-if="isUpdated">{{ formatDate(portfolio.updatedAt) }} (수정됨)</span>
+            <span v-else>{{ formatDate(portfolio.createdAt) }}</span>
+          </div>
+        </div>
+        <!-- 수정 및 삭제 버튼 -->
+        <div class="flex gap-4">
+          <button @click="goToEditPage" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">수정</button>
+          <button @click="confirmDelete" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">삭제</button>
         </div>
       </div>
 
@@ -19,7 +26,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
           <div class="flex items-center">
             <h3 class="text-lg font-semibold text-gray-700">시공 면적:</h3>
-            <p class="text-gray-600 ml-2">{{ portfolio.projectArea }}평</p>
+            <p class="text-gray-600 ml-2">{{ portfolio.floor }}평</p>
           </div>
           <div class="flex items-center">
             <h3 class="text-lg font-semibold text-gray-700">예산:</h3>
@@ -106,7 +113,10 @@ export default {
       return DOMPurify.sanitize(this.portfolio.content);
     },
     isUpdated() {
-      return this.portfolio.updatedAt && new Date(this.portfolio.updatedAt) > new Date(this.portfolio.createdAt);
+      const updatedAt = new Date(this.portfolio.updatedAt);
+      const createdAt = new Date(this.portfolio.createdAt);
+
+      return updatedAt.setSeconds(0, 0) > createdAt.setSeconds(0, 0);
     },
   },
   methods: {
@@ -116,9 +126,19 @@ export default {
       try {
         const response = await axios.get(`/api/portfolio/${id}`);
         this.portfolio = response.data;
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching portfolio data: ', error);
+      }
+    },
+    async deletePortfolio() {
+      const id = this.$route.params.id;
+
+      try {
+        await axios.delete(`/api/portfolio/${id}`);
+        alert('포트폴리오가 삭제되었습니다.');
+        this.$router.push('/portfolios');
+      } catch (error) {
+        console.error('Error deleting portfolio: ', error);
       }
     },
     formatDate(date) {
@@ -128,6 +148,14 @@ export default {
     formatDateWithoutTime(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(date).toLocaleDateString('ko-KR', options);
+    },
+    goToEditPage() {
+      this.$router.push(`/portfolio/edit/${this.$route.params.id}`);
+    },
+    confirmDelete() {
+      if (confirm('정말로 이 포트폴리오를 삭제하시겠습니까?')) {
+        this.deletePortfolio();
+      }
     },
   },
 };
