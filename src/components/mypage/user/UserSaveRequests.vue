@@ -173,10 +173,15 @@ export default {
     };
 
     const accept = async (estimate, requestId) => {
+      const isConfirm = confirm('승인하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
       try {
         await authInstance.post(`/api/estimaterequests/${requestId}/estimates/${estimate.estimateId}/accept`);
         alert('승인이 완료되었습니다.');
         closeModal;
+        window.location.reload();
       } catch (error) {
         console.log('승인 실패했습니다.', error);
       }
