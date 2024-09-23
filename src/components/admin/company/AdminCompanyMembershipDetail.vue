@@ -2,7 +2,7 @@
   <div>
     <!-- 기업 로고 -->
     <div class="flex items-center justify-center h-full mb-10">
-      <img class="object-fill w-72 h-auto rounded-full rounded-full bg-white" src="@/assets/logo.png" alt="" />
+      <img class="object-fill w-72 h-auto rounded-full bg-white" src="@/assets/logo.png" alt="" />
     </div>
     <!-- 기업 정보 -->
     <div>
@@ -20,24 +20,27 @@
           <div class="flex-col">
             <div class="flex mb-2">
               <p class="w-1/5 px-10">{{ membershipType }}</p>
+              <!-- 라디오 버튼에 따라서 상태의 값도 바뀐다 -->
               <p
-                class="mx-10 px-2 border-2 border-solid border-secondary rounded-lg whitespace-nowrap text-secondary text-center"
+                :class="[
+                  'mx-10 px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center',
+                  membershipState === '변경' ? 'border-red text-red' : 'border-secondary text-secondary',
+                ]"
               >
                 {{ membershipState }}
               </p>
             </div>
-            <!-- 라디오버튼 버튼에 따라서 상태 변경_부트스트랩 따옴 따로 설치한 건  -->
+            <!-- 라디오버튼 버튼에 따라서 상태 변경 -->
             <div class="form-check mx-10">
               <input
                 class="form-check-input"
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                value="Basic"
+                value="None"
                 v-model="stateUpdate"
-                checked
               />
-              <label class="form-check-label" for="flexRadioDefault1"> Basic </label>
+              <label class="form-check-label" for="flexRadioDefault1"> None </label>
             </div>
             <div class="form-check mx-10">
               <input
@@ -45,10 +48,21 @@
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault2"
+                value="Basic"
+                v-model="stateUpdate"
+              />
+              <label class="form-check-label" for="flexRadioDefault2"> Basic </label>
+            </div>
+            <div class="form-check mx-10">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault3"
                 value="Premium"
                 v-model="stateUpdate"
               />
-              <label class="form-check-label" for="flexRadioDefault2"> Premium </label>
+              <label class="form-check-label" for="flexRadioDefault3"> Premium </label>
             </div>
           </div>
         </li>
@@ -71,7 +85,7 @@
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">비밀번호</label>
           <div>
-            <p class="w-4/5 px-10">{{ password }}</p>
+            <p class="w-4/5 px-10">{{ maskedPassword }}</p>
             <input
               type="text"
               v-model="newPassword"
@@ -120,10 +134,11 @@
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
       <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="checkForChanges">수정</button>
+      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="confirmDeletion">탈퇴</button>
       <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
     </div>
-    <!-- 버튼에 따른 Modal -->
-    <div v-if="isModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- 수정 버튼에 따른 Modal -->
+    <!-- <div v-if="isModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -152,10 +167,10 @@
                   </svg>
                 </div>
                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">관리자 권한으로 수정</h3>
+                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{{ modalTitle }}</h3>
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                      해당 계정의 정보를 정말로 수정하시겠습니까? 수정하면 서버에 그대로 저장이 됩니다.
+                      {{ modalMessage }}
                     </p>
                   </div>
                 </div>
@@ -170,7 +185,84 @@
                 수정
               </button>
               <button
-                @click="isModalOpen = false"
+                @click="isModalOpen = false; isDeleteModalOpen = false"
+                type="button"
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- 버튼에 따른 Modal -->
+    <div
+      v-if="isModalOpen || isDeleteModalOpen"
+      class="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+      <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+          >
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div class="sm:flex sm:items-start">
+                <div
+                  class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+                >
+                  <svg
+                    class="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{{ modalTitle }}</h3>
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-500">
+                      {{ modalMessage }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                v-if="isModalOpen"
+                @click="confirmEdit"
+                type="button"
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              >
+                수정
+              </button>
+              <button
+                v-if="isDeleteModalOpen"
+                @click="confirmDelete"
+                type="button"
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-600 sm:mt-0 sm:w-auto"
+              >
+                탈퇴
+              </button>
+              <button
+                @click="
+                  isModalOpen = false;
+                  isDeleteModalOpen = false;
+                "
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
@@ -188,12 +280,12 @@
 export default {
   data() {
     return {
-      // 임의로 넣어뒀어요
+      // 임의로 넣어둔 값들
       companyName: '뚝딱뚝딱업체',
       owner: '김뚝딱',
-      membershipType: 'Basic',
+      membershipType: 'Basic', // 현재 멤버십 종류
       membershipState: '유지',
-      stateUpdate: '', // 멤버십 변경하는 input 입력값
+      stateUpdate: 'Basic', // 라디오 버튼으로 변경할 멤버십 종류 (기본값을 현재 멤버십으로 설정)
       membershipStartDate: '24.07.02',
       membershipEndDate: '24.10.7',
       email: 'dukdakInterior@gmail.com',
@@ -206,10 +298,24 @@ export default {
       service: '전체 시공',
       rating: '5',
       isModalOpen: false,
+      isDeleteModalOpen: false,
+      modalTitle: '',
+      modalMessage: '',
     };
   },
+  watch: {
+    stateUpdate(newValue) {
+      this.membershipState = newValue !== this.membershipType ? '변경' : '유지';
+    },
+  },
+  computed: {
+    // Mask the password with the same length as the actual password
+    maskedPassword() {
+      return '*'.repeat(this.password.length); // Returns masked password with asterisks
+    },
+  },
   methods: {
-    // 멤버십 종류 변경
+    // 멤버십 종류 변경 확인
     changeState() {
       if (this.stateUpdate !== this.membershipType) {
         this.membershipState = '변경';
@@ -219,34 +325,77 @@ export default {
         return null;
       }
     },
-    // 비밀번호 재발급
+    // 비밀번호 재발급 확인
     changePassword() {
       if (this.newPassword) {
         return this.newPassword;
       }
       return null;
     },
-    // 멤버십 종류, 비밀번호 중 하나라도 값을 작성하면 수정 모달창 띄우기
+    // 멤버십 종류나 비밀번호 변경 여부를 확인하고 모달을 띄움
     checkForChanges() {
       let stateChange = this.changeState();
-      console.log(stateChange);
       let passwordChange = this.changePassword();
-      console.log(passwordChange);
 
+      // 멤버십과 비밀번호 모두 변경된 경우
+      if (stateChange !== null && passwordChange !== null) {
+        this.modalTitle = '관리자 권한으로 멤버십 변경 및 비밀번호 재발급';
+        this.modalMessage = `멤버십을 ${this.stateUpdate}로 변경하고 비밀번호를 재발급하시겠습니까?`;
+      }
+      // 멤버십만 변경된 경우
+      else if (stateChange !== null) {
+        if (this.stateUpdate === 'None') {
+          this.modalTitle = '관리자 권한으로 멤버십 취소';
+          this.modalMessage =
+            '멤버십을 취소하시겠습니까? 취소 시 고객에게 제공하는 혜택이 종료되며 가입 금액은 환불됩니다.';
+        } else if (this.stateUpdate === 'Basic') {
+          this.modalTitle = '기본 멤버십으로 변경';
+          this.modalMessage = '기본 멤버십으로 변경하시겠습니까? 변경 시 일부 혜택이 제한됩니다.';
+        } else if (this.stateUpdate === 'Premium') {
+          this.modalTitle = '프리미엄 멤버십으로 업그레이드';
+          this.modalMessage = '프리미엄 멤버십으로 업그레이드하시겠습니까? 모든 혜택이 활성화됩니다.';
+        }
+      }
+      // 비밀번호만 변경된 경우
+      else if (passwordChange !== null) {
+        this.modalTitle = '관리자 권한으로 비밀번호 재발급 코드 전송';
+        this.modalMessage = '비밀번호를 재발급하시겠습니까?';
+      }
+
+      // 멤버십 또는 비밀번호 변경 사항이 있는 경우 모달을 띄움
       if (stateChange !== null || passwordChange !== null) {
         this.isModalOpen = true;
       } else {
         alert('변경 사항이 없습니다.');
       }
     },
-    // 모달 수정 버튼 선택시 정보 수정하기
+    // 모달 수정 버튼 클릭 시 정보 수정
     confirmEdit() {
       // 서버로 데이터를 보내는 로직을 여기에 작성
-      this.membershipType = this.stateUpdate;
-      this.password = this.newPassword;
+      if (this.stateUpdate !== this.membershipType) {
+        this.membershipType = this.stateUpdate;
+      }
+      if (this.newPassword) {
+        this.password = this.newPassword;
+      }
+
       alert('데이터가 변경되었습니다.');
       console.log('게시판 업데이트 완료', this.membershipType, this.password);
+      this.newPassword = null;
       this.isModalOpen = false;
+    },
+    // 탈퇴 버튼 클릭시
+    confirmDeletion() {
+      this.modalTitle = '관리자 권한으로 강제 탈퇴';
+      this.modalMessage = '해당 계정을 강제로 탈퇴하시겠습니까? 탈퇴 후 모든 데이터가 삭제됩니다.';
+      this.isDeleteModalOpen = true;
+      console.log('isDeleteModalOpen:', this.isDeleteModalOpen); // Add this line to check the flag status
+    },
+
+    confirmDelete() {
+      // 서버로 데이터를 보내는 로직을 여기에 작성
+      alert('탈퇴되었습니다.');
+      this.isDeleteModalOpen = false;
     },
   },
 };
