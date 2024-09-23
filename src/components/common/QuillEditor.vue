@@ -76,6 +76,7 @@ export default {
 
           // 선택 범위가 없을 경우 에디터 끝에 이미지를 삽입
           const base64Image = e.target.result;
+          alert('이미지 추가 완료');
 
           if (!range) {
             const length = this.quill.getLength();
@@ -88,42 +89,44 @@ export default {
           this.pendingImages.push({
             file,
             range: range ? { index: range.index, length: 1 } : { index: this.quill.getLength(), length: 0 },
+            placeholder: e.target.result,
           });
 
+          alert(this.pendingImages[0].placeholder);
           // 서버로 이미지를 업로드하고 Base64 이미지를 URL로 교체
-          this.uploadImages();
         };
 
         reader.readAsDataURL(file);
       };
     },
 
-    async uploadImages() {
+    async uploadImages(portfolioId) {
       const uploadedUrls = [];
+      let afterUpdate = this.quill.root.innerHTML;
 
-      for (const { file, range } of this.pendingImages) {
+      for (const { file, range, placeholder } of this.pendingImages) {
         const formData = new FormData();
-        formData.append('image', file);
-
+        formData.append('file', file);
+        console.log(range);
         try {
-          const response = await axios.post('/api/uploads', formData, {
+          const response = await axios.post(`/api/portfolio/${portfolioId}/images`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-
-          const imageUrl = 'http://localhost:8080' + response.data.path;
+          const imageUrl = response.data;
           console.log(imageUrl);
           uploadedUrls.push(imageUrl);
-
+          afterUpdate = afterUpdate.replace(placeholder, imageUrl);
           // Base64 이미지를 서버 URL로 교체
-          this.quill.deleteText(range.index, range.length);
-          this.quill.insertEmbed(range.index, 'image', imageUrl);
+          //this.quill.deleteText(range.index, range.length);
+          //this.quill.insertEmbed(range.index, 'image', imageUrl);
         } catch (error) {
           console.error('Image upload failed:', error);
         }
       }
 
+      this.$emit('insert-images', portfolioId, afterUpdate);
       this.pendingImages = [];
     },
   },
