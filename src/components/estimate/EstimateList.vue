@@ -17,10 +17,21 @@
           <p><strong>Floor:</strong> {{ estimate.floor }}</p>
           <div class="text-right">
             <button
+              v-if="estimates[index].send === false"
               class="bg-midGreen text-white rounded-xl py-2 px-4"
               @click="openModal(estimate)"
             >
               견적 보내기
+            </button>
+            <button
+              v-else
+              class="bg-midGreen text-white rounded-xl py-2 px-4"
+            >
+              견적
+              1. 수정
+              2. 취소
+              3. 보기
+              중 어떤 것을 넣을지 생각해보기
             </button>
           </div>
         </li>
@@ -113,6 +124,10 @@ export default {
     
     // 견적 금액을 제출하는 함수
     async submitEstimate() {
+      const isConfirm = confirm('견적을 보내시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
       try {
         // 시공 타입별 입력 금액 데이터를 서버로 전송할 형식으로 변환
         const constructionPrices = {};
@@ -131,6 +146,7 @@ export default {
 
         console.log('견적 금액이 성공적으로 제출되었습니다.');
         this.closeModal(); // 전송 후 모달 닫기
+        window.location.reload();
       } catch (error) {
         console.error('견적 금액을 제출하는 데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
       }

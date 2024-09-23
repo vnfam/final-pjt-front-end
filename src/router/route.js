@@ -83,7 +83,7 @@ export default [
       },
 
       {
-        path: 'usersentrequest',
+        path: 'usersaverequest',
         component: UserSaveRequests,
       },
       {
