@@ -21,19 +21,16 @@
           >
             <!-- 전체 선택 체크박스 -->
             <div
-              class="flex items-center py-3 pl-3 pr-4 pb-3 border-b-[1px] border-gray-100 cursor-pointer"
               @click="toggleAllServices"
+              class="flex items-center py-3 pl-3 pr-4 pb-3 border-b-[1px] border-gray-100 cursor-pointer"
             >
               <input
                 type="checkbox"
-                @change="toggleAllServices"
                 :checked="isAllSelected"
                 class="mr-3 custom-checkbox"
-                :class="{ 'checked-checkbox': selectedServices.length === services.length }"
+                :class="{ 'checked-checkbox': isAllSelected }"
               />
-              <span class="font-medium" :class="{ 'text-midGreen': selectedServices.length === services.length }"
-                >전체 선택</span
-              >
+              <span class="font-medium" :class="{ 'text-midGreen': isAllSelected }">전체 선택</span>
             </div>
 
             <!-- 개별 시공 서비스 체크박스 -->
@@ -80,11 +77,6 @@ export default {
   setup(props, { emit }) {
     const services = ref([]);
     const selectedServices = ref([]);
-
-    const resetSelection = () => {
-      selectedServices.value = [];
-      emit('services-selected', { services: [] }); // 초기화된 서비스를 부모로 전달
-    };
 
     // 서비스 목록 가져오기
     const fetchServices = async () => {
@@ -146,7 +138,6 @@ export default {
       toggleAllServices,
       selectedServiceNames,
       toggleService,
-      resetSelection,
     };
   },
 };
