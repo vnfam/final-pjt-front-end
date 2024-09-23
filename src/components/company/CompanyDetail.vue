@@ -72,14 +72,18 @@ export default {
       try {
         const response = await axios.get(`/api/company/${companyId}`);
         this.company = response.data;
+
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching company data:', error);
       }
     },
+
     formatDate(dateStr) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(dateStr).toLocaleDateString('ko-KR', options);
     },
+
     formatPhoneNumber(phoneNumber) {
       return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     },

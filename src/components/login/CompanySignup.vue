@@ -214,14 +214,19 @@
 
           <!-- 전체 선택 체크박스 -->
           <div class="mt-2 mb-3 flex items-center">
-            <input type="checkbox" @change="toggleAllConstructionTypes" :checked="isAllSelected" class="mr-2" />
+            <input
+              type="checkbox"
+              @change="toggleAllConstructionTypes"
+              :checked="isAllSelected"
+              class="mr-2 accent-midGreen"
+            />
             <span>전체 선택</span>
           </div>
 
           <!-- 개별 시공 종류 체크박스 -->
           <div class="mt-2 flex flex-wrap gap-2">
             <div v-for="type in constructionTypes" :key="type.id" class="flex items-center">
-              <input type="checkbox" :value="type.id" v-model="selectedTypes" class="mr-2" />
+              <input type="checkbox" :value="type.id" v-model="selectedTypes" class="mr-2 accent-midGreen" />
               <span>{{ type.name }}</span>
             </div>
           </div>

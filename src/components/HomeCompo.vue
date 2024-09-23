@@ -4,7 +4,7 @@
     <div class="w-[1100px] w-max-[1100px] py-2 flex items-center justify-between bg-white fixed top-[80px] z-50">
       <div class="flex items-center justify-start">
         <!-- 지역 선택 -->
-        <category-compo @region-selected="onRegionSelected" ref="categoryCompo" />
+        <category-compo @region-selected="onRegionSelected" ref="categoryCompo" class="mr-3" />
         <!-- 시공 서비스 선택 (select box 형태) -->
         <construction-category-compo
           @services-selected="onServicesSelected"
@@ -63,15 +63,25 @@ export default {
         let url = '/api/company/list';
 
         const params = [];
+
+        // 지역 선택이 된 경우
         if (this.selectedRegion) {
           const { city, district } = this.selectedRegion;
-          params.push(`city=${city}&district=${district}`);
+
+          // district가 없을 경우 city만 사용하여 필터링
+          if (district) {
+            params.push(`city=${city}&district=${district}`);
+          } else {
+            params.push(`city=${city}`);
+          }
         }
 
+        // 선택된 서비스가 있는 경우
         if (this.selectedServices.length > 0) {
           params.push(`services=${this.selectedServices.join(',')}`);
         }
 
+        // 파라미터가 있으면 URL에 추가
         if (params.length > 0) {
           url += `?${params.join('&')}`;
         }
@@ -86,6 +96,7 @@ export default {
     // 지역 선택 시 호출
     onRegionSelected(region) {
       this.selectedRegion = region;
+      console.log(this.selectedRegion);
       this.fetchCompanies(); // 선택된 지역을 기반으로 업체 데이터 조회
     },
 

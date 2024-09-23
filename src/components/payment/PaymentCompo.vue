@@ -52,10 +52,11 @@
 
     <!-- 환불 정책 모달 -->
     <div v-if="showPolicyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-20">
-      <div class="bg-white py-20 rounded-lg shadow-lg text-center">
+      <div class="bg-white px-10 py-10 rounded-lg shadow-lg text-center">
         <h3 class="text-xl font-bold">환불 정책</h3>
         <p class="mt-4 text-gray-600">
-          결제 후 7일 이내에 환불 요청 시 전액 환불이 가능합니다. 그 이후 환불은 불가합니다.
+          결제 후 7일 이내에 환불 요청 시 전액 환불이 가능합니다.
+          <br />그 이후 환불은 불가합니다.
         </p>
         <button @click="closeRefundPolicy" class="mt-6 bg-midGreen text-white py-2 px-4 rounded">닫기</button>
       </div>
@@ -99,36 +100,39 @@ export default {
   },
 
   methods: {
-    // 결제 요청
     async paymentRequest(membershipId) {
       try {
+        // 결제 요청
         const response = await authInstance.post(`/api/payment/prepare`, { membershipId });
-        const { price, type, merchantUid } = response.data.data;
+        console.log(response);
+        const { price, type, merchantUid, paymentCompany } = response.data.data;
+
+        console.log(response.data.data);
 
         window.IMP.request_pay(
           {
             pg: 'html5_inicis',
             pay_method: 'card',
             merchant_uid: merchantUid, // 주문 고유 번호
-            name: type,
-            amount: price,
+            name: type, // 결제할 멤버십 이름
+            amount: price, // 가격
 
-            buyer_email: 'gildong@gmail.com',
-            buyer_name: '홍길동',
-            buyer_tel: '010-4242-4242',
-            buyer_addr: '서울특별시 강남구 신사동',
-            buyer_postcode: '01181',
+            // 회사 정보
+            buyer_email: paymentCompany.companyEmail,
+            buyer_name: paymentCompany.companyOwner,
+            buyer_tel: paymentCompany.phoneNumber,
+            buyer_addr: paymentCompany.companyAddr,
+            buyer_postcode: paymentCompany.postcode,
           },
+
           async (response) => {
-            if (response.success) {
-              const complete = await authInstance.post(`${SERVER_BASE_URL}/api/memberships`, {
-                impUid: response.imp_uid,
-                merchantUid: response.merchant_uid,
-                success: response.success,
-                paidAmount: response.paid_amount,
-              });
-              console.log(complete.data.data);
-            }
+            const complete = await authInstance.post(`${SERVER_BASE_URL}/api/memberships`, {
+              impUid: response.imp_uid,
+              merchantUid: response.merchant_uid,
+              success: response.success,
+              paidAmount: response.paid_amount,
+            });
+            console.log(complete.data.data);
           }
         );
       } catch (error) {
