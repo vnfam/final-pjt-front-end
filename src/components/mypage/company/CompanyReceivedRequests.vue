@@ -12,7 +12,7 @@
         <p><strong>Address:</strong> {{ estimate.fullAddress }}</p>
         <p><strong>Floor:</strong> {{ estimate.floor }}</p>
         <div class="text-right">
-          <button class="mr-4 bg-white rounded-xl py-2 px-4">거절</button>
+          <button class="mr-4 bg-white rounded-xl py-2 px-4" @click="reject">거절</button>
           <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openModal(estimate)">견적 보내기</button>
         </div>
       </li>
@@ -105,6 +105,10 @@ export default {
 
     // 견적 금액을 제출하는 함수
     async submitEstimate() {
+      const isConfirm = confirm('견적을 보내시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
       try {
         // 시공 타입별 입력 금액 데이터를 서버로 전송할 형식으로 변환
         const constructionPrices = {};
