@@ -60,19 +60,19 @@
           <div class="mt-6 text-right">
             <button
               v-if="!estimate.send"
-              class="w-full bg-midGreen text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition"
+              class="w-full bg-midGreen text-white font-medium py-2 px-4 rounded-lg hover:bg-green-600 transition"
               @click="openModal(estimate)"
             >
               견적 보내기
             </button>
             <div v-else-if="estimate.send && estimate.status !== null" class="flex gap-2 justify-end">
               <button
-                class="w-full bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-400 transition"
+                class="w-full bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg hover:bg-gray-400 transition"
               >
                 취소
               </button>
               <button
-                class="w-full bg-midGreen text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition"
+                class="w-full bg-midGreen text-white font-medium py-2 px-4 rounded-lg hover:bg-green-600 transition"
               >
                 수정
               </button>
