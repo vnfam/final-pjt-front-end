@@ -50,7 +50,6 @@ import authInstance from '@/utils/axiosUtils';
 export default {
   data() {
     return {
-      selectedRegion: '서울 강남구',
       estimates: [],
       showModal: false, // 모달 표시 여부를 제어하는 변수
       selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
