@@ -567,7 +567,7 @@ export default {
         formData.append('publishDate', this.publishDate);
         formData.append('address', this.address);
         formData.append('companyDesc', this.companyDesc);
-        formData.append('constructionService', JSON.stringify(this.selectedTypes));
+        formData.append('constructionService', this.selectedTypes);
 
         if (this.logoFile) {
           formData.append('logoFile', this.logoFile);
@@ -575,11 +575,7 @@ export default {
 
         // 서버로 POST 요청
         try {
-          await axios.post('/api/company', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
+          await axios.post('/api/company', formData);
           alert('업체 등록이 완료되었습니다.');
           this.$router.push('/');
         } catch (error) {
