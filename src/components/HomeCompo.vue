@@ -37,7 +37,7 @@
     <!-- 업체 리스트 -->
     <div class="w-full flex flex-col gap-[40px] pb-[40px]">
       <!-- Premium 업체 -->
-      <div v-if="sortedCompanies.PREMIUM.length > 0">
+      <div v-if="sortedCompanies.PREMIUM.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
         <!-- <div class="text-[16px] font-bold text-gray-600">광고</div> -->
         <div class="flex flex-wrap gap-[20px]">
           <company-card
@@ -119,7 +119,6 @@ export default {
         const response = await axios.get(url);
         this.companies = response.data;
         this.sortCompanies();
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching company data: ', error);
       }
