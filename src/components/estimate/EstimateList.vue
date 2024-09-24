@@ -24,7 +24,7 @@
               견적 보내기
             </button>
             <div v-else-if="estimate.send === true && estimate.status === 'SENT'">
-              <button class="bg-gray-300 text-black rounded-xl py-2 px-4 mr-2" @click="deleteEstimate(estimate)">
+              <button class="mr-4 bg-white rounded-xl py-2 px-4" @click="deleteEstimate(estimate)">
                 삭제(이름 생각해보기)
               </button>
               <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openUpdateModal(estimate)">
@@ -32,7 +32,9 @@
               </button>
             </div>
             <div v-else-if="estimate.send === true && estimate.status === 'RECEIVED'">
-              <button class="mr-4 bg-white rounded-xl py-2 px-4">거절</button>
+              <button class="mr-4 bg-white rounded-xl py-2 px-4" @click="deleteEstimate(estimate)">
+                삭제(이름 생각해보기)
+              </button>
               <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openSendModal(estimate)">
                 견적 보내기
               </button>
@@ -225,11 +227,17 @@ export default {
         // 시공 타입별 입력된 금액 데이터를 전송할 형식으로 변환
         const constructionPrices = {};
         this.constructionTypeInputs.forEach((price, index) => {
-          constructionPrices[`${this.estimateDetails[index].estimateConstructionTypeId}`] = price; // 시공 타입에 맞는 가격 설정
+          const typeId = this.estimateDetails[index].estimateConstructionTypeId;
+          constructionPrices[typeId] = parseFloat(price); // 금액을 숫자 형식으로 변환
         });
 
-        await authInstance.post(``);
+        // 요청 페이로드 준비
+        const requestData = {
+          constructionPrices: constructionPrices,
+        };
 
+        await authInstance.patch(`/api/estimates/${this.selectedEstimate.estimateId}`, requestData);
+        this.closeModal(); // 수정 후 모달 닫기
         window.location.reload();
       } catch (error) {
         console.error('견적 수정을 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
