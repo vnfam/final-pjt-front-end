@@ -12,29 +12,17 @@ const authInstance = axios.create({
 authInstance.interceptors.request.use(
   (config) => {
     const user = JSON.parse(localStorage.getItem('user'));
-    const accessToken = user.accessToken;
+    let accessToken = user?.accessToken;
+    if (accessToken === null) {
+      accessToken = '';
+    }
+
     if (accessToken) {
       config.headers['Authorization'] = accessToken;
     }
     return config;
   },
   (error) => Promise.reject(error)
-);
-
-authInstance.interceptors.request.use(
-  (request) => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const accessToken = user.accessToken;
-
-    if (accessToken) {
-      request.headers['Authorization'] = accessToken;
-    }
-    return request;
-  },
-
-  (error) => {
-    console.log(error);
-  }
 );
 
 authInstance.interceptors.response.use(

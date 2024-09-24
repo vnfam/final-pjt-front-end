@@ -15,13 +15,14 @@
 
       <!-- 카테고리 초기화 버튼 -->
       <button @click="resetAllSelections" class="bg-gray-400 text-white text-[12px] font-medium px-3 py-2 rounded">
-        선택 초기화
+        <font-awesome-icon :icon="['fas', 'arrow-rotate-left']" /> 선택 초기화
       </button>
     </div>
 
     <!-- 배너 및 타이틀 -->
     <banner-compo></banner-compo>
-    <div class="pt-8 pb-4">
+
+    <div class="py-8">
       <p class="text-[22px] font-bold text-[#1d1d1d] leading-[22px] tracking-[-0.3px] mb-2 flex items-center">
         리모델링 파트너
       </p>
@@ -34,8 +35,31 @@
     </div>
 
     <!-- 업체 리스트 -->
-    <div class="w-full flex items-center flex-wrap gap-[20px] pb-[40px]">
-      <company-card v-for="company in companies" :key="company.id" :company="company"></company-card>
+    <div class="w-full flex flex-col gap-[40px] pb-[40px]">
+      <!-- Premium 업체 -->
+      <div v-if="sortedCompanies.PREMIUM.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
+        <!-- <div class="text-[16px] font-bold text-gray-600">광고</div> -->
+        <div class="flex flex-wrap gap-[20px]">
+          <company-card
+            v-for="company in sortedCompanies.PREMIUM"
+            :key="company.id"
+            :company="company"
+            :isPremium="true"
+          ></company-card>
+        </div>
+      </div>
+
+      <!-- Basic, No 업체 섞여서 표시 -->
+      <div v-if="mixedBasicNoCompanies.length > 0">
+        <div class="flex flex-wrap gap-[20px]">
+          <company-card
+            v-for="company in mixedBasicNoCompanies"
+            :key="company.id"
+            :company="company"
+            :isPremium="false"
+          ></company-card>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,7 +75,13 @@ export default {
   components: { CategoryCompo, ConstructionCategoryCompo, BannerCompo, CompanyCard },
   data() {
     return {
-      companies: [], // 업체 데이터를 저장할 변수
+      companies: [], // 전체 업체 데이터를 저장할 변수
+      sortedCompanies: {
+        PREMIUM: [],
+        BASIC: [],
+        NO: [],
+      }, // 정렬된 업체 데이터를 저장할 변수
+      mixedBasicNoCompanies: [], // BASIC과 NO를 합친 배열
       selectedRegion: null, // 선택된 지역 저장
       selectedServices: [], // 선택된 시공 서비스 저장
     };
@@ -60,7 +90,7 @@ export default {
     // 선택된 지역 및 서비스에 맞는 업체 데이터를 불러오는 함수
     async fetchCompanies() {
       try {
-        let url = '/api/company/list';
+        let url = '/api/company/list2';
 
         const params = [];
 
@@ -88,9 +118,20 @@ export default {
 
         const response = await axios.get(url);
         this.companies = response.data;
+        this.sortCompanies();
       } catch (error) {
         console.error('Error fetching company data: ', error);
       }
+    },
+
+    // 업체 데이터를 Premium과 Basic, No로 나누고, Basic과 No는 섞어서 표시
+    sortCompanies() {
+      this.sortedCompanies.PREMIUM = this.companies.PREMIUM || [];
+      this.sortedCompanies.BASIC = this.companies.BASIC || [];
+      this.sortedCompanies.NO = this.companies.NO || [];
+
+      // BASIC과 NO 등급 업체들을 하나의 배열로 합쳐서 관리
+      this.mixedBasicNoCompanies = [...this.sortedCompanies.BASIC, ...this.sortedCompanies.NO];
     },
 
     // 지역 선택 시 호출

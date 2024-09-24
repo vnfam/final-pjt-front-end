@@ -50,6 +50,7 @@ import PlateformAskDetail from '@/components/admin/plateform/PlateformAskDetail.
 import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
 import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
+import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -87,10 +88,13 @@ export default [
         path: 'info',
         component: UserBaseInfo,
       },
-
       {
         path: 'usersaverequest',
         component: UserSaveRequests,
+      },
+      {
+        path: 'userongoingrequest',
+        component: UserOnGoingRequests,
       },
       {
         path: 'reviewlist',

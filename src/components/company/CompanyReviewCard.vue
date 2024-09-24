@@ -15,7 +15,7 @@
     <!-- 내용 영역 -->
     <div class="bg-white px-2 pt-2 pb-3 rounded-b-lg">
       <div class="mb-1">
-        <p class="text-base font-bold text-gray-900 leading-5 tracking-tight truncate">{{ review.title }}</p>
+        <p class="text-md font-bold text-gray-900 leading-5 tracking-tight truncate">{{ review.title }}</p>
       </div>
       <div class="my-2 flex justify-start items-center">
         <span class="text-sm font-medium text-gray-600 tracking-tight">{{ review.buildingTypeName }}</span>
