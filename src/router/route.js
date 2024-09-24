@@ -34,6 +34,12 @@ import AdminCompanyPortfolioList from '@/components/admin/company/AdminCompanyPo
 import AdminCompanyPortfolioDetail from '@/components/admin/company/AdminCompanyPortfolioDetail.vue';
 import AdminMemberReviewList from '@/components/admin/member/AdminMemberReviewList.vue';
 import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReviewDetail.vue';
+import AdminMemberList from '@/components/admin/member/AdminMemberList.vue';
+import AdminMemberDetail from '@/components/admin/member/AdminMemberDetail.vue';
+
+import AdminMembershipList from '@/components/admin/Membership/AdminMembershipList.vue';
+import AdminMembershipDetail from '@/components/admin/Membership/AdminMembershipDetail.vue';
+
 import PlateformEventList from '@/components/admin/plateform/PlateformEventList.vue';
 import PlateformEventDetail from '@/components/admin/plateform/PlateformEventDetail.vue';
 import PlateformFAQList from '@/components/admin/plateform/PlateformFAQList.vue';
@@ -140,12 +146,28 @@ export default [
         component: AdminCompanyPortfolioDetail,
       },
       {
+        path: 'adminMemberList',
+        component: AdminMemberList,
+      },
+      {
+        path: 'adminMemberDetail',
+        component: AdminMemberDetail,
+      },
+      {
         path: 'adminMemberReviewList',
         component: AdminMemberReviewList,
       },
       {
         path: 'adminMemberReviewDetail',
         component: AdminMemberReviewDetail,
+      },
+      {
+        path: 'adminMembershipList',
+        component: AdminMembershipList,
+      },
+      {
+        path: 'adminMembershipDetail',
+        component: AdminMembershipDetail,
       },
       {
         path: 'plateformEventList',
