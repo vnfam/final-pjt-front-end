@@ -44,7 +44,7 @@
                   <p class="text-lg my-2 font-semibold">{{ selectedEstimateRequestsMap[index].companyName }}</p>
 
                   <p class="text-sm text-gray-500">
-                    {{ selectedEstimateRequestsMap[index].completeEstimateCount }}건의 공사
+                    {{ selectedEstimateRequestsMap[index].countOfCompleteEstimate }}건의 공사
                   </p>
                   <p class="text-sm text-midGreen">
                     <font-awesome-icon icon="star" />

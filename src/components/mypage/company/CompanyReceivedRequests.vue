@@ -37,8 +37,8 @@
 
       <!-- 모달 액션 -->
       <div class="mt-4 flex justify-end">
-        <button class="bg-gray-300 text-black rounded-lg py-2 px-4 mr-2" @click="closeModal">취소</button>
-        <button class="bg-midGreen text-white rounded-lg py-2 px-4" @click="submitEstimate">보내기</button>
+        <button class="bg-gray-300 text-black rounded-xl py-2 px-4 mr-2" @click="closeModal">취소</button>
+        <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="submitEstimate">보내기</button>
       </div>
     </div>
   </div>
@@ -56,8 +56,6 @@ export default {
       selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
       constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
       estimateDetails: [],
-      test: [],
-      test2: [],
     };
   },
   created() {

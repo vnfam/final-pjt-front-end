@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="text-lg font-semibold mb-4">보낸 요청 내역</h3>
+    <h3 class="font-medium text-[18px] mb-4">보낸 요청 내역</h3>
     <!-- List of sent requests goes here -->
     <ul>
       <li v-for="(request, index) in sentRequests" :key="index" class="mb-2">

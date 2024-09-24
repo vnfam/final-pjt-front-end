@@ -17,15 +17,16 @@
           <p><strong>Floor:</strong> {{ estimate.floor }}</p>
           <div class="text-right">
             <button
-              v-if="estimates[index].send === false"
+              v-if="estimate.send === false"
               class="bg-midGreen text-white rounded-xl py-2 px-4"
               @click="openModal(estimate)"
             >
               견적 보내기
             </button>
-            <button v-else class="bg-midGreen text-white rounded-xl py-2 px-4">
-              견적 1. 수정 2. 취소 3. 보기 중 어떤 것을 넣을지 생각해보기
-            </button>
+            <div v-else-if="estimate.send === true && estimate.status != null">
+              <button class="bg-gray-300 text-black rounded-xl py-2 px-4 mr-2">취소</button>
+              <button class="bg-midGreen text-white rounded-xl py-2 px-4">수정</button>
+            </div>
           </div>
         </li>
       </ul>
@@ -86,6 +87,7 @@ export default {
         });
         this.estimates = response.data; // 가져온 데이터를 estimates 배열에 저장
         console.log(response.data);
+        console.log(this.estimates[0].status);
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
       }
