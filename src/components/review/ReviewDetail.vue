@@ -26,29 +26,23 @@
       />
     </div>
 
-    <!-- 리뷰 제목 및 수정, 삭제 버튼 -->
-    <div class="bg-white p-6 mb-8 border-b-[1px] border-gray-200 flex justify-between items-center">
-      <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ reviewDetail.title }}</h2>
-        <div class="text-sm text-gray-400">{{ formattedRegDate }}</div>
-      </div>
-      <div class="flex gap-4">
-        <button @click="goToEditPage" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">수정</button>
-        <button @click="confirmDelete" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">삭제</button>
-      </div>
-    </div>
-
     <!-- 리뷰 제목 -->
     <div class="bg-white p-6 mb-8 border-b-[1px] border-gray-200">
       <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ reviewDetail.title }}</h2>
       <div class="flex justify-between items-center text-gray-600">
         <div>
-          <p class="text-md text-gray-600 mb-1">{{ reviewDetail.memberNickName }} 고객님</p>
-          <p class="text-sm text-gray-400">{{ formattedRegDate }}</p>
+          <p class="text-md text-gray-600 mb-1 font-semibold">{{ reviewDetail.memberNickName }} 고객님</p>
+          <p class="text-sm text-gray-400 font-medium">{{ formattedRegDate }}</p>
         </div>
-        <div class="flex items-center text-lg text-midGreen">
-          <font-awesome-icon class="text-[16px] mr-1 pt-[0.5px]" :icon="['fas', 'star']" />
-          <span class="font-semibold">{{ reviewDetail.rating }}점</span>
+        <div>
+          <div class="flex gap-4">
+            <button @click="goToEditPage" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">수정</button>
+            <button @click="confirmDelete" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">삭제</button>
+          </div>
+          <div class="flex justify-end items-center text-lg text-midGreen">
+            <font-awesome-icon class="text-[16px] pt-[0.5px]" :icon="['fas', 'star']" />
+            <span class="font-semibold">{{ reviewDetail.rating }}점</span>
+          </div>
         </div>
       </div>
     </div>
@@ -66,7 +60,7 @@
       <h3 class="text-xl font-semibold text-gray-800 mb-3">시공 업체</h3>
       <p
         @click="this.$router.push(`/company/${reviewDetail.companyId}`)"
-        class="px-2 text-md font-semibold cursor-pointer hover:text-midGreen"
+        class="px-2 text-md text-gray-700 font-semibold cursor-pointer hover:text-midGreen hover:underline"
       >
         {{ reviewDetail.companyName }}
       </p>

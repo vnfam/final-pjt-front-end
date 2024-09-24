@@ -8,7 +8,7 @@
         class="w-[500px] mb-2 overflow-x-hidden overflow-y-scroll px-10 pt-2 pb-4 pb-20 mx-auto"
       >
         <div class="mb-[22px]">
-          <label class="text-[14px] font-normal">업체 로고</label>
+          <label class="text-[14px] font-medium">업체 로고</label>
           <div class="mt-2 flex items-center space-x-4">
             <!-- 미리보기 이미지 -->
             <div v-if="previewImage" class="mt-2">
@@ -25,7 +25,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="companyName" class="text-[14px] font-normal mb-4">업체 이름</label>
+          <label for="companyName" class="text-[14px] font-medium mb-4">업체 이름</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="companyName"
@@ -40,7 +40,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="companyNumber" class="text-[14px] font-normal mb-4">사업자번호</label>
+          <label for="companyNumber" class="text-[14px] font-medium mb-4">사업자번호</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="companyNumber"
@@ -62,7 +62,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="email" class="text-[14px] font-normal mb-4">이메일</label>
+          <label for="email" class="text-[14px] font-medium mb-4">이메일</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="email"
@@ -84,7 +84,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="password" class="text-[14px] font-normal mb-4"
+          <label for="password" class="text-[14px] font-medium mb-4"
             >비밀번호
             <span class="text-[10px] text-[#bbb] leading-[14px]">(10~16자, 영문/숫자/특수문자 조합)</span></label
           >
@@ -102,7 +102,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="confirmPassword" class="text-[14px] font-normal mb-4">비밀번호 확인</label>
+          <label for="confirmPassword" class="text-[14px] font-medium mb-4">비밀번호 확인</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="confirmPassword"
@@ -120,7 +120,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="owner" class="text-[14px] font-normal mb-4"
+          <label for="owner" class="text-[14px] font-medium mb-4"
             >대표자명
             <span class="text-[10px] text-[#bbb] leading-[14px]">(2자 이상)</span>
           </label>
@@ -138,7 +138,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="phone" class="text-[14px] font-normal mb-4">휴대폰번호 </label>
+          <label for="phone" class="text-[14px] font-medium mb-4">휴대폰번호 </label>
           <span class="text-[10px] text-[#bbb] leading-[14px]">(숫자만 입력)</span>
           <div class="mt-2 flex justify-between items-center">
             <input
@@ -154,7 +154,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="publishDate" class="text-[14px] font-normal mb-4">개업일자</label>
+          <label for="publishDate" class="text-[14px] font-medium mb-4">개업일자</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="publishDate"
@@ -168,7 +168,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="address" class="text-[14px] font-normal mb-4">업체 주소 </label>
+          <label for="address" class="text-[14px] font-medium mb-4">업체 주소 </label>
           <span class="text-[10px] text-[#bbb] leading-[14px]">(상세 주소까지 작성)</span>
           <div class="mt-2 flex justify-between items-center">
             <input
@@ -217,7 +217,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="companyDesc" class="text-[14px] font-normal mb-4">업체 소개 </label>
+          <label for="companyDesc" class="text-[14px] font-medium mb-4">업체 소개 </label>
           <div class="mt-2 flex justify-between items-center">
             <textarea
               v-model="companyDesc"
@@ -229,7 +229,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
+          <label for="constructionTypes" class="text-[14px] font-medium mb-4">시공 종류</label>
 
           <!-- 전체 선택 체크박스 -->
           <div class="mt-2 mb-3 flex items-center">
