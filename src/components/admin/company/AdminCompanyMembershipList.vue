@@ -2,7 +2,7 @@
   <div class="flex-col">
     <!-- header -->
     <div class="mb-10 p-5 bg-white rounded-lg">
-      <h2 class="font-semibold text-xl mb-4">멤버십 관리</h2>
+      <h2 class="font-semibold text-xl mb-4">멤버십 가입자 관리</h2>
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 가입자수</label>
@@ -38,6 +38,7 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 가입일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 만료일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">환불 상태</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
           </tr>
         </thead>
@@ -54,6 +55,7 @@
                 유지
               </p>
             </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">X</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
@@ -75,6 +77,7 @@
                 유지
               </p>
             </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">X</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
@@ -96,6 +99,7 @@
                 유지
               </p>
             </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">X</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
@@ -115,6 +119,7 @@
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <p class="border-2 border-solid border-red rounded-lg px-2 px-2 px-2 text-red whitespace-nowrap">정지</p>
             </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">O</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"

@@ -1,83 +1,24 @@
 <template>
   <div>
-    <!-- 기업 로고 -->
+    <!-- 고객 이미지 -->
     <div class="flex items-center justify-center h-full mb-10">
       <img class="object-fill w-72 h-auto rounded-full bg-white" src="@/assets/logo.png" alt="" />
     </div>
-    <!-- 기업 정보 -->
+    <!-- 고객 정보 -->
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">업체명</label>
-          <p class="w-4/5 px-10">{{ companyName }}</p>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500">고객명</label>
+          <p class="w-1/5 px-10 whitespace-nowrap">{{ name }}</p>
+          <p class="px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center">
+            {{ memberState }}
+          </p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">대표자명</label>
-          <p class="w-4/5 px-10">{{ owner }}</p>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500">닉네임</label>
+          <p class="w-4/5 px-10">{{ nickName }}</p>
         </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십 종류</label>
-          <div class="flex-col">
-            <div class="flex mb-2">
-              <p class="w-1/5 px-10">{{ membershipType }}</p>
-              <!-- 라디오 버튼에 따라서 상태의 값도 바뀐다 -->
-              <p
-                :class="[
-                  'mx-10 px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center',
-                  membershipState === '변경' ? 'border-red text-red' : 'border-secondary text-secondary',
-                ]"
-              >
-                {{ membershipState }}
-              </p>
-            </div>
-            <!-- 라디오버튼 버튼에 따라서 상태 변경 -->
-            <div class="form-check mx-10">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault1"
-                value="None"
-                v-model="stateUpdate"
-              />
-              <label class="form-check-label" for="flexRadioDefault1"> None </label>
-            </div>
-            <div class="form-check mx-10">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault2"
-                value="Basic"
-                v-model="stateUpdate"
-              />
-              <label class="form-check-label" for="flexRadioDefault2"> Basic </label>
-            </div>
-            <div class="form-check mx-10">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault3"
-                value="Premium"
-                v-model="stateUpdate"
-              />
-              <label class="form-check-label" for="flexRadioDefault3"> Premium </label>
-            </div>
-          </div>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십 시작일</label>
-          <div>
-            <p class="w-4/5 px-10">{{ membershipStartDate }}</p>
-          </div>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십 만료일</label>
-          <div>
-            <p class="w-4/5 px-10">{{ membershipEndDate }}</p>
-          </div>
-        </li>
+
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">이메일</label>
           <p class="w-4/5 px-10">{{ email }}</p>
@@ -96,24 +37,11 @@
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">전화번호</label>
-          <p class="w-4/5 px-10">{{ companyPhoneNumber }}</p>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">사업자번호</label>
-          <p class="w-4/5 px-10">{{ companyNumber }}</p>
-        </li>
-
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">개업일</label>
-          <p class="w-4/5 px-10">{{ publishDate }}</p>
+          <p class="w-4/5 px-10">{{ phoneNumber }}</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">주소</label>
           <p class="w-4/5 px-10">{{ address }}</p>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">시공 분야</label>
-          <p class="w-4/5 px-10">{{ service }}</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">상담 수</label>
@@ -124,10 +52,8 @@
           <p class="w-4/5 px-10">2건</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">평점</label>
-          <p class="w-4/5 px-10">
-            <font-awesome-icon class="text-midGreen" :icon="['fas', 'star']" />&nbsp; {{ rating }}점
-          </p>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500">가입일</label>
+          <p class="w-4/5 px-10">{{ startDate }}</p>
         </li>
       </ul>
     </div>
@@ -222,32 +148,20 @@ export default {
   data() {
     return {
       // 임의로 넣어둔 값들
-      companyName: '뚝딱뚝딱업체',
-      owner: '김뚝딱',
-      membershipType: 'Basic', // 현재 멤버십 종류
-      membershipState: '유지',
-      stateUpdate: 'Basic', // 라디오 버튼으로 변경할 멤버십 종류 (기본값을 현재 멤버십으로 설정)
-      membershipStartDate: '24.07.02',
-      membershipEndDate: '24.10.7',
-      email: 'dukdakInterior@gmail.com',
-      password: 'dukdakInterior',
+      name: '김선우',
+      nickName: '김선우',
+      memberState: '비활동',
+      email: 'kimSunWo@gmail.com',
+      password: 'kimsunwowiwowi!',
       newPassword: '', // 비밀번호 재발급 input 입력값
-      companyPhoneNumber: '010-1234-5678',
-      companyNumber: '123-4567-8910',
-      publishDate: '2024.08.29',
-      address: '서울특별시 성북구 솔솔솔',
-      service: '전체 시공',
-      rating: '5',
+      phoneNumber: '010-1111-2222',
+      address: '서울특별시 죠스떡볶이',
+      startDate: '2024.09.11',
       isModalOpen: false,
       isDeleteModalOpen: false,
       modalTitle: '',
       modalMessage: '',
     };
-  },
-  watch: {
-    stateUpdate(newValue) {
-      this.membershipState = newValue !== this.membershipType ? '변경' : '유지';
-    },
   },
   computed: {
     // 비밀번호 숨김
@@ -256,16 +170,6 @@ export default {
     },
   },
   methods: {
-    // 멤버십 종류 변경 확인
-    changeState() {
-      if (this.stateUpdate !== this.membershipType) {
-        this.membershipState = '변경';
-        return this.stateUpdate;
-      } else {
-        this.membershipState = '유지';
-        return null;
-      }
-    },
     // 비밀번호 재발급 확인
     changePassword() {
       if (this.newPassword) {
@@ -273,38 +177,18 @@ export default {
       }
       return null;
     },
-    // 멤버십 종류나 비밀번호 변경 여부를 확인하고 모달을 띄움
+    // 비밀번호 변경 여부를 확인하고 모달을 띄움
     checkForChanges() {
-      let stateChange = this.changeState();
       let passwordChange = this.changePassword();
 
-      // 멤버십과 비밀번호 모두 변경된 경우
-      if (stateChange !== null && passwordChange !== null) {
-        this.modalTitle = '관리자 권한으로 멤버십 변경 및 비밀번호 재발급';
-        this.modalMessage = `멤버십을 ${this.stateUpdate}로 변경하고 비밀번호를 재발급하시겠습니까?`;
-      }
-      // 멤버십만 변경된 경우
-      else if (stateChange !== null) {
-        if (this.stateUpdate === 'None') {
-          this.modalTitle = '관리자 권한으로 멤버십 취소';
-          this.modalMessage =
-            '멤버십을 취소하시겠습니까? 취소 시 고객에게 제공하는 혜택이 종료되며 가입 금액은 환불됩니다.';
-        } else if (this.stateUpdate === 'Basic') {
-          this.modalTitle = '기본 멤버십으로 변경';
-          this.modalMessage = '기본 멤버십으로 변경하시겠습니까? 변경 시 일부 혜택이 제한됩니다.';
-        } else if (this.stateUpdate === 'Premium') {
-          this.modalTitle = '프리미엄 멤버십으로 업그레이드';
-          this.modalMessage = '프리미엄 멤버십으로 업그레이드하시겠습니까? 모든 혜택이 활성화됩니다.';
-        }
-      }
       // 비밀번호만 변경된 경우
-      else if (passwordChange !== null) {
+      if (passwordChange !== null) {
         this.modalTitle = '관리자 권한으로 비밀번호 재발급 코드 전송';
         this.modalMessage = '비밀번호를 재발급하시겠습니까?';
       }
 
       // 멤버십 또는 비밀번호 변경 사항이 있는 경우 모달을 띄움
-      if (stateChange !== null || passwordChange !== null) {
+      if (passwordChange !== null) {
         this.isModalOpen = true;
       } else {
         alert('변경 사항이 없습니다.');
@@ -313,15 +197,12 @@ export default {
     // 모달 수정 버튼 클릭 시 정보 수정
     confirmEdit() {
       // 서버로 데이터를 보내는 로직을 여기에 작성
-      if (this.stateUpdate !== this.membershipType) {
-        this.membershipType = this.stateUpdate;
-      }
       if (this.newPassword) {
         this.password = this.newPassword;
       }
 
       alert('데이터가 변경되었습니다.');
-      console.log('게시판 업데이트 완료', this.membershipType, this.password);
+      console.log('게시판 업데이트 완료', this.password);
       this.newPassword = null;
       this.isModalOpen = false;
     },
