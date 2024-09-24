@@ -283,6 +283,7 @@ export default {
       publishDate: '',
       companyDesc: '',
       address: '',
+      detailedAddress: '',
       constructionTypes: [], // 시공 종류 데이터 배열
       selectedTypes: [], // 선택된 시공 종류 배열
       today: '',
