@@ -49,9 +49,20 @@
             >
               견적 보내기
             </button>
-            <div v-else-if="estimate.send && estimate.status !== null">
-              <button class="bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg hover:bg-gray-400 mr-2">
-                취소
+            <div v-else-if="estimate.send === true && estimate.status === 'SENT'">
+              <button class="mr-4 bg-white rounded-xl py-2 px-4" @click="deleteEstimate(estimate)">
+                삭제(이름 생각해보기)
+              </button>
+              <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openUpdateModal(estimate)">
+                수정
+              </button>
+            </div>
+            <div v-else-if="estimate.send === true && estimate.status === 'RECEIVED'">
+              <button class="mr-4 bg-white rounded-xl py-2 px-4" @click="deleteEstimate(estimate)">
+                삭제(이름 생각해보기)
+              </button>
+              <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openSendModal(estimate)">
+                견적 보내기
               </button>
               <button class="bg-midGreen text-white font-medium py-2 px-4 rounded-lg hover:bg-green-700">수정</button>
             </div>
@@ -103,11 +114,12 @@ import authInstance from '@/utils/axiosUtils';
 export default {
   data() {
     return {
-      estimates: [],
-      showModal: false,
-      selectedEstimate: {},
-      constructionTypeInputs: [],
-      estimateDetails: [],
+      estimates: [], // 견적 요청 목록을 저장하는 배열
+      showSendModal: false, // 모달 표시 여부를 제어하는 변수
+      showUpdateModal: false, // 모달 표시 여부를 제어하는 변수
+      selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
+      constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
+      estimateDetails: [], // 견적 상세 정보를 저장하는 배열
     };
   },
   created() {
@@ -145,6 +157,38 @@ export default {
         console.error('견적 상세 정보를 가져오는데 실패했습니다.', error);
       }
     },
+    // "수정" 버튼 클릭 시 모달을 열고 견적 정보를 보여주는 함수
+    async openUpdateModal(estimate) {
+      try {
+        // 선택된 견적의 상세 정보를 API로부터 가져옴
+        const response = await authInstance.get(`/api/estimates/${estimate.estimateId}`);
+        console.log(response.data);
+
+        // 예시: response.data.constructionPrices가 객체로 { typeId: { price: number, ... } } 형태라고 가정
+        const constructionPrices = response.data.constructionPrices;
+
+        // constructionPrices 객체를 배열으로 변환하여 estimateDetails에 저장
+        this.estimateDetails = Object.keys(constructionPrices).map((typeId) => ({
+          estimateConstructionTypeId: typeId,
+          price: constructionPrices[typeId].price,
+        }));
+
+        // constructionTypeInputs를 설정
+        this.constructionTypeInputs = this.estimateDetails.map((detail) => detail.price);
+
+        // totalPrice를 selectedEstimate에 추가
+        this.selectedEstimate = {
+          ...estimate,
+          totalPrice: response.data.totalPrice, // 받아온 totalPrice 값 추가
+        };
+
+        this.showUpdateModal = true; // 데이터를 다 가져온 후 모달을 표시
+      } catch (error) {
+        console.error('견적 상세 정보를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
+      }
+    },
+
+    // 모달을 닫는 함수
     closeModal() {
       this.showModal = false;
     },
@@ -163,7 +207,48 @@ export default {
         this.closeModal();
         window.location.reload();
       } catch (error) {
-        console.error('견적 금액을 제출하는 데 실패했습니다.', error);
+        console.error('견적 금액을 제출하는 데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
+      }
+    },
+
+    // 견적 금액 수정 후 제출하는 함수
+    async submitUpdateEstimate() {
+      const isConfirm = confirm('견적을 수정하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
+      try {
+        // 시공 타입별 입력된 금액 데이터를 전송할 형식으로 변환
+        const constructionPrices = {};
+        this.constructionTypeInputs.forEach((price, index) => {
+          const typeId = this.estimateDetails[index].estimateConstructionTypeId;
+          constructionPrices[typeId] = parseFloat(price); // 금액을 숫자 형식으로 변환
+        });
+
+        // 요청 페이로드 준비
+        const requestData = {
+          constructionPrices: constructionPrices,
+        };
+
+        await authInstance.patch(`/api/estimates/${this.selectedEstimate.estimateId}`, requestData);
+        this.closeModal(); // 수정 후 모달 닫기
+        window.location.reload();
+      } catch (error) {
+        console.error('견적 수정을 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
+      }
+    },
+
+    // 요청이 온 견적을 삭제(거절) 하기
+    async deleteEstimate(estimate) {
+      const isConfirm = confirm('정말로 삭제하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
+      try {
+        await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
+        window.location.reload();
+      } catch (error) {
+        console.log('견적 삭제를 실패했습니다.', error);
       }
     },
   },

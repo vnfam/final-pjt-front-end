@@ -32,6 +32,14 @@
         >
           시공요청 조회
         </p>
+        <p
+          v-if="role === 'COMPANY' || role === 'USER'"
+          @click="$router.push('/plateformEvent/list')"
+          class="cursor-pointer text-[16px] font-semibold mr-8"
+          :class="{ 'text-midGreen': isPlateformEventListPage, 'hover:text-midGreen': !isPlateformEventListPage }"
+        >
+          공지사항
+        </p>
       </div>
     </div>
 
@@ -151,7 +159,6 @@ export default {
     isEstimateListPage() {
       return this.$route.path === '/estimate/list';
     },
-
     isCreatePortfolioPage() {
       return this.$route.path === '/portfolio/create';
     },
@@ -160,6 +167,9 @@ export default {
     },
     isReviewCreatePage() {
       return this.$route.path === '/reviews/create';
+    },
+    isPlateformEventListPage() {
+      return this.$route.path === '/plateformEvent/list';
     },
   },
 };
