@@ -20,7 +20,7 @@
               {{ constructionType }}<span v-if="index !== review.constructionTypes.length - 1">, </span>
             </span>
           </li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full">{{ schedule }}</li>
+          <li class="px-3 py-1 text-[13px] bg-[#f1f2f3] rounded-full">{{ schedule }}</li>
         </ul>
       </div>
 

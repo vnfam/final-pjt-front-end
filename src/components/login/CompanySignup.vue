@@ -13,7 +13,7 @@
             <!-- 미리보기 이미지 -->
             <div v-if="previewImage" class="mt-2">
               <img :src="previewImage" alt="로고 미리보기" class="w-[150px] h-[150px] object-cover rounded-lg border" />
-              <span v-if="selectedFileName" class="pl-2 mt-2 text-gray-600 font-[14px]">{{ selectedFileName }}</span>
+              <span v-if="selectedFileName" class="pl-2 mt-2 text-gray-600 text-[14px]">{{ selectedFileName }}</span>
             </div>
           </div>
           <div class="mt-4">
@@ -283,6 +283,7 @@ export default {
       publishDate: '',
       companyDesc: '',
       address: '',
+      detailedAddress: '',
       constructionTypes: [], // 시공 종류 데이터 배열
       selectedTypes: [], // 선택된 시공 종류 배열
       today: '',
@@ -554,22 +555,31 @@ export default {
 
       // 에러가 없는 경우에만 서버로 요청 전송
       if (Object.keys(this.errors).length === 0) {
-        const companyData = {
-          email: this.email,
-          companyName: this.companyName,
-          password: this.password,
-          phoneNumber: this.phoneNumber,
-          owner: this.owner,
-          companyNumber: this.companyNumber,
-          publishDate: this.publishDate,
-          address: this.address,
-          companyDesc: this.companyDesc,
-          constructionService: this.selectedTypes, // 선택된 시공 종류 ID 배열
-        };
+        const formData = new FormData();
+
+        // 폼 데이터 추가
+        formData.append('email', this.email);
+        formData.append('companyName', this.companyName);
+        formData.append('password', this.password);
+        formData.append('phoneNumber', this.phoneNumber);
+        formData.append('owner', this.owner);
+        formData.append('companyNumber', this.companyNumber);
+        formData.append('publishDate', this.publishDate);
+        formData.append('address', this.address);
+        formData.append('companyDesc', this.companyDesc);
+        formData.append('constructionService', JSON.stringify(this.selectedTypes));
+
+        if (this.logoFile) {
+          formData.append('logoFile', this.logoFile);
+        }
 
         // 서버로 POST 요청
         try {
-          await axios.post('/api/company', companyData);
+          await axios.post('/api/company', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
           alert('업체 등록이 완료되었습니다.');
           this.$router.push('/');
         } catch (error) {
