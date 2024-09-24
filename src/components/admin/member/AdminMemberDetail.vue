@@ -24,18 +24,6 @@
           <p class="w-4/5 px-10">{{ email }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">비밀번호</label>
-          <div>
-            <p class="w-4/5 px-10">{{ maskedPassword }}</p>
-            <input
-              type="text"
-              v-model="newPassword"
-              placeholder="비밀번호 재발급"
-              class="mt-2 mx-10 pl-2 border-2 border-indigo-500 rounded-md resize-none focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-            />
-          </div>
-        </li>
-        <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">전화번호</label>
           <p class="w-4/5 px-10">{{ phoneNumber }}</p>
         </li>
@@ -59,18 +47,11 @@
     </div>
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="checkForChanges">수정</button>
       <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="confirmDeletion">탈퇴</button>
       <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
     </div>
     <!-- 버튼에 따른 Modal -->
-    <div
-      v-if="isModalOpen || isDeleteModalOpen"
-      class="relative z-10"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div v-if="isDeleteModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -110,14 +91,6 @@
             </div>
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                v-if="isModalOpen"
-                @click="confirmEdit"
-                type="button"
-                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-              >
-                수정
-              </button>
-              <button
                 v-if="isDeleteModalOpen"
                 @click="confirmDelete"
                 type="button"
@@ -126,10 +99,7 @@
                 탈퇴
               </button>
               <button
-                @click="
-                  isModalOpen = false;
-                  isDeleteModalOpen = false;
-                "
+                @click="isDeleteModalOpen = false"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
@@ -152,66 +122,21 @@ export default {
       nickName: '김선우',
       memberState: '비활동',
       email: 'kimSunWo@gmail.com',
-      password: 'kimsunwowiwowi!',
-      newPassword: '', // 비밀번호 재발급 input 입력값
       phoneNumber: '010-1111-2222',
       address: '서울특별시 죠스떡볶이',
       startDate: '2024.09.11',
-      isModalOpen: false,
       isDeleteModalOpen: false,
       modalTitle: '',
       modalMessage: '',
     };
   },
-  computed: {
-    // 비밀번호 숨김
-    maskedPassword() {
-      return '*'.repeat(this.password.length);
-    },
-  },
   methods: {
-    // 비밀번호 재발급 확인
-    changePassword() {
-      if (this.newPassword) {
-        return this.newPassword;
-      }
-      return null;
-    },
-    // 비밀번호 변경 여부를 확인하고 모달을 띄움
-    checkForChanges() {
-      let passwordChange = this.changePassword();
-
-      // 비밀번호만 변경된 경우
-      if (passwordChange !== null) {
-        this.modalTitle = '관리자 권한으로 비밀번호 재발급 코드 전송';
-        this.modalMessage = '비밀번호를 재발급하시겠습니까?';
-      }
-
-      // 멤버십 또는 비밀번호 변경 사항이 있는 경우 모달을 띄움
-      if (passwordChange !== null) {
-        this.isModalOpen = true;
-      } else {
-        alert('변경 사항이 없습니다.');
-      }
-    },
-    // 모달 수정 버튼 클릭 시 정보 수정
-    confirmEdit() {
-      // 서버로 데이터를 보내는 로직을 여기에 작성
-      if (this.newPassword) {
-        this.password = this.newPassword;
-      }
-
-      alert('데이터가 변경되었습니다.');
-      console.log('게시판 업데이트 완료', this.password);
-      this.newPassword = null;
-      this.isModalOpen = false;
-    },
     // 탈퇴 버튼 클릭시
     confirmDeletion() {
       this.modalTitle = '관리자 권한으로 강제 탈퇴';
       this.modalMessage = '해당 계정을 강제로 탈퇴하시겠습니까? 탈퇴 후 모든 데이터가 삭제됩니다.';
       this.isDeleteModalOpen = true;
-      console.log('isDeleteModalOpen:', this.isDeleteModalOpen);
+      console.log('계정 탈퇴 완료', this.isDeleteModalOpen);
     },
 
     confirmDelete() {
