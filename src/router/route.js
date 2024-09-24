@@ -54,6 +54,7 @@ import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
 import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vue';
 
 import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
+import PlateformEventDetail from '@/components/plateformEvent/plateformEventDetail.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -207,4 +208,5 @@ export default [
     ],
   },
   { path: '/plateformEvent/list', component: PlateformEventList },
+  { path: '/plateformEvents/list/1', component: PlateformEventDetail },
 ];

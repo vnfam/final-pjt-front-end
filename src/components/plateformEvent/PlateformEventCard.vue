@@ -1,119 +1,76 @@
 <template>
-  <!-- 전체 리뷰 공간 -->
+  <!-- 전체 공지사항 공간 -->
   <div class="flex border-b cursor-pointer px-3 py-6 transition duration-300" @click="goToDetailPage">
     <div class="flex-1 flex flex-col pr-6">
       <!-- 제목 -->
-      <h2 class="text-xl font-bold text-gray-900 mb-4">{{ review.title }}</h2>
+      <h2 class="text-xl font-bold text-gray-900 mb-4">{{ title }}</h2>
 
       <!-- 내용 미리보기 -->
       <div class="text-gray-700">
         <p v-html="truncatedContent"></p>
       </div>
 
-      <!-- 시공 정보 -->
-      <div class="mt-1">
-        <ul class="flex flex-wrap text-sm text-gray-700">
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.buildingType }}</li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.floor }}평</li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">
-            <span v-for="(constructionType, index) in review.constructionTypes" :key="index">
-              {{ constructionType }}<span v-if="index !== review.constructionTypes.length - 1">, </span>
-            </span>
-          </li>
-          <li class="px-3 py-1 text-[13px] bg-[#f1f2f3] rounded-full">{{ schedule }}</li>
-        </ul>
-      </div>
-
       <!-- 별점 및 작성자 정보 -->
       <div class="flex items-center mt-3 text-sm text-gray-600 font-medium">
-        <font-awesome-icon class="text-midGreen mr-1" :icon="['fas', 'star']" />
-        <span class="mr-4">{{ review.rating }}</span>
-        <span class="mr-4">{{ review.memberNickName }} 고객님</span>
-        <span class="font-normal text-gray-500">{{ formattedRegDate }}</span>
+        <span class="mr-4">{{ adminName }} 관리자</span>
+        <span class="font-normal text-gray-500">{{ regDate }}</span>
       </div>
     </div>
 
     <!-- 썸네일 이미지 -->
     <div class="w-32 h-32 flex-shrink-0">
-      <img
-        :src="
-          review.reviewImageResponses[0]
-            ? review.reviewImageResponses[0].imageUrl
-            : require('@/assets/replaceHouse.png')
-        "
-        alt="후기 이미지"
-        class="w-full h-full object-cover rounded-lg shadow-sm"
-      />
+      <img src="@/assets/logo.png" alt="공지사항 이미지" class="w-full h-full object-cover rounded-lg shadow-sm" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      title: '새로운 정책으로 여러분을 만납니다!',
+      content:
+        '항상 저희 플랫폼을 사랑해주시는 고객 여러분께 진심으로 감사드립니다. 여러분께 더 나은 서비스와 편리한 이용 환경을 제공하기 위해 체인집업 플랫폼이 새로운 정책을 도입하게 되어 이를 안내드리고자 합니다. 1. 개선된 사용자 경험 더욱 간편한 회원가입 절차: 기존보다 빠르고 쉬운 절차로 신규 회원 가입이 가능합니다. 개인화된 맞춤 서비스: 이용자 개개인의 선호도에 맞춘 맞춤형 추천 기능이 강화됩니다. 2. 안전한 거래 환경 보안 강화: 사용자 정보 보호를 위해 최신 보안 시스템을 도입하여 거래 과정의 안전성을 한층 더 강화했습니다. 리뷰 및 평가 시스템 개선: 신뢰할 수 있는 리뷰 기반의 평가 시스템을 통해 고객 여러분의 만족도를 높이겠습니다. 3. 더 다양한 혜택 포인트 적립제도 신설: 거래 시 적립된 포인트를 통해 다양한 혜택을 누리실 수 있습니다. 회원 등급제 도입: 이용 실적에 따라 차별화된 혜택을 받을 수 있는 등급제를 도입하였습니다. 저희 체인집업 플랫폼은 항상 여러분의 소중한 의견을 경청하고, 더 나은 서비스로 보답할 수 있도록 노력하겠습니다. 앞으로도 많은 관심과 성원부탁드립니다. 새로운 변화와 함께 더 나은 서비스로 찾아뵙겠습니다! 감사합니다. 체인집업 드림',
+      adminName: '체인집업',
+      regDate: '24.10.07',
+      id: '1',
+    };
+  },
   props: {
-    review: {
+    plateformEvent: {
       type: Object,
       required: true,
     },
   },
-
   computed: {
-    // review content 글자수 정하기 및 img태그 숨김
+    // plateformEvent content 글자수 정하기 및 img태그 숨김
     truncatedContent() {
-      if (!this.review || !this.review.content) {
+      if (!this.content) {
         return '';
       }
-      const cleanedContent = this.review.content.replace(/<img[^>]*>/g, ''); // content에 img태그 지우기
+      const cleanedContent = this.content.replace(/<img[^>]*>/g, ''); // content에 img태그 지우기
       return cleanedContent.length > 100 ? cleanedContent.substring(0, 100) + '...' : cleanedContent;
     },
 
     // 게시일에 불필요한 시간 자르기
-    formattedRegDate() {
-      if (!this.review || !this.review.regDate) return '';
+    // formattedRegDate() {
+    //   if (!this.plateformEvent || !this.plateformEvent.regDate) return '';
 
-      const date = new Date(this.review.regDate);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+    //   const date = new Date(this.regDate);
+    //   const year = date.getFullYear();
+    //   const month = String(date.getMonth() + 1).padStart(2, '0');
+    //   const day = String(date.getDate()).padStart(2, '0');
 
-      return `${year}.${month}.${day}`;
-    },
-
-    // 시공 기간 계산하기
-    schedule() {
-      if (!this.review.workStartDate || !this.review.workEndDate) return '';
-
-      const startDate = new Date(this.review.workStartDate);
-      const endDate = new Date(this.review.workEndDate);
-
-      if (
-        startDate.getFullYear() === endDate.getFullYear() &&
-        startDate.getMonth() === endDate.getMonth() &&
-        startDate.getDate() === endDate.getDate()
-      ) {
-        return '1 일';
-      }
-
-      const timeDiff = Math.abs(endDate - startDate);
-      const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-      if (dayDiff >= 7) {
-        const weekDiff = Math.ceil(dayDiff / 7);
-        return `${weekDiff}주 소요`;
-      } else {
-        return `${dayDiff}일 소요`;
-      }
-    },
+    //   return `${year}.${month}.${day}`;
+    // },
   },
 
   methods: {
     goToDetailPage() {
-      this.$router.push(`/reviews/${this.review.id}`);
+      this.$router.push(`/plateformEvents/1`);
     },
   },
 };
 </script>
 
-<style scoped>
-/* 기본적으로 Tailwind CSS를 활용한 스타일이 적용됨 */
-</style>
+<style scoped></style>
