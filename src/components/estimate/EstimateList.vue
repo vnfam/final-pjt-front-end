@@ -110,7 +110,7 @@ export default {
       showUpdateModal: false, // 모달 표시 여부를 제어하는 변수
       selectedEstimate: {}, // 선택된 견적 정보를 저장하는 객체
       constructionTypeInputs: [], // 각 시공 타입별 입력 필드 값을 저장하는 배열
-      estimateDetails: [],
+      estimateDetails: [], // 견적 상세 정보를 저장하는 배열
     };
   },
   created() {
@@ -163,11 +163,17 @@ export default {
         const response = await authInstance.get(`/api/estimates/${estimate.estimateId}`);
         console.log(response.data);
 
-        // constructionPrices가 객체이므로, 이를 배열로 변환하여 처리
+        // 예시: response.data.constructionPrices가 객체로 { typeId: { price: number, ... } } 형태라고 가정
         const constructionPrices = response.data.constructionPrices;
 
-        // 객체의 값을 배열로 변환 후 각 price를 추출
-        this.constructionTypeInputs = Object.values(constructionPrices).map((priceObj) => priceObj.price);
+        // constructionPrices 객체를 배열으로 변환하여 estimateDetails에 저장
+        this.estimateDetails = Object.keys(constructionPrices).map((typeId) => ({
+          estimateConstructionTypeId: typeId,
+          price: constructionPrices[typeId].price,
+        }));
+
+        // constructionTypeInputs를 설정
+        this.constructionTypeInputs = this.estimateDetails.map((detail) => detail.price);
 
         // totalPrice를 selectedEstimate에 추가
         this.selectedEstimate = {
