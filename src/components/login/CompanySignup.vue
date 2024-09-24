@@ -567,7 +567,7 @@ export default {
         formData.append('publishDate', this.publishDate);
         formData.append('address', this.address);
         formData.append('companyDesc', this.companyDesc);
-        formData.append('constructionService', JSON.stringify(this.selectedTypes));
+        formData.append('constructionService', this.selectedTypes);
 
         if (this.logoFile) {
           formData.append('logoFile', this.logoFile);
