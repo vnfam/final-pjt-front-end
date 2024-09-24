@@ -37,20 +37,23 @@ import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReview
 import AdminMemberList from '@/components/admin/member/AdminMemberList.vue';
 import AdminMemberDetail from '@/components/admin/member/AdminMemberDetail.vue';
 
+import CreateMembership from '@/components/admin/Membership/CreateMembership.vue';
 import AdminMembershipList from '@/components/admin/Membership/AdminMembershipList.vue';
 import AdminMembershipDetail from '@/components/admin/Membership/AdminMembershipDetail.vue';
 
-import PlateformEventList from '@/components/admin/plateform/PlateformEventList.vue';
-import PlateformEventDetail from '@/components/admin/plateform/PlateformEventDetail.vue';
-import PlateformFAQList from '@/components/admin/plateform/PlateformFAQList.vue';
-import PlateformFAQDetail from '@/components/admin/plateform/PlateformFAQDetail.vue';
-import PlateformAskList from '@/components/admin/plateform/PlateformAskList.vue';
-import PlateformAskDetail from '@/components/admin/plateform/PlateformAskDetail.vue';
+import AdminPlateformAskList from '@/components/admin/plateform/AdminPlateformAskList.vue';
+import AdminPlateformAskDetail from '@/components/admin/plateform/AdminPlateformAskDetail.vue';
+import AdminPlateformEventList from '@/components/admin/plateform/AdminPlateformEventList.vue';
+import AdminPlateformEventDetail from '@/components/admin/plateform/AdminPlateformEventDetail.vue';
+import AdminPlateformFAQList from '@/components/admin/plateform/AdminPlateformFAQList.vue';
+import AdminPlateformFAQDetail from '@/components/admin/plateform/AdminPlateformFAQDetail.vue';
 
 import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
 import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
 import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vue';
+
+import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -170,33 +173,38 @@ export default [
         component: AdminMembershipList,
       },
       {
+        path: 'createMembership',
+        component: CreateMembership,
+      },
+      {
         path: 'adminMembershipDetail',
         component: AdminMembershipDetail,
       },
       {
-        path: 'plateformEventList',
-        component: PlateformEventList,
+        path: 'adminplateformEventList',
+        component: AdminPlateformEventList,
       },
       {
-        path: 'plateformEventDetail',
-        component: PlateformEventDetail,
+        path: 'adminplateformEventDetail',
+        component: AdminPlateformEventDetail,
       },
       {
-        path: 'plateformFAQList',
-        component: PlateformFAQList,
+        path: 'adminplateformFAQList',
+        component: AdminPlateformFAQList,
       },
       {
-        path: 'plateformFAQDetail',
-        component: PlateformFAQDetail,
+        path: 'adminplateformFAQDetail',
+        component: AdminPlateformFAQDetail,
       },
       {
-        path: 'plateformAskList',
-        component: PlateformAskList,
+        path: 'adminplateformAskList',
+        component: AdminPlateformAskList,
       },
       {
-        path: 'plateformAskDetail',
-        component: PlateformAskDetail,
+        path: 'adminplateformAskDetail',
+        component: AdminPlateformAskDetail,
       },
     ],
   },
+  { path: '/plateformEvent/list', component: PlateformEventList },
 ];

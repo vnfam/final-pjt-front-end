@@ -137,7 +137,9 @@
                   </svg>
                 </div>
                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">게시물 삭제</h3>
+                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                    관리자의 권한으로 게시물 삭제
+                  </h3>
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
                       해당 게시물을 정말로 수정하시겠습니까? 해당 게시물의 작업은 그대로 서버에 저장됩니다. 이 작업은
