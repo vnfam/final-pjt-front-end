@@ -108,19 +108,18 @@ export default {
 
         // 선택된 서비스가 있는 경우
         if (this.selectedServices.length > 0) {
-          console.log(this.selectedServices);
           params.push(`services=${this.selectedServices.join(',')}`);
         }
 
         // 파라미터가 있으면 URL에 추가
         if (params.length > 0) {
           url += `?${params.join('&')}`;
-          console.log(url);
         }
 
         const response = await axios.get(url);
         this.companies = response.data;
         this.sortCompanies();
+        console.log(this.companies);
       } catch (error) {
         console.error('Error fetching company data: ', error);
       }
@@ -146,7 +145,6 @@ export default {
 
     // 시공 서비스 선택 시 호출
     onServicesSelected({ services }) {
-      console.log('부모', services.value);
       this.selectedServices = services;
       this.fetchCompanies(); // 선택된 시공 서비스 기반으로 업체 데이터 조회
     },
