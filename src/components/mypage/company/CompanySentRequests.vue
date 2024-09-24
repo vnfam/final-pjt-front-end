@@ -11,14 +11,18 @@
 </template>
 
 <script>
+import authInstance from '@/utils/axiosUtils';
+
 export default {
-  data() {
-    return {
-      sentRequests: [
-        { title: '첫 번째 보낸 요청', date: '2024-09-10' },
-        { title: '두 번째 보낸 요청', date: '2024-09-12' },
-      ],
+  setup() {
+    const test = async () => {
+      const response = await authInstance.get('/api/estimaterequests/sent');
+      console.log(response);
     };
+
+    test();
+
+    return {};
   },
 };
 </script>

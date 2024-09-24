@@ -29,8 +29,8 @@
             <div v-if="showRequestOptions" class="ml-4 mt-2 space-y-2">
               <button
                 type="button"
-                @click="activeTab = 'sent'"
-                :class="{ 'bg-gray-200 font-bold': activeTab === 'sent' }"
+                @click="activeTab = 'save'"
+                :class="{ 'bg-gray-200 font-bold': activeTab === 'save' }"
                 class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
               >
                 견적 요청 목록(이름 변경 필요)
@@ -86,7 +86,7 @@ export default {
       switch (this.activeTab) {
         case 'info':
           return UserBaseInfo;
-        case 'sent':
+        case 'save':
           return UserSaveRequests;
         case 'ongoing':
           return UserOnGoingRequests;

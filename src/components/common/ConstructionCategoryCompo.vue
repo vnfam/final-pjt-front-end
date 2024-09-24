@@ -21,19 +21,16 @@
           >
             <!-- 전체 선택 체크박스 -->
             <div
-              class="flex items-center py-3 pl-3 pr-4 pb-3 border-b-[1px] border-gray-100 cursor-pointer"
               @click="toggleAllServices"
+              class="flex items-center py-3 pl-3 pr-4 pb-3 border-b-[1px] border-gray-100 cursor-pointer"
             >
               <input
                 type="checkbox"
-                @change="toggleAllServices"
                 :checked="isAllSelected"
                 class="mr-3 custom-checkbox"
-                :class="{ 'checked-checkbox': selectedServices.length === services.length }"
+                :class="{ 'checked-checkbox': isAllSelected }"
               />
-              <span class="font-medium" :class="{ 'text-midGreen': selectedServices.length === services.length }"
-                >전체 선택</span
-              >
+              <span class="font-medium" :class="{ 'text-midGreen': isAllSelected }">전체 선택</span>
             </div>
 
             <!-- 개별 시공 서비스 체크박스 -->
