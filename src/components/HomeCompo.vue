@@ -90,7 +90,7 @@ export default {
     // 선택된 지역 및 서비스에 맞는 업체 데이터를 불러오는 함수
     async fetchCompanies() {
       try {
-        let url = '/api/company/list2';
+        let url = '/api/company/list';
 
         const params = [];
 

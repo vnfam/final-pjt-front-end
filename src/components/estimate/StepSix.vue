@@ -66,7 +66,7 @@ export default {
     async fetchCompanies() {
       try {
         this.loading = true;
-        const response = await authInstance.get('/api/company/list2');
+        const response = await authInstance.get('/api/company/list');
         this.companiesNO = response.data.NO;
         this.companiesBASIC = response.data.BASIC;
         this.companiesPREMIUM = response.data.RREMIUM;
