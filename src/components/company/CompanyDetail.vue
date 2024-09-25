@@ -96,6 +96,7 @@ export default {
         this.company = response.data;
         this.portfolios = this.company.responses.list;
         this.reviews = this.company.reviews.list;
+        console.log(this.company);
         console.log(this.reviews);
       } catch (error) {
         console.error('Error fetching company data:', error);
