@@ -43,6 +43,14 @@
               >
                 진행 중인 시공(이름 변경 필요)
               </button>
+              <button
+                type="button"
+                @click="activeTab = 'complete'"
+                :class="{ 'bg-gray-200 font-bold': activeTab === 'complete' }"
+                class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
+              >
+                완료된 시공(이름 변경 필요)
+              </button>
             </div>
           </li>
 
@@ -73,6 +81,7 @@ import UserSaveRequests from './UserSaveRequests.vue';
 import UserReviewList from './review/UserReviewList.vue';
 import UserBaseInfo from './UserBaseInfo.vue';
 import UserOnGoingRequests from './UserOnGoingRequests.vue';
+import UserCompleteRequests from './UserCompleteRequests.vue';
 
 export default {
   data() {
@@ -90,6 +99,8 @@ export default {
           return UserSaveRequests;
         case 'ongoing':
           return UserOnGoingRequests;
+        case 'complete':
+          return UserCompleteRequests;
         case 'reviewlist':
           return UserReviewList;
         default:

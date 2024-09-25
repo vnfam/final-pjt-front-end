@@ -57,6 +57,7 @@ import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vu
 
 import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
 import PlateformEventDetail from '@/components/plateformEvent/plateformEventDetail.vue';
+import UserCompleteRequests from '@/components/mypage/user/UserCompleteRequests.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -101,6 +102,10 @@ export default [
       {
         path: 'userongoingrequest',
         component: UserOnGoingRequests,
+      },
+      {
+        path: 'usercompleterequest',
+        component: UserCompleteRequests,
       },
       {
         path: 'reviewlist',

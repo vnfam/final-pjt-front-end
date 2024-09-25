@@ -30,7 +30,8 @@ authInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.status != 401 || error.status != 403) {
+    console.log (error);
+    if (error.status == 500) {
       console.log('서버 예외');
       return Promise.reject(error);
     }

@@ -8,39 +8,39 @@
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">고객명</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">고객명</label>
           <p class="w-1/5 px-10 whitespace-nowrap">{{ name }}</p>
           <p class="px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center">
             {{ memberState }}
           </p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">닉네임</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">닉네임</label>
           <p class="w-4/5 px-10">{{ nickName }}</p>
         </li>
 
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">이메일</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">이메일</label>
           <p class="w-4/5 px-10">{{ email }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">전화번호</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">전화번호</label>
           <p class="w-4/5 px-10">{{ phoneNumber }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">주소</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">주소</label>
           <p class="w-4/5 px-10">{{ address }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">상담 수</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">상담 수</label>
           <p class="w-4/5 px-10">8건</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">시공 수</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 수</label>
           <p class="w-4/5 px-10">2건</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">가입일</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가입일</label>
           <p class="w-4/5 px-10">{{ startDate }}</p>
         </li>
       </ul>

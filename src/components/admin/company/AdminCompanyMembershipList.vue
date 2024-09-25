@@ -1,4 +1,28 @@
 <template>
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-lg font-semibold mb-4">정말 환불하시겠습니까?</h2>
+
+      <div class="flex justify-end space-x-4">
+        <button
+          @click="confirmRefund"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          예
+        </button>
+        <button
+          @click="closeModal"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          아니요
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="flex-col">
     <!-- header -->
     <div class="mb-10 p-5 bg-white rounded-lg">
@@ -31,7 +55,6 @@
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
           <tr>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">업체명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 종류</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 금액</th>
@@ -39,93 +62,29 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 만료일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">환불 상태</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">환불</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">1</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">부자업체</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">Basic</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">100원</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.9.20</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.10.20</td>
+          <tr v-for="company in membershipCompany" :key="company.companyId">
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.companyName }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.membershipName }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.membershipPrice }}원</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.startDate }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.endDate }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
-                유지
+              <p class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap" :class="{'border-2' : company.validMembership, 'border-red': !company.validMembership}">
+                {{ company.validMembership ? '진행' : '정지' }}
               </p>
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">X</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyMembershipDetail')"
+                @click="openModal"
               >
-                상세보기
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">2</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">프리미엄업체</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">Premium</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">150원</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.9.17</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.10.17</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
-                유지
-              </p>
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">X</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyMembershipDetail')"
-              >
-                상세보기
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">3</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">뚝딱뚝딱업체</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">Basic</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">100원</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.09.07</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.10.7</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
-                유지
-              </p>
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">X</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyMembershipDetail')"
-              >
-                상세보기
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">4</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">하우스업체</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">Premium</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">150원</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.08.23</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.9.23</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid border-red rounded-lg px-2 px-2 px-2 text-red whitespace-nowrap">정지</p>
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">O</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyMembershipDetail')"
-              >
-                상세보기
+                환불처리
               </button>
             </td>
           </tr>
@@ -135,11 +94,11 @@
     <!-- footer -->
     <div class="mt-5">
       <vue-paginate
-        :model-value="page"
-        :page-count="20"
+        :model-value="pageNumber"
+        :page-count="totalPage"
         :page-range="3"
         :margin-pages="2"
-        :click-handler="clickCallback"
+        :click-handler="fetchMembershipList"
         prev-text="<"
         next-text=">"
         :container-class="'flex justify-center font-sans cursor-pointer'"
@@ -147,7 +106,7 @@
         :prev-link-class="'m-3'"
         :next-link-class="'m-3'"
         active-class="bg-accent rounded-md"
-        @update:model-value="page = $event"
+        @update:model-value="pageNumber = $event"
       />
     </div>
   </div>
@@ -156,21 +115,53 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
+import authInstance from '@/utils/axiosUtils';
 
 export default defineComponent({
   components: {
     VuePaginate,
   },
-  setup() {
-    const page = ref(10);
 
-    const clickCallback = (pageNum) => {
+  async mounted() {
+    const memberships = await authInstance.get("/api/admin/memberships");
+    console.log(memberships.data);
+
+    this.membershipCompany = memberships.data.slice;
+    this.pageNumber = memberships.data.pageNumber;
+  },
+
+  setup() {
+    const pageNumber = ref(1);
+    const pageSize = ref(10);
+    const membershipCompany = ref([]);
+    const totalPage = ref(1);
+    const isModalOpen = ref(false);
+
+    const openModal = () => {
+      console.log(isModalOpen.value);
+      isModalOpen.value = true;
+    };
+
+    const closeModal = () => {
+      isModalOpen.value = false;
+    };
+
+    const fetchMembershipList = async (pageNum) => {
       console.log(pageNum);
+      const memberships = await authInstance.get("/api/admin/memberships");
+      this.membershipCompany = memberships.data.slice;
+      this.pageNumber = memberships.data.pageNumber;
     };
 
     return {
-      page,
-      clickCallback,
+      membershipCompany,
+      pageNumber,
+      pageSize,
+      totalPage,
+      fetchMembershipList,
+      isModalOpen,
+      openModal,
+      closeModal
     };
   },
 });

@@ -1,8 +1,23 @@
 <template>
   <div>
     <!-- 포트폴리오 이미지 -->
-    <div class="flex items-center justify-center h-full mb-10">
-      <img class="object-fill w-72 h-auto rounded-full rounded-lg bg-white" src="@/assets/replaceHouse.png" alt="" />
+    <!-- 이미지 슬라이더 -->
+    <div class="my-carousel mb-8">
+      <swiper
+        :modules="[Navigation, Pagination]"
+        :navigation="true"
+        :pagination="{ clickable: true }"
+        :loop="true"
+        class="w-[500px] h-[400px] rounded-lg overflow-hidden custom-swiper"
+      >
+        <swiper-slide>
+          <img
+            class="w-full h-full object-cover rounded-lg bg-white"
+            :src="require('@/assets/replaceHouse.png')"
+            alt="Review Image"
+          />
+        </swiper-slide>
+      </swiper>
     </div>
     <!-- 포트폴리오 내용 -->
     <div>
@@ -122,6 +137,12 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper';
+
 export default {
   data() {
     return {
@@ -138,6 +159,16 @@ export default {
       isModalOpen: false,
       modalTitle: '',
       modalMessage: '',
+    };
+  },
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  setup() {
+    return {
+      Navigation,
+      Pagination,
     };
   },
   methods: {
@@ -162,5 +193,9 @@ export default {
 <style>
 .littleTitle {
   display: flex;
+}
+.custom-swiper {
+  --swiper-navigation-color: #eee;
+  --swiper-pagination-color: #eee;
 }
 </style>
