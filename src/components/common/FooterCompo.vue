@@ -20,6 +20,15 @@
             <li><a href="#" class="hover:text-gray-300">서비스</a></li>
             <li><a href="#" class="hover:text-gray-300">회사 소개</a></li>
             <li><a href="#" class="hover:text-gray-300">연락처</a></li>
+            <li>
+              <p
+                @click="$router.push('/plateformEvent/list')"
+                class="cursor-pointer"
+                :class="{ 'text-midGreen': isPlateformEventListPage, 'hover:text-gray-300': !isPlateformEventListPage }"
+              >
+                공지사항
+              </p>
+            </li>
           </ul>
         </div>
       </div>
@@ -33,7 +42,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    isPlateformEventListPage() {
+      return this.$route.path === '/plateformEvent/list';
+    },
+  },
+};
 </script>
 
 <style scoped></style>
