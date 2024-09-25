@@ -25,10 +25,7 @@
     "quill-image-uploader": "^1.3.0",
     "swiper": "7",
     "vue": "^3.4.38",
-<<<<<<< HEAD
-=======
     "vue-paginate": "^3.6.0",
->>>>>>> 624b274abc3ab1eb7752087196b033ffb3dfb93f
     "vue-router": "^4.4.3",
     "vuejs-paginate": "^2.1.0"
   },
