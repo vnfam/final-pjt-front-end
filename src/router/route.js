@@ -208,5 +208,5 @@ export default [
     ],
   },
   { path: '/plateformEvent/list', component: PlateformEventList },
-  { path: '/plateformEvents/list/1', component: PlateformEventDetail },
+  { path: '/plateformEvents/list/:id', component: PlateformEventDetail },
 ];
