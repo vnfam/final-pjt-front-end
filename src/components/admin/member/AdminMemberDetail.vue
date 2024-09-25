@@ -49,7 +49,7 @@
     <div class="flex justify-end mt-4 gap-5">
       <button
         class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
-        @click="confirmDeletion"
+        @click="deletionMember"
       >
         탈퇴
       </button>
@@ -61,7 +61,7 @@
       </button>
     </div>
     <!-- 버튼에 따른 Modal -->
-    <div v-if="isDeleteModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div v-if="isModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -101,15 +101,15 @@
             </div>
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                v-if="isDeleteModalOpen"
-                @click="confirmDelete"
+                v-if="isModalOpen"
+                @click="deleteMember"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-600 sm:mt-0 sm:w-auto"
               >
                 탈퇴
               </button>
               <button
-                @click="isDeleteModalOpen = false"
+                @click="isModalOpen = false"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
@@ -135,25 +135,25 @@ export default {
       phoneNumber: '010-1111-2222',
       address: '서울특별시 죠스떡볶이',
       startDate: '2024.09.11',
-      isDeleteModalOpen: false,
+      isModalOpen: false,
       modalTitle: '',
       modalMessage: '',
     };
   },
   methods: {
     // 탈퇴 버튼 클릭시
-    confirmDeletion() {
+    deletionMember() {
       this.modalTitle = '관리자 권한으로 강제 탈퇴';
       this.modalMessage =
         '해당 계정을 정말로 강제 탈퇴하시겠습니까? 해당 계정의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
-      this.isDeleteModalOpen = true;
-      console.log('계정 탈퇴 완료', this.isDeleteModalOpen);
+      this.isModalOpen = true;
+      console.log('계정 탈퇴 완료', this.isModalOpen);
     },
 
-    confirmDelete() {
+    deleteMember() {
       // 서버로 데이터를 보내는 로직을 여기에 작성
       alert('탈퇴했습니다.');
-      this.isDeleteModalOpen = false;
+      this.isModalOpen = false;
     },
   },
 };

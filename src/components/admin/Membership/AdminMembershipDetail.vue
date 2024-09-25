@@ -49,7 +49,7 @@
     <div class="flex justify-end mt-4 gap-5">
       <button
         class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
-        @click="checkForChanges"
+        @click="confirmEdition"
       >
         수정
       </button>
@@ -68,7 +68,7 @@
     </div>
     <!-- 버튼에 따른 Modal -->
     <div
-      v-if="isModalOpen || isDeleteModalOpen"
+      v-if="isEditModalOpen || isDeleteModalOpen"
       class="relative z-10"
       aria-labelledby="modal-title"
       role="dialog"
@@ -113,7 +113,7 @@
             </div>
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                v-if="isModalOpen"
+                v-if="isEditModalOpen"
                 @click="confirmEdit"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
@@ -130,7 +130,7 @@
               </button>
               <button
                 @click="
-                  isModalOpen = false;
+                  isEditModalOpen = false;
                   isDeleteModalOpen = false;
                 "
                 type="button"
@@ -155,7 +155,7 @@ export default {
       price: '100',
       desc: '가장 기본적인 멤버십',
       membershipCount: '2',
-      isModalOpen: false,
+      isEditModalOpen: false,
       isDeleteModalOpen: false,
       modalTitle: '',
       modalMessage: '',
@@ -175,7 +175,7 @@ export default {
       return this.newDesc ? this.newDesc : null;
     },
     // 변경사항 여부를 확인하고 모달을 띄움
-    checkForChanges() {
+    confirmEdition() {
       let typeChange = this.changeType();
       let priceChange = this.changePrice();
       let descChange = this.changeDesc();
@@ -200,7 +200,7 @@ export default {
         this.modalMessage = `${changes.join(
           ', '
         )}를 변경하시겠습니까? 변경한 멤버십 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.`;
-        this.isModalOpen = true;
+        this.isEditModalOpen = true;
       } else {
         alert('변경 사항이 없습니다.');
       }
@@ -222,7 +222,7 @@ export default {
       this.newType = null;
       this.newPrice = null;
       this.newDesc = null;
-      this.isModalOpen = false;
+      this.isEditModalOpen = false;
     },
     // 삭제 버튼 클릭시
     confirmDeletion() {
