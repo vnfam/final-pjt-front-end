@@ -94,6 +94,11 @@ export default {
         return '1 일';
       }
 
+      // 당일 시공 처리
+      if (startDate.getTime() === endDate.getTime()) {
+        return '당일 시공';
+      }
+
       const timeDiff = Math.abs(endDate - startDate);
       const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 

@@ -38,7 +38,7 @@
     <div class="w-full flex flex-col gap-[40px] pb-[40px]">
       <!-- Premium 업체 -->
       <div v-if="sortedCompanies.PREMIUM.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <!-- <div class="text-[16px] font-bold text-gray-600">광고</div> -->
+        <div class="text-[16px] font-bold text-gray-600 mb-4">프리미엄 업체</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.PREMIUM"
@@ -47,17 +47,43 @@
             :isPremium="true"
           ></company-card>
         </div>
+        <!-- "더보기" 버튼 -->
+        <div v-if="premiumPage < totalPremiumPages" class="text-center mt-4">
+          <button @click="loadMorePremium" class="bg-midGreen text-white px-6 py-2 rounded-md">더보기</button>
+        </div>
       </div>
 
-      <!-- Basic, No 업체 섞여서 표시 -->
-      <div v-if="mixedBasicNoCompanies.length > 0">
+      <!-- Basic 업체 -->
+      <div v-if="sortedCompanies.BASIC.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
+        <div class="text-[16px] font-bold text-gray-600 mb-4">베이직 업체</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
-            v-for="company in mixedBasicNoCompanies"
+            v-for="company in sortedCompanies.BASIC"
             :key="company.id"
             :company="company"
             :isPremium="false"
           ></company-card>
+        </div>
+        <!-- "더보기" 버튼 -->
+        <div v-if="basicPage < totalBasicPages" class="text-center mt-4">
+          <button @click="loadMoreBasic" class="bg-midGreen text-white px-6 py-2 rounded-md">더보기</button>
+        </div>
+      </div>
+
+      <!-- No 업체 -->
+      <div v-if="sortedCompanies.NO.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
+        <div class="text-[16px] font-bold text-gray-600 mb-4">일반 업체</div>
+        <div class="flex flex-wrap gap-[20px]">
+          <company-card
+            v-for="company in sortedCompanies.NO"
+            :key="company.id"
+            :company="company"
+            :isPremium="false"
+          ></company-card>
+        </div>
+        <!-- "더보기" 버튼 -->
+        <div v-if="noPage < totalNoPages" class="text-center mt-4">
+          <button @click="loadMoreNo" class="bg-midGreen text-white px-6 py-2 rounded-md">더보기</button>
         </div>
       </div>
     </div>
@@ -81,24 +107,31 @@ export default {
         BASIC: [],
         NO: [],
       }, // 정렬된 업체 데이터를 저장할 변수
-      mixedBasicNoCompanies: [], // BASIC과 NO를 합친 배열
       selectedRegion: null, // 선택된 지역 저장
       selectedServices: [], // 선택된 시공 서비스 저장
+
+      // Pagination Data
+      premiumPage: 1,
+      basicPage: 1,
+      noPage: 1,
+      totalPremiumPages: 1,
+      totalBasicPages: 1,
+      totalNoPages: 1,
+
+      // Initial Load 상태를 저장하는 변수
+      initialLoaded: false,
     };
   },
   methods: {
-    // 선택된 지역 및 서비스에 맞는 업체 데이터를 불러오는 함수
-    async fetchCompanies() {
+    // 초기 호출: list2 API 호출
+    async fetchInitialCompanies() {
       try {
-        let url = '/api/company/list';
+        let url = `/api/company/list2`;
 
         const params = [];
 
-        // 지역 선택이 된 경우
         if (this.selectedRegion) {
           const { city, district } = this.selectedRegion;
-
-          // district가 없을 경우 city만 사용하여 필터링
           if (district) {
             params.push(`city=${city}&district=${district}`);
           } else {
@@ -106,59 +139,127 @@ export default {
           }
         }
 
-        // 선택된 서비스가 있는 경우
         if (this.selectedServices.length > 0) {
           params.push(`services=${this.selectedServices.join(',')}`);
         }
 
-        // 파라미터가 있으면 URL에 추가
         if (params.length > 0) {
           url += `?${params.join('&')}`;
         }
 
         const response = await axios.get(url);
         this.companies = response.data;
-        this.sortCompanies();
         console.log(this.companies);
+
+        // Fetch total pages from the response
+        this.totalPremiumPages = response.data.PREMIUM.totalPage;
+        this.totalBasicPages = response.data.BASIC.totalPage;
+        this.totalNoPages = response.data.NO.totalPage;
+
+        this.sortCompanies(); // Call to sort companies into categories
+        this.initialLoaded = true; // 처음 데이터를 불러온 상태를 true로 변경
       } catch (error) {
         console.error('Error fetching company data: ', error);
       }
     },
 
-    // 업체 데이터를 Premium과 Basic, No로 나누고, Basic과 No는 섞어서 표시
-    sortCompanies() {
-      this.sortedCompanies.PREMIUM = this.companies.PREMIUM || [];
-      this.sortedCompanies.BASIC = this.companies.BASIC || [];
-      this.sortedCompanies.NO = this.companies.NO || [];
+    async fetchMoreCompanies(page, pageSize, status) {
+      try {
+        let url = `/api/company/categorylist?page=${page + 1}&size=${pageSize}&status=${status}`;
+        const params = [];
 
-      // BASIC과 NO 등급 업체들을 하나의 배열로 합쳐서 관리
-      this.mixedBasicNoCompanies = [...this.sortedCompanies.BASIC, ...this.sortedCompanies.NO];
+        if (this.selectedRegion) {
+          const { city, district } = this.selectedRegion;
+          if (district) {
+            params.push(`city=${city}&district=${district}`);
+          } else {
+            params.push(`city=${city}`);
+          }
+        }
+
+        if (this.selectedServices.length > 0) {
+          params.push(`services=${this.selectedServices.join(',')}`);
+        }
+
+        if (params.length > 0) {
+          url += `&${params.join('&')}`;
+        }
+
+        const response = await axios.get(url);
+
+        console.log(response.data);
+        // Fetch total pages from the response or calculate them
+        if (status === 'PREMIUM') {
+          this.totalPremiumPages = response.data.totalPage;
+          this.sortedCompanies.PREMIUM.push(...response.data.slice);
+        } else if (status === 'BASIC') {
+          this.totalBasicPages = response.data.totalPage;
+          this.sortedCompanies.BASIC.push(...response.data.slice);
+        } else if (status === 'NO') {
+          this.totalNoPages = response.data.totalPage;
+          this.sortedCompanies.NO.push(...response.data.slice);
+        }
+      } catch (error) {
+        console.error('Error fetching more companies: ', error);
+      }
     },
 
-    // 지역 선택 시 호출
+    sortCompanies() {
+      this.sortedCompanies.PREMIUM = this.companies.PREMIUM.slice || [];
+      this.sortedCompanies.BASIC = this.companies.BASIC.slice || [];
+      this.sortedCompanies.NO = this.companies.NO.slice || [];
+    },
+
+    // Load more Premium companies
+    async loadMorePremium() {
+      this.premiumPage += 1;
+      await this.fetchMoreCompanies(this.premiumPage, 1, 'PREMIUM');
+    },
+
+    // Load more Basic companies
+    async loadMoreBasic() {
+      this.basicPage += 1;
+      await this.fetchMoreCompanies(this.basicPage, 1, 'BASIC');
+    },
+
+    // Load more No companies
+    async loadMoreNo() {
+      this.noPage += 1;
+      await this.fetchMoreCompanies(this.noPage, 1, 'NO');
+      console.log(this.totalNoPages);
+    },
+
     onRegionSelected(region) {
       this.selectedRegion = region;
-      console.log(this.selectedRegion);
-      1;
-      this.fetchCompanies(); // 선택된 지역을 기반으로 업체 데이터 조회
+      this.resetPagination();
+      this.fetchInitialCompanies(); // 지역을 선택하면 페이지 초기화하고 list2 데이터 조회
     },
 
-    // 시공 서비스 선택 시 호출
     onServicesSelected({ services }) {
       this.selectedServices = services;
-      this.fetchCompanies(); // 선택된 시공 서비스 기반으로 업체 데이터 조회
+      this.resetPagination();
+      this.fetchInitialCompanies(); // 서비스 선택하면 페이지 초기화하고 list2 데이터 조회
     },
 
-    // 카테고리 전체 초기화
+    resetPagination() {
+      this.premiumPage = 1;
+      this.basicPage = 1;
+      this.noPage = 1;
+      this.sortedCompanies.PREMIUM = [];
+      this.sortedCompanies.BASIC = [];
+      this.sortedCompanies.NO = [];
+    },
+
     resetAllSelections() {
       this.selectedRegion = null;
       this.selectedServices = [];
-      this.$refs.categoryCompo.resetSelection(); // 지역 초기화
-      this.$refs.constructionCompo.resetSelection(); // 시공 서비스 초기화
-      this.fetchCompanies(); // 전체 업체 목록 조회
+      this.resetPagination();
+      this.fetchInitialCompanies(); // 초기화 후 다시 list2 데이터 조회
     },
+  },
+  mounted() {
+    // 컴포넌트가 마운트되면 초기 데이터 호출
+    this.fetchInitialCompanies();
   },
 };
 </script>
-
-<style></style>
