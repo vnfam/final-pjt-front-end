@@ -18,11 +18,37 @@
 </template>
 
 <script>
+import authInstance from '@/utils/axiosUtils';
 import ReviewCompo from './ReviewCompo.vue';
 
 export default {
   components: {
     ReviewCompo,
+  },
+  data() {
+    return {
+      list: [],
+      pageSize: 5,
+      pageNumber: 0,
+    };
+  },
+  mounted() {
+    this.review();
+  },
+  methods: {
+    async review() {
+      try {
+        const response = await authInstance.get('/api/reviews/mypage', {
+          params: {
+            page: this.pageNumber,
+            size: this.pageSize,
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error('유저 정보를 가져오지 못했습니다.', error);
+      }
+    },
   },
 };
 </script>

@@ -11,7 +11,7 @@
       >
         <div class="flex justify-between items-center">
           <div>
-            <span>{{ '요청 ' + (index + 1) }}</span>
+            <span>{{ estimateRequest.fullAddress }}</span>
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-gray-500">{{
@@ -136,8 +136,9 @@ export default {
         const response = await authInstance.get('/api/estimaterequests/users', {
           params: {
             status: 'WAITING',
-          }
+          },
         });
+        console.log(response.data);
         estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
       } catch (error) {
         console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
