@@ -17,18 +17,11 @@
           <h3 class="text-lg font-bold">퀵 링크</h3>
           <ul class="mt-2 space-y-2">
             <li><a href="#" class="hover:text-gray-300">홈</a></li>
-            <li><a href="#" class="hover:text-gray-300">서비스</a></li>
+            <li>
+              <p @click="$router.push('/plateformEvent/list')" class="cursor-pointer">공지사항</p>
+            </li>
             <li><a href="#" class="hover:text-gray-300">회사 소개</a></li>
             <li><a href="#" class="hover:text-gray-300">연락처</a></li>
-            <li>
-              <p
-                @click="$router.push('/plateformEvent/list')"
-                class="cursor-pointer"
-                :class="{ 'text-midGreen': isPlateformEventListPage, 'hover:text-gray-300': !isPlateformEventListPage }"
-              >
-                공지사항
-              </p>
-            </li>
           </ul>
         </div>
       </div>
@@ -42,13 +35,7 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    isPlateformEventListPage() {
-      return this.$route.path === '/plateformEvent/list';
-    },
-  },
-};
+export default {};
 </script>
 
 <style scoped></style>

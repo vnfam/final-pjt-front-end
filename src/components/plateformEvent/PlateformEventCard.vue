@@ -67,7 +67,7 @@ export default {
 
   methods: {
     goToDetailPage() {
-      this.$router.push(`/plateformEvents/1`);
+      this.$router.push(`/plateformEvents/list/${this.id}`);
     },
   },
 };
