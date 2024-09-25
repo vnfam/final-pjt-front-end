@@ -4,7 +4,7 @@
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십명</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십명</label>
           <div>
             <p class="w-4/5 px-10">{{ type }}</p>
             <input
@@ -16,7 +16,7 @@
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">가격</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가격</label>
           <div>
             <p class="w-4/5 px-10">{{ price }}원</p>
             <input
@@ -28,7 +28,7 @@
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">서비스 내용</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">서비스 내용</label>
           <div>
             <p class="w-4/5 px-10">{{ desc }}</p>
             <input
@@ -40,7 +40,7 @@
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">가입자수</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가입자수</label>
           <p class="w-4/5 px-10">{{ membershipCount }}명</p>
         </li>
       </ul>

@@ -8,67 +8,67 @@
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">업체명</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">업체명</label>
           <p class="w-4/5 px-10">{{ companyName }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">대표자명</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">대표자명</label>
           <p class="w-4/5 px-10">{{ owner }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십 종류</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십 종류</label>
           <p class="w-1/5 px-10">{{ membershipType }}</p>
           <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
             {{ membershipState }}
           </p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십 시작일</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십 시작일</label>
           <div>
             <p class="w-4/5 px-10">{{ membershipStartDate }}</p>
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십 만료일</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십 만료일</label>
           <div>
             <p class="w-4/5 px-10">{{ membershipEndDate }}</p>
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">이메일</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">이메일</label>
           <p class="w-4/5 px-10">{{ email }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">전화번호</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">전화번호</label>
           <p class="w-4/5 px-10">{{ companyPhoneNumber }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">사업자번호</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">사업자번호</label>
           <p class="w-4/5 px-10">{{ companyNumber }}</p>
         </li>
 
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">개업일</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">개업일</label>
           <p class="w-4/5 px-10">{{ publishDate }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">주소</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">주소</label>
           <p class="w-4/5 px-10">{{ address }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">시공 분야</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 분야</label>
           <p class="w-4/5 px-10">{{ constructionTypeService }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">상담 수</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">상담 수</label>
           <p class="w-4/5 px-10">8건</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">시공 수</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 수</label>
           <p class="w-4/5 px-10">2건</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">평점</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">평점</label>
           <p class="w-4/5 px-10">
             <font-awesome-icon class="text-midGreen" :icon="['fas', 'star']" />&nbsp; {{ rating }}점
           </p>
