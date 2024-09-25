@@ -46,6 +46,10 @@ export default {
       if (!this.review.startDate || !this.review.endDate) return '';
       const startDate = new Date(this.review.startDate);
       const endDate = new Date(this.review.endDate);
+      // 당일 시공 처리
+      if (startDate.getTime() === endDate.getTime()) {
+        return '당일 시공';
+      }
       const timeDiff = Math.abs(endDate - startDate);
       const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
       return dayDiff >= 7 ? `${Math.ceil(dayDiff / 7)}주 소요` : `${dayDiff}일 소요`;

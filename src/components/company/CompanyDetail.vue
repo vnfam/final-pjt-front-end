@@ -47,6 +47,11 @@
       <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <CompanyPortfolioCard v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio" />
       </div>
+      <div v-if="currentPortfolioPage < totalPortfolioPages" class="flex justify-center mt-6">
+        <button @click="loadMorePortfolios" class="py-2 px-6 bg-midGreen text-white rounded hover:bg-green-600">
+          더보기
+        </button>
+      </div>
     </div>
 
     <!-- 업체 시공 후기 -->
@@ -54,6 +59,11 @@
       <h3 class="text-xl font-semibold text-gray-900 mb-6">업체 시공 후기</h3>
       <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <CompanyReviewCard v-for="review in reviews" :key="review.id" :review="review" />
+      </div>
+      <div v-if="currentReviewPage < totalReviewPages" class="flex justify-center mt-6">
+        <button @click="loadMoreReviews" class="py-2 px-6 bg-midGreen text-white rounded hover:bg-green-600">
+          더보기
+        </button>
       </div>
     </div>
 
@@ -83,6 +93,11 @@ export default {
       company: null,
       portfolios: [],
       reviews: [],
+      currentPortfolioPage: 1,
+      currentReviewPage: 1,
+      pageSize: 1,
+      totalPortfolioPages: 1,
+      totalReviewPages: 1,
     };
   },
   mounted() {
@@ -94,12 +109,43 @@ export default {
       try {
         const response = await axios.get(`/api/company/${companyId}`);
         this.company = response.data;
-        this.portfolios = this.company.responses.list;
-        this.reviews = this.company.reviews.list;
-        console.log(this.company);
-        console.log(this.reviews);
+        this.portfolios = this.company.responses.slice;
+        this.reviews = this.company.reviews.slice;
+        this.totalPortfolioPages = this.company.responses.totalPage;
+        this.totalReviewPages = this.company.reviews.totalPage;
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching company data:', error);
+      }
+    },
+
+    async loadMorePortfolios() {
+      if (this.currentPortfolioPage + 1 < this.totalPortfolioPages) {
+        this.currentPortfolioPage += 1;
+        const companyId = this.$route.params.id;
+        try {
+          const response = await axios.get(
+            `/api/company/${companyId}/portfolios?page=${this.currentPortfolioPage}&size${this.pageSize}`
+          );
+          this.portfolios.push(...response.data.response.slice);
+        } catch (error) {
+          console.error('Error loading more portfolios:', error);
+        }
+      }
+    },
+
+    async loadMoreReviews() {
+      if (this.currentReviewPage < this.totalReviewPages) {
+        this.currentReviewPage += 1;
+        const companyId = this.$route.params.id;
+        try {
+          const response = await axios.get(
+            `/api/company/${companyId}?page=${this.currentReviewPage}&size=${this.pageSize}`
+          );
+          this.reviews.push(...response.data.reviews.slice);
+        } catch (error) {
+          console.error('Error loading more reviews:', error);
+        }
       }
     },
 
@@ -114,3 +160,5 @@ export default {
   },
 };
 </script>
+
+<style scoped></style>

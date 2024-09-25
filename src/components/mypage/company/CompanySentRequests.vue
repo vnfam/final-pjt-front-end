@@ -1,36 +1,67 @@
 <template>
-  <div>
-    <h3 class="font-medium text-[18px] mb-4">보낸 요청 내역</h3>
-    <!-- List of sent requests goes here -->
-    <ul>
-      <li v-for="(request, index) in sentRequests" :key="index" class="mb-4">
-        <h4 class="font-bold">견적 ID: {{ request.estimateId }}</h4>
-        <p>상태: {{ request.estimateStatus }}</p>
+  <div class="p-4 max-w-screen-lg mx-auto">
+    <!-- 제목 -->
+    <div class="mb-6">
+      <h3 class="font-bold text-2xl text-gray-800">보낸 요청 내역</h3>
+    </div>
 
-        <div v-if="request.estimateResponse">
-          <p><strong>주소:</strong> {{ request.estimateResponse.fullAddress }}</p>
-          <p><strong>건물 유형:</strong> {{ request.estimateResponse.buildingType }}</p>
-          <p><strong>예산:</strong> {{ request.estimateResponse.budget }}</p>
-          <p><strong>층수:</strong> {{ request.estimateResponse.floor }}</p>
-          <p><strong>일정:</strong> {{ request.estimateResponse.schedule }}</p>
-        </div>
+    <!-- 보낸 요청이 있을 경우 목록을 보여주고, 없을 경우 메시지를 보여줌 -->
+    <div v-if="sentRequests.length > 0">
+      <ul class="space-y-6">
+        <li
+          v-for="(request, index) in sentRequests"
+          :key="index"
+          class="bg-white p-6 border border-gray-200 rounded-lg shadow hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <!-- 상단 정보 섹션 -->
+          <div class="grid grid-cols-2 gap-x-6 mb-1">
+            <p class="text-base text-gray-700 mb-2"><strong>요청자</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ request.memberResponse.nickName }}</p>
 
-        <div v-if="request.memberResponse">
-          <p><strong>회원 이메일:</strong> {{ request.memberResponse.email }}</p>
-          <p><strong>닉네임:</strong> {{ request.memberResponse.nickName }}</p>
-          <p><strong>연락처:</strong> {{ request.memberResponse.phoneNumber }}</p>
-        </div>
+            <p class="text-base text-gray-700 mb-2"><strong>요청 날짜</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ formatDate(request.regDate) }}</p>
 
-        <div v-if="request.constructionPrices">
-          <h4 class="font-bold">공사 가격:</h4>
-          <ul>
-            <li v-for="(price, type) in request.constructionPrices" :key="type">{{ type }}: {{ price }}만원</li>
-          </ul>
-        </div>
+            <p class="text-base text-gray-700 mb-2"><strong>건물 유형</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ request.estimateResponse.buildingType }}</p>
 
-        <p><strong>총 가격:</strong> {{ request.totalPrice }}만원</p>
-      </li>
-    </ul>
+            <p class="text-base text-gray-700 mb-2"><strong>평수</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ request.estimateResponse.floor }} 평</p>
+          </div>
+
+          <!-- 예산, 일정 정보 섹션 -->
+          <div class="grid grid-cols-2 gap-x-6 mb-1">
+            <p class="text-base text-gray-700 mb-2"><strong>예산</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ request.estimateResponse.budget }}만원</p>
+
+            <p class="text-base text-gray-700 mb-2"><strong>예상 일정</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ request.estimateResponse.schedule }}</p>
+
+            <p class="text-base text-gray-700 mb-2"><strong>주소</strong></p>
+            <p class="text-base text-gray-700 mb-2">{{ request.estimateResponse.fullAddress }}</p>
+          </div>
+
+          <!-- 공사 가격 정보 섹션 -->
+          <div v-if="request.constructionPrices">
+            <p class="font-semibold text-gray-800 mb-2 text-base">공사 가격</p>
+            <ul class="flex flex-wrap gap-2">
+              <li v-for="(price, type) in request.constructionPrices" :key="type">
+                <span class="font-medium bg-gray-100 text-gray-700 rounded-full text-sm px-3 py-1"
+                  >{{ type }}: {{ price }}만원</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- 총 가격 정보 -->
+          <p class="text-base text-gray-700 mt-4"><strong>총 가격:</strong> {{ request.totalPrice }}만원</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 보낸 요청이 없을 경우 보여줄 메시지 -->
+    <div v-else class="text-center text-gray-500">
+      <p class="text-lg font-semibold">보낸 견적 요청이 없습니다.</p>
+    </div>
   </div>
 </template>
 
@@ -45,10 +76,9 @@ export default {
     const fetchRequests = async () => {
       try {
         const response = await authInstance.get('/api/estimaterequests/sent');
-        sentRequests.value = response.data; // Assuming the data array is directly in response.data
-        console.log(response.data);
+        sentRequests.value = response.data;
       } catch (error) {
-        console.error('Failed to fetch requests', error);
+        console.error('Failed to fetch sent requests', error);
       }
     };
 
@@ -56,8 +86,17 @@ export default {
       fetchRequests();
     });
 
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}년 ${month}월 ${day}일`;
+    };
+
     return {
       sentRequests,
+      formatDate,
     };
   },
 };
