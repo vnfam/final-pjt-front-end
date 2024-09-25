@@ -31,9 +31,7 @@
           <!-- 예산, 일정 정보 섹션 -->
           <div class="grid grid-cols-2 gap-x-6 mb-1">
             <p class="text-base text-gray-700 mb-2"><strong>예산</strong></p>
-            <p class="text-base text-gray-700 mb-2">
-              {{ estimate.budget }} <span v-if="estimate.budget !== '미정'">원</span>
-            </p>
+            <p class="text-base text-gray-700 mb-2">{{ estimate.budget }}</p>
 
             <p class="text-base text-gray-700 mb-2"><strong>예상 일정</strong></p>
             <p class="text-base text-gray-700 mb-2">{{ estimate.schedule }}</p>
