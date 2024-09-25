@@ -1,8 +1,23 @@
 <template>
   <div>
     <!-- 포트폴리오 이미지 -->
-    <div class="flex items-center justify-center h-full mb-10">
-      <img class="object-fill w-72 h-auto rounded-full rounded-lg bg-white" src="@/assets/replaceHouse.png" alt="" />
+    <!-- 이미지 슬라이더 -->
+    <div class="my-carousel mb-8">
+      <swiper
+        :modules="[Navigation, Pagination]"
+        :navigation="true"
+        :pagination="{ clickable: true }"
+        :loop="true"
+        class="w-[500px] h-[400px] rounded-lg overflow-hidden custom-swiper"
+      >
+        <swiper-slide>
+          <img
+            class="w-full h-full object-cover rounded-lg bg-white"
+            :src="require('@/assets/replaceHouse.png')"
+            alt="Review Image"
+          />
+        </swiper-slide>
+      </swiper>
     </div>
     <!-- 포트폴리오 내용 -->
     <div>
@@ -45,11 +60,21 @@
     </div>
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="confirmDeletion">삭제</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="deletionCompanyPortfolio"
+      >
+        삭제
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="this.$router.back()"
+      >
+        되돌아가기
+      </button>
     </div>
     <!-- 버튼에 따른 Modal -->
-    <div v-if="isDeleteModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div v-if="isModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -89,15 +114,15 @@
             </div>
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                v-if="isDeleteModalOpen"
-                @click="confirmDelete"
+                v-if="isModalOpen"
+                @click="deleteCompanyPortfolio"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-600 sm:mt-0 sm:w-auto"
               >
                 삭제
               </button>
               <button
-                @click="isDeleteModalOpen = false"
+                @click="isModalOpen = false"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
@@ -112,6 +137,12 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper';
+
 export default {
   data() {
     return {
@@ -125,25 +156,35 @@ export default {
       constructionTypeService: '전체 시공',
       totalPrice: '5000만원',
       regDate: '24.09.29',
-      isDeleteModalOpen: false,
+      isModalOpen: false,
       modalTitle: '',
       modalMessage: '',
     };
   },
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  setup() {
+    return {
+      Navigation,
+      Pagination,
+    };
+  },
   methods: {
     // 탈퇴 버튼 클릭시
-    confirmDeletion() {
+    deletionCompanyPortfolio() {
       this.modalTitle = '관리자 권한으로 게시물 삭제';
       this.modalMessage =
         '해당 게시물을 정말로 삭제하시겠습니까? 해당 게시물의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
-      this.isDeleteModalOpen = true;
-      console.log('게시판 삭제완료:', this.isDeleteModalOpen);
+      this.isModalOpen = true;
+      console.log('게시판 삭제완료:', this.isModalOpen);
     },
 
-    confirmDelete() {
+    deleteCompanyPortfolio() {
       // 서버로 데이터를 보내는 로직을 여기에 작성
       alert('삭제했습니다.');
-      this.isDeleteModalOpen = false;
+      this.isModalOpen = false;
     },
   },
 };
@@ -152,5 +193,9 @@ export default {
 <style>
 .littleTitle {
   display: flex;
+}
+.custom-swiper {
+  --swiper-navigation-color: #eee;
+  --swiper-pagination-color: #eee;
 }
 </style>

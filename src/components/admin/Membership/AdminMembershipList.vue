@@ -22,8 +22,8 @@
         </li>
         <li>
           <button
-            class="px-2 py-1 rounded-lg bg-accent hover:bg-accent-dark"
-            @click="$router.push('/createMembership')"
+            class="px-2 py-1 bg-midGreen hover:bg-[#2a692d] text-white rounded-lg text-[16px] font-medium mt-6"
+            @click="$router.push('/mypage/admin/createAdminMembership')"
           >
             등록하기
           </button>

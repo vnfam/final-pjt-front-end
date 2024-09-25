@@ -37,12 +37,14 @@ import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReview
 import AdminMemberList from '@/components/admin/member/AdminMemberList.vue';
 import AdminMemberDetail from '@/components/admin/member/AdminMemberDetail.vue';
 
-import CreateMembership from '@/components/admin/Membership/CreateMembership.vue';
+import CreateAdminMembership from '@/components/admin/Membership/CreateAdminMembership.vue';
 import AdminMembershipList from '@/components/admin/Membership/AdminMembershipList.vue';
 import AdminMembershipDetail from '@/components/admin/Membership/AdminMembershipDetail.vue';
 
 import AdminPlateformAskList from '@/components/admin/plateform/AdminPlateformAskList.vue';
 import AdminPlateformAskDetail from '@/components/admin/plateform/AdminPlateformAskDetail.vue';
+
+import CreateAdminPlateformEvent from '@/components/admin/plateform/CreateAdminPlateformEvent.vue';
 import AdminPlateformEventList from '@/components/admin/plateform/AdminPlateformEventList.vue';
 import AdminPlateformEventDetail from '@/components/admin/plateform/AdminPlateformEventDetail.vue';
 import AdminPlateformFAQList from '@/components/admin/plateform/AdminPlateformFAQList.vue';
@@ -170,16 +172,20 @@ export default [
         component: AdminMemberReviewDetail,
       },
       {
+        path: 'createAdminMembership',
+        component: CreateAdminMembership,
+      },
+      {
         path: 'adminMembershipList',
         component: AdminMembershipList,
       },
       {
-        path: 'createMembership',
-        component: CreateMembership,
-      },
-      {
         path: 'adminMembershipDetail',
         component: AdminMembershipDetail,
+      },
+      {
+        path: 'createAdminPlateformEvent',
+        component: CreateAdminPlateformEvent,
       },
       {
         path: 'adminplateformEventList',

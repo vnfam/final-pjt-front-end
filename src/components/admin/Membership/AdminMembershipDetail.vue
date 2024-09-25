@@ -4,7 +4,7 @@
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">멤버십명</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십명</label>
           <div>
             <p class="w-4/5 px-10">{{ type }}</p>
             <input
@@ -16,7 +16,7 @@
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">가격</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가격</label>
           <div>
             <p class="w-4/5 px-10">{{ price }}원</p>
             <input
@@ -28,7 +28,7 @@
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">서비스 내용</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">서비스 내용</label>
           <div>
             <p class="w-4/5 px-10">{{ desc }}</p>
             <input
@@ -40,20 +40,35 @@
           </div>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">가입자수</label>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가입자수</label>
           <p class="w-4/5 px-10">{{ membershipCount }}명</p>
         </li>
       </ul>
     </div>
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="checkForChanges">수정</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="confirmDeletion">삭제</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="confirmEdition"
+      >
+        수정
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="confirmDeletion"
+      >
+        삭제
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="this.$router.back()"
+      >
+        되돌아가기
+      </button>
     </div>
     <!-- 버튼에 따른 Modal -->
     <div
-      v-if="isModalOpen || isDeleteModalOpen"
+      v-if="isEditModalOpen || isDeleteModalOpen"
       class="relative z-10"
       aria-labelledby="modal-title"
       role="dialog"
@@ -98,7 +113,7 @@
             </div>
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                v-if="isModalOpen"
+                v-if="isEditModalOpen"
                 @click="confirmEdit"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
@@ -115,7 +130,7 @@
               </button>
               <button
                 @click="
-                  isModalOpen = false;
+                  isEditModalOpen = false;
                   isDeleteModalOpen = false;
                 "
                 type="button"
@@ -140,7 +155,7 @@ export default {
       price: '100',
       desc: '가장 기본적인 멤버십',
       membershipCount: '2',
-      isModalOpen: false,
+      isEditModalOpen: false,
       isDeleteModalOpen: false,
       modalTitle: '',
       modalMessage: '',
@@ -160,7 +175,7 @@ export default {
       return this.newDesc ? this.newDesc : null;
     },
     // 변경사항 여부를 확인하고 모달을 띄움
-    checkForChanges() {
+    confirmEdition() {
       let typeChange = this.changeType();
       let priceChange = this.changePrice();
       let descChange = this.changeDesc();
@@ -182,8 +197,10 @@ export default {
         }
 
         // 변경된 내용이 여러 개일 경우 메시지 구성
-        this.modalMessage = `${changes.join(', ')}를 변경하시겠습니까?`;
-        this.isModalOpen = true;
+        this.modalMessage = `${changes.join(
+          ', '
+        )}를 변경하시겠습니까? 변경한 멤버십 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.`;
+        this.isEditModalOpen = true;
       } else {
         alert('변경 사항이 없습니다.');
       }
@@ -205,12 +222,13 @@ export default {
       this.newType = null;
       this.newPrice = null;
       this.newDesc = null;
-      this.isModalOpen = false;
+      this.isEditModalOpen = false;
     },
     // 삭제 버튼 클릭시
     confirmDeletion() {
       this.modalTitle = '관리자 권한으로 삭제';
-      this.modalMessage = '해당 멤버십을 삭제하시겠습니까? 삭제 후 모든 데이터가 삭제됩니다.';
+      this.modalMessage =
+        '해당 멤버십을 정말로 삭제하시겠습니까? 해당 멤버십의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
       this.isDeleteModalOpen = true;
     },
 
