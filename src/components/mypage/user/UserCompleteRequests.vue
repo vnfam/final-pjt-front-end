@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="font-medium text-[18px] mb-4">진행 중인 시공 목록</h3>
+    <h3 class="font-medium text-[18px] mb-4">완료된 시공 목록</h3>
 
     <!-- 토글 리스트 -->
     <ul class="list-none p-0">
