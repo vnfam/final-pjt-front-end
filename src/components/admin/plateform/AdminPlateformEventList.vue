@@ -9,7 +9,12 @@
           <p class="text-red">1개</p>
         </li>
         <li>
-          <button class="px-2 py-1 rounded-lg bg-accent hover:bg-">등록하기</button>
+          <button
+            class="px-2 py-1 bg-midGreen hover:bg-[#2a692d] text-white rounded-lg text-[16px] font-medium mt-6"
+            @click="$router.push('/mypage/admin/createAdminPlateformEvent')"
+          >
+            등록하기
+          </button>
         </li>
       </ul>
     </div>
@@ -27,16 +32,16 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white">1</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white">
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">1</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               체인집업 플랫폼 새로운 정책으로 여러분을 맞이합니다!
             </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white">체인집업</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white">24.10.07</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white">
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">체인집업</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.10.07</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('plateformEventDetail')"
+                @click="$router.push('adminplateformEventDetail')"
               >
                 상세보기
               </button>

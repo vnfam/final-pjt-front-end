@@ -47,9 +47,24 @@
     </div>
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="checkForChanges">수정</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="confirmDeletion">삭제</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="checkForChanges"
+      >
+        수정
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="confirmDeletion"
+      >
+        삭제
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="this.$router.back()"
+      >
+        되돌아가기
+      </button>
     </div>
     <!-- 버튼에 따른 Modal -->
     <div
@@ -182,7 +197,9 @@ export default {
         }
 
         // 변경된 내용이 여러 개일 경우 메시지 구성
-        this.modalMessage = `${changes.join(', ')}를 변경하시겠습니까?`;
+        this.modalMessage = `${changes.join(
+          ', '
+        )}를 변경하시겠습니까? 변경한 멤버십 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.`;
         this.isModalOpen = true;
       } else {
         alert('변경 사항이 없습니다.');
@@ -210,7 +227,8 @@ export default {
     // 삭제 버튼 클릭시
     confirmDeletion() {
       this.modalTitle = '관리자 권한으로 삭제';
-      this.modalMessage = '해당 멤버십을 삭제하시겠습니까? 삭제 후 모든 데이터가 삭제됩니다.';
+      this.modalMessage =
+        '해당 멤버십을 정말로 삭제하시겠습니까? 해당 멤버십의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
       this.isDeleteModalOpen = true;
     },
 

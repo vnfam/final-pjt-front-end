@@ -45,7 +45,7 @@
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('plateformAskDetail')"
+                @click="$router.push('adminplateformAskDetail')"
               >
                 상세보기
               </button>
