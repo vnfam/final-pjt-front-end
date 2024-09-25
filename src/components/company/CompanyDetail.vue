@@ -23,13 +23,13 @@
 
     <!-- 업체 설명 -->
     <div class="bg-gray-50 p-6 rounded-lg mb-8">
-      <h3 class="text-2xl font-semibold text-gray-800 mb-4">업체 소개</h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">업체 소개</h3>
       <p class="text-gray-700 leading-relaxed">{{ company.companyDesc }}</p>
     </div>
 
     <!-- 업체 서비스 -->
-    <div class="bg-white p-6 rounded-lg mb-8 shadow-sm">
-      <h3 class="text-2xl font-semibold text-gray-800 mb-4">시공 서비스</h3>
+    <div class="bg-white p-6 rounded-lg mb-20">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">시공 서비스</h3>
       <ul class="flex flex-wrap gap-2">
         <li
           v-for="(service, index) in company.services"
@@ -41,28 +41,28 @@
       </ul>
     </div>
 
-    <!-- 업체 추가 정보 -->
-    <div class="bg-gray-50 p-6 rounded-lg mb-12">
-      <h3 class="text-2xl font-semibold text-gray-800 mb-4">기타 정보</h3>
-      <p class="text-gray-700 mb-2"><strong>주소:</strong> {{ company.address }}</p>
-      <p class="text-gray-700 mb-2"><strong>연락처:</strong> {{ formatPhoneNumber(company.phoneNumber) }}</p>
-      <p class="text-gray-700"><strong>평점:</strong> {{ company.rating }} / 5.0</p>
-    </div>
-
     <!-- 업체 시공 사례 -->
-    <div v-if="portfolios.length > 0" class="p-6 border-t border-gray-200">
-      <h3 class="text-2xl font-semibold text-gray-900 mb-6">업체 시공 사례</h3>
+    <div v-if="portfolios.length > 0" class="p-6 mb-20">
+      <h3 class="text-xl font-semibold text-gray-900 mb-6">업체 시공 사례</h3>
       <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <CompanyPortfolioCard v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio" />
       </div>
     </div>
 
     <!-- 업체 시공 후기 -->
-    <div v-if="reviews.length > 0" class="p-6">
-      <h3 class="text-2xl font-semibold text-gray-900 mb-6">업체 시공 후기</h3>
+    <div v-if="reviews.length > 0" class="p-6 pb-20 mb-12 border-b-[1px] border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-900 mb-6">업체 시공 후기</h3>
       <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <CompanyReviewCard v-for="review in reviews" :key="review.id" :review="review" />
       </div>
+    </div>
+
+    <!-- 업체 추가 정보 -->
+    <div class="bg-gray-50 p-6 rounded-lg mb-12">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">기본 정보</h3>
+      <p class="text-gray-700 mb-2"><strong>주소:</strong> {{ company.address }}</p>
+      <p class="text-gray-700 mb-2"><strong>연락처:</strong> {{ formatPhoneNumber(company.phoneNumber) }}</p>
+      <p class="text-gray-700"><strong>평점:</strong> {{ company.rating }} / 5.0</p>
     </div>
   </div>
   <div v-else>
@@ -96,6 +96,7 @@ export default {
         this.company = response.data;
         this.portfolios = this.company.responses.list;
         this.reviews = this.company.reviews.list;
+        console.log(this.company);
         console.log(this.reviews);
       } catch (error) {
         console.error('Error fetching company data:', error);

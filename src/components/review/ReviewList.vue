@@ -2,10 +2,10 @@
   <div class="py-5">
     <p v-if="reviews && reviews.length" class="text-lg font-medium mb-6">
       총
-      <strong class="text-xl">{{ reviews.length }}개의 고객 후기</strong>
+      <strong class="text-xl">{{ reviews.length }}개의 시공 후기</strong>
     </p>
 
-    <p v-else class="pt-20 text-center text-gray-600 text-lg font-medium">고객 후기가 없습니다.</p>
+    <p v-else class="pt-20 text-center text-gray-600 text-lg font-medium">시공 후기가 없습니다.</p>
   </div>
 
   <div class="flex flex-col space-y-6">

@@ -151,7 +151,6 @@ export default {
     isEstimateListPage() {
       return this.$route.path === '/estimate/list';
     },
-
     isCreatePortfolioPage() {
       return this.$route.path === '/portfolio/create';
     },

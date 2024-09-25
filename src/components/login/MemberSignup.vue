@@ -15,7 +15,7 @@
             <input
               v-model="email"
               @blur="validateEmail"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
               type="email"
               placeholder="이메일을 입력해 주세요."
               required
@@ -40,7 +40,7 @@
             <input
               v-model="password"
               @blur="validatePassword"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
               type="password"
               placeholder="비밀번호를 입력해 주세요."
               required
@@ -55,7 +55,7 @@
             <input
               v-model="confirmPassword"
               @blur="validateConfirmPassword"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
               type="password"
               placeholder="비밀번호를 한 번 더 입력해 주세요."
               required
@@ -76,7 +76,7 @@
             <input
               v-model="name"
               @blur="validateName"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
               type="text"
               placeholder="이름을 입력해 주세요."
               required
@@ -94,7 +94,7 @@
             <input
               v-model="nickName"
               @blur="validateNickname"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
               type="text"
               placeholder="닉네임을 입력해 주세요."
               required
@@ -109,7 +109,7 @@
             <input
               v-model="phoneNumber"
               @blur="validatePhone"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
               type="text"
               placeholder="휴대폰번호를 입력해 주세요."
               required
@@ -121,7 +121,7 @@
         <button
           @click="insertMember"
           type="submit"
-          class="bg-midGreen text-white w-full h-[52px] border-solid border-[1px] border-secondary rounded-[4px] text-[16px] mt-[24px]"
+          class="bg-midGreen text-white w-full h-[52px] rounded-[4px] text-[16px] mt-[24px]"
         >
           가입하기
         </button>
