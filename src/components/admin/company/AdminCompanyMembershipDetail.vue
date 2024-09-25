@@ -154,6 +154,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -176,6 +177,7 @@ export default {
       modalMessage: '',
     };
   },
+
   methods: {
     // 탈퇴 버튼 클릭시
     deletionCompany() {
@@ -192,6 +194,9 @@ export default {
       this.isModalOpen = false;
     },
   },
+
+
+
 };
 </script>
 

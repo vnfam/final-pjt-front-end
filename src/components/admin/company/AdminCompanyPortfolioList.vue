@@ -112,14 +112,14 @@ export default defineComponent({
     VuePaginate,
   },
   setup() {
-    const page = ref(10);
+    const pageSize = ref(10);
 
     const clickCallback = (pageNum) => {
       console.log(pageNum);
     };
 
     return {
-      page,
+      pageSize,
       clickCallback,
     };
   },
