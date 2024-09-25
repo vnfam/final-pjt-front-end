@@ -47,8 +47,18 @@
     </div>
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="confirmDeletion">탈퇴</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="confirmDeletion"
+      >
+        탈퇴
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="this.$router.back()"
+      >
+        되돌아가기
+      </button>
     </div>
     <!-- 버튼에 따른 Modal -->
     <div v-if="isDeleteModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -134,7 +144,8 @@ export default {
     // 탈퇴 버튼 클릭시
     confirmDeletion() {
       this.modalTitle = '관리자 권한으로 강제 탈퇴';
-      this.modalMessage = '해당 계정을 강제로 탈퇴하시겠습니까? 탈퇴 후 모든 데이터가 삭제됩니다.';
+      this.modalMessage =
+        '해당 계정을 정말로 강제 탈퇴하시겠습니까? 해당 계정의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
       this.isDeleteModalOpen = true;
       console.log('계정 탈퇴 완료', this.isDeleteModalOpen);
     },
