@@ -210,6 +210,11 @@ export default {
         return;
       }
 
+      const isConfirm = confirm('정말로 수정하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
+
       try {
         // 사용자 정보 업데이트 API 호출
         await authInstance.patch('/api/company/mypage', {
