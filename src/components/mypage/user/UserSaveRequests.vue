@@ -20,8 +20,8 @@
               '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
             }}</span>
             <button @click="toggle(estimateRequest, index)">
-              <span v-if="isOpen[index]">▲</span>
-              <span v-else>▼</span>
+              <span v-if="isOpen[index]" class="text-xs p-1">▲</span>
+              <span v-else class="text-xs p-1">▼</span>
             </button>
           </div>
         </div>
@@ -43,7 +43,7 @@
                 <img
                   :src="estimate.companyLogoUrl ? estimate.companyLogoUrl : require('@/assets/logo.png')"
                   alt="로고"
-                  class="w-[100px] h-[100px] object-contain"
+                  class="w-[100%] h-[100px] object-cover rounded-lg"
                 />
               </div>
               <div class="">
@@ -70,7 +70,7 @@
   <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold">상세 보기</h2>
+        <h2 class="text-lg font-semibold">상세 견적</h2>
         <button class="font-bold text-black p-2 mr-2" @click="closeModal">x</button>
         <!-- 아이콘으로 변경? -->
       </div>
@@ -81,11 +81,14 @@
           <img
             :src="selectedEstimate.companyLogoUrl ? selectedEstimate.companyLogoUrl : require('@/assets/logo.png')"
             alt="Company Logo"
-            class="w-[100px] h-[100px] object-contain mr-4"
+            class="w-[100px] h-[100px] object-contain mr-4 rounded-lg"
           />
           <div>
             <p class="font-semibold">{{ selectedEstimate.companyName }}</p>
-            <p class="text-gray-500">{{ '평점: ' + selectedEstimate.rating }}</p>
+            <p class="text-sm text-midGreen flex items-center">
+              <font-awesome-icon icon="star" />
+              <span class="ml-1">{{ selectedEstimate.rating }}</span>
+            </p>
           </div>
         </div>
 
