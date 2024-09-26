@@ -4,12 +4,12 @@
     <div class="w-[1100px] w-max-[1100px] py-2 flex items-center justify-between bg-white fixed top-[80px] z-50">
       <div class="flex items-center justify-start">
         <!-- 지역 선택 -->
-        <category-compo @region-selected="onRegionSelected" ref="categoryCompo" class="mr-3" />
+        <region-category-compo @region-selected="onRegionSelected" ref="regionCategory" class="mr-3" />
         <!-- 시공 서비스 선택 (select box 형태) -->
         <construction-category-compo
           @services-selected="onServicesSelected"
           :selectedServicesProp="selectedServices"
-          ref="constructionCompo"
+          ref="constructionCategory"
         />
       </div>
 
@@ -48,7 +48,7 @@
           ></company-card>
         </div>
         <!-- "더보기" 버튼 -->
-        <div v-if="premiumPage < totalPremiumPages" class="text-center mt-4">
+        <div v-if="premiumPage < totalPremiumPages - 1" class="text-center mt-4">
           <button @click="loadMorePremium" class="bg-midGreen text-white px-6 py-2 rounded-md">더보기</button>
         </div>
       </div>
@@ -65,7 +65,7 @@
           ></company-card>
         </div>
         <!-- "더보기" 버튼 -->
-        <div v-if="basicPage < totalBasicPages" class="text-center mt-4">
+        <div v-if="basicPage < totalBasicPages - 1" class="text-center mt-4">
           <button @click="loadMoreBasic" class="bg-midGreen text-white px-6 py-2 rounded-md">더보기</button>
         </div>
       </div>
@@ -82,7 +82,7 @@
           ></company-card>
         </div>
         <!-- "더보기" 버튼 -->
-        <div v-if="noPage < totalNoPages" class="text-center mt-4">
+        <div v-if="noPage < totalNoPages - 1" class="text-center mt-4">
           <button @click="loadMoreNo" class="bg-midGreen text-white px-6 py-2 rounded-md">더보기</button>
         </div>
       </div>
@@ -92,13 +92,13 @@
 
 <script>
 import axios from 'axios';
-import CategoryCompo from './common/RegionCategoryCompo.vue';
+import RegionCategoryCompo from './common/RegionCategoryCompo.vue';
 import ConstructionCategoryCompo from './common/ConstructionCategoryCompo.vue';
 import BannerCompo from './company/BannerCompo.vue';
 import CompanyCard from './company/CompanyCard.vue';
 
 export default {
-  components: { CategoryCompo, ConstructionCategoryCompo, BannerCompo, CompanyCard },
+  components: { RegionCategoryCompo, ConstructionCategoryCompo, BannerCompo, CompanyCard },
   data() {
     return {
       companies: [], // 전체 업체 데이터를 저장할 변수
@@ -111,22 +111,22 @@ export default {
       selectedServices: [], // 선택된 시공 서비스 저장
 
       // Pagination Data
-      premiumPage: 1,
-      basicPage: 1,
-      noPage: 1,
+      premiumPage: 0,
+      basicPage: 0,
+      noPage: 0,
       totalPremiumPages: 1,
       totalBasicPages: 1,
       totalNoPages: 1,
+      pageSize: 1,
 
       // Initial Load 상태를 저장하는 변수
       initialLoaded: false,
     };
   },
   methods: {
-    // 초기 호출: list2 API 호출
     async fetchInitialCompanies() {
       try {
-        let url = `/api/company/list2`;
+        let url = `/api/company/list?page=0&size=${this.pageSize}`;
 
         const params = [];
 
@@ -149,7 +149,7 @@ export default {
 
         const response = await axios.get(url);
         this.companies = response.data;
-        console.log(this.companies);
+        console.log('fetchCompanies', this.companies);
 
         // Fetch total pages from the response
         this.totalPremiumPages = response.data.PREMIUM.totalPage;
@@ -165,7 +165,7 @@ export default {
 
     async fetchMoreCompanies(page, pageSize, status) {
       try {
-        let url = `/api/company/categorylist?page=${page + 1}&size=${pageSize}&status=${status}`;
+        let url = `/api/company/categorylist?page=${page}&size=${pageSize}&status=${status}`;
         const params = [];
 
         if (this.selectedRegion) {
@@ -213,26 +213,25 @@ export default {
     // Load more Premium companies
     async loadMorePremium() {
       this.premiumPage += 1;
-      await this.fetchMoreCompanies(this.premiumPage, 1, 'PREMIUM');
+      await this.fetchMoreCompanies(this.premiumPage, this.pageSize, 'PREMIUM');
     },
 
     // Load more Basic companies
     async loadMoreBasic() {
       this.basicPage += 1;
-      await this.fetchMoreCompanies(this.basicPage, 1, 'BASIC');
+      await this.fetchMoreCompanies(this.basicPage, this.pageSize, 'BASIC');
     },
 
     // Load more No companies
     async loadMoreNo() {
       this.noPage += 1;
-      await this.fetchMoreCompanies(this.noPage, 1, 'NO');
-      console.log(this.totalNoPages);
+      await this.fetchMoreCompanies(this.noPage, this.pageSize, 'NO');
     },
 
     onRegionSelected(region) {
       this.selectedRegion = region;
       this.resetPagination();
-      this.fetchInitialCompanies(); // 지역을 선택하면 페이지 초기화하고 list2 데이터 조회
+      this.fetchInitialCompanies();
     },
 
     onServicesSelected({ services }) {
@@ -242,9 +241,9 @@ export default {
     },
 
     resetPagination() {
-      this.premiumPage = 1;
-      this.basicPage = 1;
-      this.noPage = 1;
+      this.premiumPage = 0;
+      this.basicPage = 0;
+      this.noPage = 0;
       this.sortedCompanies.PREMIUM = [];
       this.sortedCompanies.BASIC = [];
       this.sortedCompanies.NO = [];
@@ -253,8 +252,14 @@ export default {
     resetAllSelections() {
       this.selectedRegion = null;
       this.selectedServices = [];
+      if (this.$refs.regionCategory) {
+        this.$refs.regionCategory.resetSelection();
+      }
+      if (this.$refs.constructionCategory) {
+        this.$refs.constructionCategory.resetSelection();
+      }
       this.resetPagination();
-      this.fetchInitialCompanies(); // 초기화 후 다시 list2 데이터 조회
+      this.fetchInitialCompanies(); // 초기화 후 다시 list 데이터 조회
     },
   },
   mounted() {

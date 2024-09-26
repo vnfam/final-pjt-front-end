@@ -576,7 +576,7 @@ export default {
         // 서버로 POST 요청
         try {
           await axios.post('/api/company', formData);
-          alert('인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
+          alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
           this.$router.push('/');
         } catch (error) {
           console.error(error);
