@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4 max-w-screen-lg mx-auto">
     <div class="mb-6">
       <h3 class="font-bold text-2xl text-gray-800">완료된 시공 목록</h3>
     </div>
@@ -92,18 +92,18 @@ export default {
     const isOpen = ref([]); // 각 항목의 토글 상태를 저장
     const selectedEstimateRequestsMap = ref({}); // 각 견적별로 저장된 데이터
 
-    // 승인 견적 목록 가져오기
+    // 완료 견적 목록 가져오기
     const fetchEstimateRequests = async () => {
       try {
         const response = await authInstance.get('/api/estimaterequests/users', {
           params: {
-            status: 'ONGOING',
+            status: 'COMPLETE',
           },
         });
         estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
-        console.log('여기: ' + estimateRequests.value);
+        console.log(estimateRequests.value);
       } catch (error) {
-        console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
+        console.error('완료 견적 리스트를 가져오는데 실패했습니다.', error);
       }
     };
 
@@ -111,9 +111,7 @@ export default {
     const toggle = async (estimateRequest, index) => {
       try {
         if (!selectedEstimateRequestsMap.value[index]) {
-          const response = await authInstance.get(
-            `/api/estimaterequests/${estimateRequest.requestId}/estimates/accept`
-          );
+          const response = await authInstance.get(`/api/estimaterequests/users/complete/${estimateRequest.requestId}`);
           selectedEstimateRequestsMap.value[index] = response.data; // 해당 인덱스의 견적 정보를 저장
         }
         console.log('여기2: ' + selectedEstimateRequestsMap.value[index]);
