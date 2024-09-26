@@ -144,7 +144,7 @@ export default {
         }
 
         if (params.length > 0) {
-          url += `?${params.join('&')}`;
+          url += `&${params.join('&')}`;
         }
 
         const response = await axios.get(url);
@@ -163,9 +163,9 @@ export default {
       }
     },
 
-    async fetchMoreCompanies(page, pageSize, status) {
+    async fetchMoreCompanies(page, pageSize, name) {
       try {
-        let url = `/api/company/categorylist?page=${page}&size=${pageSize}&status=${status}`;
+        let url = `/api/company/categorylist?page=${page}&size=${pageSize}&name=${name}`;
         const params = [];
 
         if (this.selectedRegion) {
@@ -189,13 +189,13 @@ export default {
 
         console.log(response.data);
         // Fetch total pages from the response or calculate them
-        if (status === 'PREMIUM') {
+        if (name === 'PREMIUM') {
           this.totalPremiumPages = response.data.totalPage;
           this.sortedCompanies.PREMIUM.push(...response.data.slice);
-        } else if (status === 'BASIC') {
+        } else if (name === 'BASIC') {
           this.totalBasicPages = response.data.totalPage;
           this.sortedCompanies.BASIC.push(...response.data.slice);
-        } else if (status === 'NO') {
+        } else if (name === 'NO') {
           this.totalNoPages = response.data.totalPage;
           this.sortedCompanies.NO.push(...response.data.slice);
         }
