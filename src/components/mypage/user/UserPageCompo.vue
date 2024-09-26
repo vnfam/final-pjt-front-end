@@ -33,7 +33,7 @@
                 :class="{ 'bg-gray-200 font-bold': activeTab === 'save' }"
                 class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
               >
-                견적 요청 목록(이름 변경 필요)
+                견적 요청 목록
               </button>
               <button
                 type="button"
@@ -41,7 +41,7 @@
                 :class="{ 'bg-gray-200 font-bold': activeTab === 'ongoing' }"
                 class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
               >
-                진행 중인 시공(이름 변경 필요)
+                진행 중인 시공
               </button>
               <button
                 type="button"
@@ -49,7 +49,7 @@
                 :class="{ 'bg-gray-200 font-bold': activeTab === 'complete' }"
                 class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
               >
-                완료된 시공(이름 변경 필요)
+                완료된 시공
               </button>
             </div>
           </li>

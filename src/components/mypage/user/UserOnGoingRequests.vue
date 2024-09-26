@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4 max-w-screen-lg mx-auto">
     <div class="mb-6">
       <h3 class="font-bold text-2xl text-gray-800">진행 중인 시공 목록</h3>
     </div>
@@ -104,7 +104,8 @@ export default {
           },
         });
         estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
-        console.log('여기: ' + estimateRequests.value);
+        console.log('여기1');
+        console.log(estimateRequests.value);
       } catch (error) {
         console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
       }
@@ -122,7 +123,7 @@ export default {
         console.log('여기2: ' + selectedEstimateRequestsMap.value[index]);
         isOpen.value[index] = !isOpen.value[index]; // 토글 상태 변경
       } catch (error) {
-        console.error('견적 리스트를 가져오는데 실패했습니다.', error);
+        console.error('진행 중인 견적 리스트를 가져오는데 실패했습니다.', error);
       }
     };
 
