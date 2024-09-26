@@ -73,7 +73,12 @@
               <p class="font-semibold">예상 금액: {{ selectedEstimateRequestsMap[index].totalPrice }}만원</p>
             </div>
             <div class="mt-4 flex justify-end">
-              <button class="bg-midGreen text-white rounded-lg py-2 px-4">후기 작성</button>
+              <button
+                class="bg-midGreen text-white rounded-lg py-2 px-4"
+                @click="goToCreateReview(estimateRequest.requestId)"
+              >
+                후기 작성
+              </button>
             </div>
           </div>
         </div>
@@ -85,9 +90,11 @@
 <script>
 import { ref } from 'vue';
 import authInstance from '@/utils/axiosUtils';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter();
     const estimateRequests = ref([]); // 견적 요청 목록
     const isOpen = ref([]); // 각 항목의 토글 상태를 저장
     const selectedEstimateRequestsMap = ref({}); // 각 견적별로 저장된 데이터
@@ -114,11 +121,19 @@ export default {
           const response = await authInstance.get(`/api/estimaterequests/users/complete/${estimateRequest.requestId}`);
           selectedEstimateRequestsMap.value[index] = response.data; // 해당 인덱스의 견적 정보를 저장
         }
-        console.log('여기2: ' + selectedEstimateRequestsMap.value[index]);
+        console.log(selectedEstimateRequestsMap.value[index]);
         isOpen.value[index] = !isOpen.value[index]; // 토글 상태 변경
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
       }
+    };
+
+    // 후기 작성 페이지로 이동하는 메서드
+    const goToCreateReview = (requestId) => {
+      router.push({
+        path: '/reviews/create',
+        query: { requestId },
+      });
     };
 
     // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
@@ -129,6 +144,7 @@ export default {
       isOpen,
       selectedEstimateRequestsMap,
       toggle,
+      goToCreateReview,
     };
   },
 };
