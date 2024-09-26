@@ -1,5 +1,11 @@
 <template>
-  <div class="w-full pb-[40px]">
+  <div class="pb-[40px]">
+    <!-- 총 시공 사례 개수 표시 -->
+    <p v-if="totalPortfolios" class="text-lg font-medium py-4 mb-6">
+      총
+      <strong class="text-xl">{{ totalPortfolios }}개의 시공 사례</strong>
+    </p>
+
     <!-- 포트폴리오가 있을 때 -->
     <div v-if="portfolios.length > 0" class="flex items-center flex-wrap gap-[20px]">
       <portfolio-card v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"></portfolio-card>
@@ -32,6 +38,7 @@ export default {
       currentPage: 0, // 현재 페이지 번호
       pageSize: 1, // 페이지당 항목 수
       totalPage: 1, // 더 불러올 포트폴리오가 있는지 여부
+      totalPortfolios: 0,
     };
   },
   mounted() {
@@ -43,6 +50,7 @@ export default {
         const response = await axios.get(`/api/portfolio/page?size=${this.pageSize}&page=${this.currentPage}`);
         console.log(response.data);
         this.totalPage = response.data.totalPage;
+        this.totalPortfolios = response.data.list.length;
         this.portfolios.push(...response.data.slice);
       } catch (error) {
         console.error('Error fetching portfolio data: ', error);

@@ -56,7 +56,8 @@ export default {
       try {
         const response = await axios.get(`/api/reviews/page?page=${this.currentPage}&size=${this.pageSize}`);
         console.log(response.data);
-        this.totalPages = response.data.totalPage;
+        this.totalPage = response.data.totalPage;
+        this.totalReviews = response.data.list.length;
         this.reviews.push(...response.data.slice);
       } catch (error) {
         console.error('Error fetching review data:', error);

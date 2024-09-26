@@ -158,6 +158,7 @@ export default {
         console.log(response.headers.get('Authorization'));
 
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
+        alert('인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
         this.$router.push('/');
       } catch (error) {
         console.log(error);
