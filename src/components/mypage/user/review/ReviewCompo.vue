@@ -1,5 +1,8 @@
 <template>
-  <div class="flex bg-white rounded-lg p-4 space-x-4 border-[1px] border-gray-200">
+  <div
+    class="flex bg-white rounded-lg p-4 space-x-4 border-[1px] border-gray-200 transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
+    @click="this.$router.push(`/reviews/${review.id}`)"
+  >
     <!-- 이미지 영역 -->
     <div class="basis-1/3 flex justify-center items-center">
       <div class="w-40 h-40 rounded-lg bg-gray-100 overflow-hidden">

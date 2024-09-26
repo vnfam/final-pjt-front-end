@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h3 class="font-medium text-[18px] mb-4">견적 요청 목록</h3>
+    <div class="mb-6">
+      <h3 class="font-bold text-2xl text-gray-800">견적 요청 목록</h3>
+    </div>
 
     <!-- 토글 리스트 -->
     <ul class="list-none p-0">
