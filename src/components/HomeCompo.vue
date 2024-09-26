@@ -29,7 +29,7 @@
       <div class="flex items-center">
         <font-awesome-icon class="w-4 h-4 mt-[2px] mr-[4px] text-[#555]" :icon="['fas', 'circle-info']" />
         <span class="text-[14px] font-normal text-[#555] leading-[20px] tracking-[-0.3px]">
-          선택한 지역 및 서비스에 맞는 리모델링 업체를 보여드립니다.
+          선택한 지역 및 서비스에 맞는 리모델링 파트너를 보여드립니다.
         </span>
       </div>
     </div>

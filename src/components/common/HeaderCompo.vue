@@ -120,6 +120,7 @@ export default {
     const handleLogout = () => {
       userStore.logout();
       router.push('/');
+      alert('로그아웃되었습니다.');
     };
     //
     return {
