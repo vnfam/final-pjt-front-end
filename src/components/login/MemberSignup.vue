@@ -276,7 +276,7 @@ export default {
           const response = await axios.post('/api/member', memberData);
           console.log(response);
           console.log(response.data);
-          alert('입력하신 이메일로 인증 메시지가 전송되었습니다. 확인해주세요.');
+          alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
           this.$router.push('/login');
         } catch (error) {
           console.error(error);
