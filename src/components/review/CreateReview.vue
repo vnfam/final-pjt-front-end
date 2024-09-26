@@ -214,14 +214,14 @@ export default {
     // 메서드 정의
     const fetchRegisterPageData = async () => {
       try {
-        const response1 = await authInstance.get(`/api/reviews/create?requestId=${requestId.value}`);
+        const response1 = await authInstance.get(`/api/reviews?requestId=${requestId.value}`);
         const data = response1.data;
         console.log(data);
 
         constructionTypes.value = data.constructionTypeResponses;
         buildingTypes.value = data.buildingTypeResponses;
 
-        const response2 = await authInstance.get(`/api/reviews/create2?requestId=${requestId.value}`);
+        const response2 = await authInstance.get(`/api/reviews/create?requestId=${requestId.value}`);
         const data2 = response2.data;
         console.log(data2);
 
