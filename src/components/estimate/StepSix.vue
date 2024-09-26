@@ -125,8 +125,6 @@
               </button>
             </div>
           </div>
-          <!-- 다른 등급의 업체가 없을 때 -->
-          <div v-else class="text-center text-gray-500">근처에 다른 업체가 없습니다.</div>
         </div>
       </div>
     </div>
@@ -134,8 +132,11 @@
     <!-- 로딩 중이거나 에러 메시지 -->
     <div v-if="loading" class="text-center text-gray-500">로딩 중...</div>
     <div v-else-if="error" class="text-center text-red-500">{{ error }}</div>
-    <div v-else-if="!sortedCompanies.PREMIUM.length && !sortedCompanies.OTHER.length" class="text-center text-gray-500">
-      근처에 업체가 없습니다.
+    <div v-else-if="!sortedCompanies.PREMIUM.length && !sortedCompanies.OTHER.length" class="text-center">
+      <!-- 다른 등급의 업체가 없을 때 -->
+      <button class="bg-gray-400 cursor-not-allowed text-white rounded-xl py-2 px-4 transition-colors duration-300">
+        근처에 다른 업체가 없습니다.
+      </button>
     </div>
   </div>
 </template>

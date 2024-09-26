@@ -18,11 +18,11 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">사용자명</label>
+        <label class="block text-sm font-medium text-gray-700">닉네임</label>
         <input
           type="text"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
-          placeholder="사용자명 입력"
+          placeholder="닉네임 입력"
           readonly
           :value="info.nickName"
         />
