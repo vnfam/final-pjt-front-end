@@ -13,15 +13,15 @@
       >
         <div class="flex justify-between items-center">
           <div>
-            <span>{{ '견적 ' + (index + 1) }}</span>
+            <span>{{ estimateRequest.fullAddress }}</span>
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-gray-500">{{
               '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
             }}</span>
             <button @click="toggle(estimateRequest, index)">
-              <span v-if="isOpen[index]">▲</span>
-              <span v-else>▼</span>
+              <span v-if="isOpen[index]" class="text-xs p-1">▲</span>
+              <span v-else class="text-xs p-1">▼</span>
             </button>
           </div>
         </div>
@@ -40,7 +40,7 @@
                       : require('@/assets/logo.png')
                   "
                   alt="로고"
-                  class="w-[100px] h-[100px] object-contain"
+                  class="w-[100px] h-[100px] object-contain rounded-lg mr-3"
                 />
                 <div class="">
                   <p class="text-lg my-2 font-semibold">{{ selectedEstimateRequestsMap[index].companyName }}</p>
@@ -55,9 +55,9 @@
                 </div>
               </div>
               <div class="w-[500px] text-right mr-3">
-                <p>이메일 {{ selectedEstimateRequestsMap[index].companyEmail }}</p>
-                <p>주소 {{ selectedEstimateRequestsMap[index].companyAddress }}</p>
-                <p>전화번호 {{ selectedEstimateRequestsMap[index].phoneNumber }}</p>
+                <p>{{ selectedEstimateRequestsMap[index].companyEmail }}</p>
+                <p>{{ selectedEstimateRequestsMap[index].companyAddress }}</p>
+                <p>{{ selectedEstimateRequestsMap[index].phoneNumber }}</p>
               </div>
             </div>
 

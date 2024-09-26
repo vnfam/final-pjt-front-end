@@ -13,15 +13,15 @@
       >
         <div class="flex justify-between items-center">
           <div>
-            <span>{{ '견적 ' + (index + 1) }}</span>
+            <span>{{ estimateRequest.fullAddress }}</span>
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-gray-500">{{
               '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
             }}</span>
             <button @click="toggle(estimateRequest, index)">
-              <span v-if="isOpen[index]">▲</span>
-              <span v-else>▼</span>
+              <span v-if="isOpen[index]" class="text-xs p-1">▲</span>
+              <span v-else class="text-xs p-1">▼</span>
             </button>
           </div>
         </div>
@@ -40,7 +40,7 @@
                       : require('@/assets/logo.png')
                   "
                   alt="로고"
-                  class="w-[100px] h-[100px] object-contain"
+                  class="w-[100px] h-[100px] object-contain rounded-lg mr-3"
                 />
                 <div class="">
                   <p class="text-lg my-2 font-semibold">{{ selectedEstimateRequestsMap[index].companyName }}</p>
@@ -73,10 +73,7 @@
               <p class="font-semibold">예상 금액: {{ selectedEstimateRequestsMap[index].totalPrice }}만원</p>
             </div>
             <div class="mt-4 flex justify-end">
-              <button class="bg-gray-300 rounded-lg py-2 px-4 mr-2" @click="cancel(estimateRequest)">취소</button>
-              <button class="bg-midGreen text-white rounded-lg py-2 px-4" @click="complete(estimateRequest)">
-                완료
-              </button>
+              <button class="bg-midGreen text-white rounded-lg py-2 px-4">후기 작성</button>
             </div>
           </div>
         </div>
@@ -126,34 +123,6 @@ export default {
       }
     };
 
-    // 시공 취소
-    const cancel = async (estimateRequest) => {
-      const isConfirm = confirm('정말로 취소하시겠습니까?');
-      if (!isConfirm) {
-        return;
-      }
-      try {
-        authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/cancel`);
-        window.location.reload();
-      } catch (error) {
-        console.log('취소를 실패했습니다.', error);
-      }
-    };
-
-    // 시공 완료
-    const complete = async (estimateRequest) => {
-      const isConfirm = confirm('시공을 완료하시겠습니까?');
-      if (!isConfirm) {
-        return;
-      }
-      try {
-        authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/complete`);
-        window.location.reload();
-      } catch (error) {
-        console.log('시공 완료를 실패했습니다.', error);
-      }
-    };
-
     // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
     fetchEstimateRequests();
 
@@ -162,8 +131,6 @@ export default {
       isOpen,
       selectedEstimateRequestsMap,
       toggle,
-      cancel,
-      complete,
     };
   },
 };
