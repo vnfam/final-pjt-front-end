@@ -11,10 +11,10 @@
         <li
           v-for="(request, index) in sentRequests"
           :key="index"
-          class="bg-white p-6 border border-gray-200 rounded-lg shadow hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          class="bg-white p-6 border border-gray-200 rounded-lg shadow flex flex-col justify-between"
         >
           <!-- 상단 정보 섹션 -->
-          <div class="grid grid-cols-2 gap-x-6 mb-1">
+          <div class="grid grid-cols-2 gap-x-6">
             <p class="text-base text-gray-700 mb-2"><strong>요청자</strong></p>
             <p class="text-base text-gray-700 mb-2">{{ request.memberResponse.nickName }}</p>
 
@@ -53,7 +53,7 @@
           </div>
 
           <!-- 총 가격 정보 -->
-          <p class="text-base text-gray-700 mt-4"><strong>총 가격:</strong> {{ request.totalPrice }}만원</p>
+          <p class="text-base text-gray-700 mt-4 text-right"><strong>총 가격:</strong> {{ request.totalPrice }}만원</p>
         </li>
       </ul>
     </div>

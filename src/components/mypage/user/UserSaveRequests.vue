@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4 max-w-screen-lg mx-auto">
     <div class="mb-6">
       <h3 class="font-bold text-2xl text-gray-800">견적 요청 목록</h3>
     </div>
