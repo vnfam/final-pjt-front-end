@@ -11,33 +11,33 @@
         <li
           v-for="(estimate, index) in estimates"
           :key="index"
-          class="bg-white p-6 border border-gray-200 rounded-lg shadow hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          class="bg-white p-6 border border-gray-200 rounded-lg shadow hover:shadow-md transition-all flex flex-col justify-between"
         >
           <!-- 상단 정보 섹션 -->
-          <div class="grid grid-cols-2 gap-x-6 mb-1">
-            <p class="text-base text-gray-700"><strong>요청자</strong></p>
-            <p class="text-base text-gray-700">{{ estimate.nickName }}</p>
+          <div class="grid grid-cols-2 gap-x-6 mb-2">
+            <p class="text-base text-gray-700 mb-1"><strong>요청자</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ estimate.nickName }}</p>
 
-            <p class="text-base text-gray-700"><strong>요청 날짜</strong></p>
-            <p class="text-base text-gray-700">{{ formatDate(estimate.regDate) }}</p>
+            <p class="text-base text-gray-700 mb-1"><strong>요청 날짜</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ formatDate(estimate.regDate) }}</p>
 
-            <p class="text-base text-gray-700"><strong>건물 유형</strong></p>
-            <p class="text-base text-gray-700">{{ estimate.buildingTypeName }}</p>
+            <p class="text-base text-gray-700 mb-1"><strong>건물 유형</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ estimate.buildingTypeName }}</p>
 
-            <p class="text-base text-gray-700"><strong>평수</strong></p>
-            <p class="text-base text-gray-700">{{ estimate.floor }} 평</p>
+            <p class="text-base text-gray-700 mb-1"><strong>평수</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ estimate.floor }} 평</p>
           </div>
 
           <!-- 예산, 일정 정보 섹션 -->
-          <div class="grid grid-cols-2 gap-x-6 mb-1">
-            <p class="text-base text-gray-700"><strong>예산</strong></p>
-            <p class="text-base text-gray-700">{{ estimate.budget }}</p>
+          <div class="grid grid-cols-2 gap-x-6 mb-2">
+            <p class="text-base text-gray-700 mb-1"><strong>예산</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ estimate.budget }}</p>
 
-            <p class="text-base text-gray-700"><strong>예상 일정</strong></p>
-            <p class="text-base text-gray-700">{{ estimate.schedule }}</p>
+            <p class="text-base text-gray-700 mb-1"><strong>예상 일정</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ estimate.schedule }}</p>
 
-            <p class="text-base text-gray-700"><strong>주소</strong></p>
-            <p class="text-base text-gray-700">{{ estimate.fullAddress }}</p>
+            <p class="text-base text-gray-700 mb-1"><strong>주소</strong></p>
+            <p class="text-base text-gray-800 mb-1 font-normal">{{ estimate.address }}</p>
           </div>
 
           <!-- 시공 서비스 섹션 -->
@@ -47,7 +47,7 @@
               <span
                 v-for="(service, index) in estimate.constructionTypes"
                 :key="index"
-                class="font-medium bg-gray-100 text-gray-700 rounded-full text-sm px-3 py-1"
+                class="font-medium bg-gray-100 text-gray-700 rounded-full text-sm px-3 py-1 font-medium"
               >
                 {{ service }}
               </span>
@@ -55,27 +55,33 @@
           </div>
 
           <!-- 버튼 섹션 -->
-          <div class="text-right">
+          <div class="w-full mt-4">
             <button
               v-if="estimate.send === false || estimate.status === 'REJECTED'"
-              class="bg-midGreen text-white rounded-xl py-2 px-4"
+              class="w-full bg-midGreen text-white rounded-xl py-2 px-4 font-medium"
               @click="openSendModal(estimate)"
             >
               견적 보내기
             </button>
-            <div v-else-if="estimate.send === true && estimate.status === 'SENT'">
-              <button class="mr-4 bg-gray-300 text-gray-800 rounded-xl py-2 px-4" @click="deleteEstimate(estimate)">
-                삭제
+            <div class="flex" v-else-if="estimate.send === true && estimate.status === 'SENT'">
+              <button
+                class="w-full mr-4 bg-gray-300 text-gray-800 rounded-lg py-2 px-4 font-medium"
+                @click="deleteEstimate(estimate)"
+              >
+                취소
               </button>
-              <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openUpdateModal(estimate)">
+              <button class="w-full bg-midGreen text-white rounded-lg py-2 px-4" @click="openUpdateModal(estimate)">
                 수정
               </button>
             </div>
             <div v-else-if="estimate.send === true && estimate.status === 'RECEIVED'">
-              <button class="mr-4 bg-gray-300 text-gray-800 rounded-xl py-2 px-4" @click="deleteEstimate(estimate)">
-                삭제
+              <button
+                class="w-full mr-4 bg-gray-300 text-gray-800 rounded-lg py-2 px-4 font-medium"
+                @click="deleteEstimate(estimate)"
+              >
+                거절
               </button>
-              <button class="bg-midGreen text-white rounded-xl py-2 px-4" @click="openSendModal(estimate)">
+              <button class="w-full bg-midGreen text-white rounded-lg py-2 px-4" @click="openSendModal(estimate)">
                 견적 보내기
               </button>
             </div>
@@ -86,7 +92,7 @@
 
     <!-- 견적 요청이 없을 경우 보여줄 메시지 -->
     <div v-else class="text-center text-gray-500">
-      <p class="text-lg font-semibold">받은 견적 요청이 없습니다.</p>
+      <p class="text-lg font-semibold">견적 요청이 없습니다.</p>
     </div>
 
     <!-- 전송 모달 -->

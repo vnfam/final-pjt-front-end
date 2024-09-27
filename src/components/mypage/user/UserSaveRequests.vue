@@ -13,7 +13,7 @@
       >
         <div class="flex justify-between items-center">
           <div>
-            <span>{{ estimateRequest.fullAddress }}</span>
+            <span>{{ estimateRequest.address }}</span>
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-gray-500">{{

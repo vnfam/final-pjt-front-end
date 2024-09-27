@@ -157,7 +157,6 @@ export default {
         console.log(response.headers.get('Authorization'));
 
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
-        alert('로그인되었습니다.');
         this.$router.push('/');
       } catch (error) {
         console.log(error);
