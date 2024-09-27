@@ -38,7 +38,7 @@
     <div class="w-full flex flex-col gap-[40px] pb-[40px]">
       <!-- Premium 업체 -->
       <div v-if="sortedCompanies.PREMIUM.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <div class="text-[16px] font-bold text-gray-600 mb-4">프리미엄 업체</div>
+        <div class="text-[16px] font-bold text-gray-700 mb-4">프리미엄 파트너</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.PREMIUM"
@@ -55,7 +55,7 @@
 
       <!-- Basic 업체 -->
       <div v-if="sortedCompanies.BASIC.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <div class="text-[16px] font-bold text-gray-600 mb-4">베이직 업체</div>
+        <div class="text-[16px] font-bold text-gray-700 mb-4">베이직 파트너</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.BASIC"
@@ -72,7 +72,7 @@
 
       <!-- No 업체 -->
       <div v-if="sortedCompanies.NO.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <div class="text-[16px] font-bold text-gray-600 mb-4">일반 업체</div>
+        <div class="text-[16px] font-bold text-gray-700 mb-4">일반 파트너</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.NO"
