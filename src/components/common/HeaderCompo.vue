@@ -30,7 +30,7 @@
           class="cursor-pointer text-[16px] font-semibold mr-8"
           :class="{ 'text-midGreen': isEstimateListPage, 'hover:text-midGreen': !isEstimateListPage }"
         >
-          시공요청 조회
+          고객시공요청
         </p>
       </div>
     </div>
@@ -46,20 +46,12 @@
           견적요청
         </p>
         <p
-          v-if="role === 'USER'"
-          @click="$router.push('/reviews/create')"
-          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
-          :class="{ 'text-midGreen font-bold': isReviewCreatePage, 'hover:text-midGreen': !isReviewCreatePage }"
-        >
-          후기작성
-        </p>
-        <p
           v-if="role === 'COMPANY'"
           @click="$router.push('/portfolio/create')"
           class="cursor-pointer text-[16px] font-semibold mr-8"
           :class="{ 'text-midGreen': isCreatePortfolioPage, 'hover:text-midGreen': !isCreatePortfolioPage }"
         >
-          시공사례 작성
+          시공사례작성
         </p>
 
         <p @click="goToMyPage" class="cursor-pointer text-[16px] font-bold mr-8 hover:text-midGreen">
@@ -124,8 +116,9 @@ export default {
     const handleLogout = () => {
       userStore.logout();
       router.push('/');
+      alert('로그아웃되었습니다.');
     };
-    //
+
     return {
       nickName,
       isLogin,
@@ -161,9 +154,6 @@ export default {
     },
     isRequestEstimatePage() {
       return this.$route.path === '/requestEstimate';
-    },
-    isReviewCreatePage() {
-      return this.$route.path === '/reviews/create';
     },
   },
 };

@@ -29,7 +29,7 @@
       <div class="flex items-center">
         <font-awesome-icon class="w-4 h-4 mt-[2px] mr-[4px] text-[#555]" :icon="['fas', 'circle-info']" />
         <span class="text-[14px] font-normal text-[#555] leading-[20px] tracking-[-0.3px]">
-          선택한 지역 및 서비스에 맞는 리모델링 업체를 보여드립니다.
+          선택한 지역 및 서비스에 맞는 리모델링 파트너를 보여드립니다.
         </span>
       </div>
     </div>
@@ -38,7 +38,7 @@
     <div class="w-full flex flex-col gap-[40px] pb-[40px]">
       <!-- Premium 업체 -->
       <div v-if="sortedCompanies.PREMIUM.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <div class="text-[16px] font-bold text-gray-600 mb-4">프리미엄 업체</div>
+        <div class="text-[16px] font-bold text-gray-700 mb-4">프리미엄 파트너</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.PREMIUM"
@@ -55,7 +55,7 @@
 
       <!-- Basic 업체 -->
       <div v-if="sortedCompanies.BASIC.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <div class="text-[16px] font-bold text-gray-600 mb-4">베이직 업체</div>
+        <div class="text-[16px] font-bold text-gray-700 mb-4">베이직 파트너</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.BASIC"
@@ -72,7 +72,7 @@
 
       <!-- No 업체 -->
       <div v-if="sortedCompanies.NO.length > 0" class="pb-[40px] border-b-[1px] border-gray-200">
-        <div class="text-[16px] font-bold text-gray-600 mb-4">일반 업체</div>
+        <div class="text-[16px] font-bold text-gray-700 mb-4">일반 파트너</div>
         <div class="flex flex-wrap gap-[20px]">
           <company-card
             v-for="company in sortedCompanies.NO"
