@@ -56,6 +56,16 @@
               시공사례내역
             </button>
           </li>
+
+          <!-- 멤버십가입페이지-->
+          <li>
+            <button
+              @click="this.$router.push('/payment')"
+              class="block w-full p-3 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
+            >
+              멤버십가입
+            </button>
+          </li>
         </ul>
       </div>
 
