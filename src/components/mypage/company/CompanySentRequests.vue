@@ -83,6 +83,34 @@
       <p class="text-lg font-semibold">보낸 견적 요청이 없습니다.</p>
     </div>
   </div>
+
+  <!-- 수정 모달 -->
+  <div v-if="showUpdateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
+      <h2 class="text-lg font-semibold mb-4">견적 수정하기</h2>
+
+      <!-- 각 시공 타입별 입력 필드 -->
+      <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
+        <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
+        <input
+          type="text"
+          :id="'constructionType-' + index"
+          v-model="constructionTypeInputs[index]"
+          class="w-full border border-gray-300 p-2 rounded"
+          placeholder="해당 시공 타입의 금액을 입력하세요"
+        />
+      </div>
+      <div class="text-right">
+        <p class="font-semibold">예상 금액: {{ selectedEstimate.totalPrice }}만원</p>
+      </div>
+
+      <!-- 모달 액션 -->
+      <div class="mt-4 flex justify-end">
+        <button class="bg-gray-300 text-black rounded-lg py-2 px-4 mr-2" @click="closeModal">취소</button>
+        <button class="bg-midGreen text-white rounded-lg py-2 px-4" @click="submitUpdateEstimate()">수정하기</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -121,6 +149,21 @@ export default {
       formatDate,
       status,
     };
+  },
+  methods: {
+    // 요청이 온 견적을 삭제(거절) 하기
+    async deleteEstimate(estimate) {
+      const isConfirm = confirm('정말로 삭제하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
+      try {
+        await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
+        window.location.reload();
+      } catch (error) {
+        console.log('견적 삭제를 실패했습니다.', error);
+      }
+    },
   },
 };
 </script>
