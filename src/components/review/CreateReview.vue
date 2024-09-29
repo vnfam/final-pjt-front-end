@@ -148,7 +148,7 @@
       <!-- 내용 입력 -->
       <div class="mb-[12px]">
         <label for="content" class="block text-sm font-medium mb-2">내용</label>
-        <QuillEditor ref="quillEditor" v-model:content="content" :options="editorOptions" />
+        <QuillEditor ref="quillEditor" contentType="html" v-model:content="content" :options="editorOptions" />
       </div>
 
       <!-- 제출 버튼 -->
@@ -302,7 +302,11 @@ export default {
         try {
           const formData = new FormData();
           formData.append('file', image.file);
-          const imageUploadResponse = await authInstance.post(`/api/reviews/${reviewId}/images`, formData);
+          const imageUploadResponse = await authInstance.post(`/api/reviews/${reviewId}/images`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
           const imageUrl = imageUploadResponse.data;
           content.value = content.value.replace(image.placeholder, imageUrl);
         } catch (error) {
