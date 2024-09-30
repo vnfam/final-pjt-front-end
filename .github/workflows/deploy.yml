@@ -28,7 +28,7 @@ jobs:
         uses: cpina/github-action-push-to-another-repository@main
 
         env:
-          SSH_DEPLOY_KEY: ${{ secrets.AUTO_ACTIONS }}
+          API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
 
         with:
           source-directory: 'output'
