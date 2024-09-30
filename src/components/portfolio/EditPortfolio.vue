@@ -132,8 +132,9 @@
 
 <script>
 import axios from 'axios';
-import { useUserStore } from '@/stores/userStore';
+// import { useUserStore } from '@/stores/userStore';
 import QuillEditor from '@/components/common/QuillEditor.vue';
+import authInstance from '@/utils/axiosUtils';
 
 export default {
   components: { QuillEditor },
@@ -196,8 +197,8 @@ export default {
     },
 
     async afterUploadImages(portfolioId, afterUpdateContent, resolve, reject) {
-      const userStore = useUserStore();
-      const token = userStore.accessToken;
+      // const userStore = useUserStore();
+      // const token = userStore.accessToken;
 
       const portfolioRequest = {
         title: this.title,
@@ -212,12 +213,7 @@ export default {
       };
 
       try {
-        const response = await axios.patch(`/api/portfolio/${portfolioId}`, portfolioRequest, {
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await authInstance.patch(`/api/portfolio/${portfolioId}`, portfolioRequest);
 
         return resolve(response);
       } catch (error) {
@@ -288,8 +284,8 @@ export default {
     },
 
     async updatePortfolio() {
-      const userStore = useUserStore();
-      const token = userStore.accessToken;
+      // const userStore = useUserStore();
+      // const token = userStore.accessToken;
 
       const portfolioRequest = {
         title: this.title,
@@ -304,12 +300,7 @@ export default {
       };
 
       try {
-        const response = await axios.patch(`/api/portfolio/${this.portfolioId}`, portfolioRequest, {
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await authInstance.patch(`/api/portfolio/${this.portfolioId}`, portfolioRequest);
         console.log(response.data);
 
         // 이미지 업로드도 진행
