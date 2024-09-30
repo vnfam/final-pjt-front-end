@@ -57,13 +57,13 @@
             </button>
           </li>
 
-          <!-- 멤버십가입페이지-->
           <li>
             <button
-              @click="this.$router.push('/payment')"
+              @click="activeTab = 'membership'"
+              :class="{ 'bg-gray-200 font-bold': activeTab === 'membership' }"
               class="block w-full p-3 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
             >
-              멤버십가입
+              멤버십 관리
             </button>
           </li>
         </ul>
@@ -83,6 +83,7 @@ import CompanyBaseInfo from './CompanyBaseInfo.vue';
 import ReceivedRequests from './CompanyReceivedRequests.vue';
 import CompanyPortfolioList from './portfolio/CompanyPortfolioList.vue';
 import SentRequests from './CompanySentRequests.vue';
+import CompanyMembership from './CompanyMembership.vue';
 
 export default {
   data() {
@@ -102,6 +103,8 @@ export default {
           return ReceivedRequests;
         case 'portfolio':
           return CompanyPortfolioList;
+        case 'membership':
+          return CompanyMembership;
         default:
           return CompanyBaseInfo;
       }

@@ -11,7 +11,7 @@
         <li
           v-for="(estimate, index) in estimates"
           :key="index"
-          class="bg-white p-6 border border-gray-200 rounded-lg shadow hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          class="bg-white p-6 border border-gray-200 rounded-lg shadow"
         >
           <!-- 상단 정보 섹션 -->
           <div class="grid grid-cols-2 gap-x-6 mb-1">
@@ -42,7 +42,7 @@
 
           <!-- 시공 서비스 섹션 -->
           <div>
-            <p class="font-semibold text-gray-800 mb-2 font-medium">시공 서비스</p>
+            <p class="font-semibold text-gray-800 mb-2">시공 서비스</p>
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="(service, index) in estimate.constructionTypes"
