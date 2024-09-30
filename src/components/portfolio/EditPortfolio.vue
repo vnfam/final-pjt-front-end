@@ -149,7 +149,7 @@ export default {
       projectBudget: '',
       constructionTypes: [],
       selectedTypes: [], // Checked construction types
-      buildingTypes: [],
+      buildingTypes: '',
       selectedBuildingType: '',
       today: '',
       portfolioId: '', // 수정할 포트폴리오 ID 저장
@@ -182,10 +182,12 @@ export default {
         this.projectLocation = data.projectLocation;
         this.floor = data.floor;
         this.projectBudget = data.projectBudget;
-        this.selectedBuildingType = data.buildingTypeId;
+
+        // 기존 건물 타입을 비교하여 라디오 버튼 설정
+        this.selectedBuildingType = this.buildingTypes.filter((type) => data.buildingType.includes(type.name));
 
         // 기존 시공 서비스를 비교하여 체크박스 설정
-        const serviceNames = data.constructionService; // 포트폴리오의 시공 서비스 (string 리스트)
+        const serviceNames = data.services; // 포트폴리오의 시공 서비스 (string 리스트)
 
         // 시공 타입과 비교해서 체크박스 활성화
         this.selectedTypes = this.constructionTypes
@@ -289,7 +291,7 @@ export default {
 
       const portfolioRequest = {
         title: this.title,
-        content: '대체 예정',
+        content: this.content,
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
