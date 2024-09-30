@@ -90,7 +90,6 @@ export default {
             range: range ? { index: range.index, length: 1 } : { index: this.quill.getLength(), length: 0 },
             placeholder: e.target.result,
           });
-          // 서버로 이미지를 업로드하고 Base64 이미지를 URL로 교체
         };
 
         reader.readAsDataURL(file);

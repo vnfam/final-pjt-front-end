@@ -58,6 +58,7 @@ import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vu
 import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
 import PlateformEventDetail from '@/components/plateformEvent/plateformEventDetail.vue';
 import UserCompleteRequests from '@/components/mypage/user/UserCompleteRequests.vue';
+import EditPortfolio from '@/components/portfolio/EditPortfolio.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -83,7 +84,7 @@ export default [
   { path: '/portfolio/create', component: CreatePortfolio },
   { path: '/portfolio', component: PortfolioList },
   { path: '/portfolio/:id', component: PortfolioDetail },
-
+  { path: '/portfolio/edit/:id', component: EditPortfolio },
   { path: '/estimate/list', component: EstimateList },
   { path: '/verify-email', component: VerifyCompo },
   {
