@@ -22,7 +22,7 @@
         <textarea
           v-model="content"
           class="mt-2 block w-full h-[500px] px-3 py-2 rounded border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen resize-none"
-          placeholder="공지사항을 입력해주세요."
+          placeholder="내용을 입력해주세요."
         ></textarea>
       </div>
 
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import authInstance from '@/utils/axiosUtils';
 import { ref } from 'vue';
 
@@ -55,13 +56,17 @@ export default {
     const content = ref('');
 
     const createNotice = async () => {
+      const isConfirm = confirm('공지사항을 등록하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
       try {
         const noticeData = {
           title: title.value,
           content: content.value,
         };
-        const response = await authInstance.post('/api/admin/notice/create', { noticeData });
-        console.log(response);
+        await authInstance.post('/api/admin/notice/create', noticeData);
+        router.push('/plateformEvent/list');
       } catch (error) {
         console.log('공지사항 등록을 실패했습니다.', error);
       }
