@@ -44,8 +44,8 @@ import AdminMembershipDetail from '@/components/admin/Membership/AdminMembership
 import AdminPlateformAskList from '@/components/admin/plateform/AdminPlateformAskList.vue';
 import AdminPlateformAskDetail from '@/components/admin/plateform/AdminPlateformAskDetail.vue';
 
-import CreateAdminPlateformEvent from '@/components/admin/plateform/CreateAdminPlateformEvent.vue';
-import AdminPlateformEventList from '@/components/admin/plateform/AdminPlateformEventList.vue';
+import AdminCreateNotice from '@/components/admin/plateform/AdminCreateNotice.vue';
+import AdminNoticeList from '@/components/admin/plateform/AdminNoticeList.vue';
 import AdminPlateformEventDetail from '@/components/admin/plateform/AdminPlateformEventDetail.vue';
 import AdminPlateformFAQList from '@/components/admin/plateform/AdminPlateformFAQList.vue';
 import AdminPlateformFAQDetail from '@/components/admin/plateform/AdminPlateformFAQDetail.vue';
@@ -190,12 +190,12 @@ export default [
         component: AdminMembershipDetail,
       },
       {
-        path: 'createAdminPlateformEvent',
-        component: CreateAdminPlateformEvent,
+        path: 'admincreatenotice',
+        component: AdminCreateNotice,
       },
       {
-        path: 'adminplateformEventList',
-        component: AdminPlateformEventList,
+        path: 'adminnoticelist',
+        component: AdminNoticeList,
       },
       {
         path: 'adminplateformEventDetail',
