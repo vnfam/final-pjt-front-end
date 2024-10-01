@@ -30,8 +30,8 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
           </tr>
         </thead>
-        <tbody v-for="(notice, index) in noticeList" :key="index">
-          <tr>
+        <tbody>
+          <tr v-for="(notice, index) in noticeList" :key="notice.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ notice.title }}
