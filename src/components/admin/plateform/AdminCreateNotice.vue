@@ -30,6 +30,7 @@
       <div class="flex gap-12">
         <button
           class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+          type="button"
           @click="this.$router.go(-1)"
         >
           되돌아가기

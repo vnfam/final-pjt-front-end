@@ -59,6 +59,8 @@ import NoticeList from '@/components/notice/NoticeList.vue';
 import NoticeDetail from '@/components/notice/NoticeDetail.vue';
 import UserCompleteRequests from '@/components/mypage/user/UserCompleteRequests.vue';
 import EditPortfolio from '@/components/portfolio/EditPortfolio.vue';
+import AdminCompanyList from '@/components/admin/company/AdminCompanyList.vue';
+import AdminCompanyDetail from '@/components/admin/company/AdminCompanyDetail.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -143,8 +145,16 @@ export default [
   {
     path: '/mypage/admin',
     component: AdminPageCompo,
-    redirect: '/mypage/admin/adminCompanyMembershipList',
+    redirect: '/mypage/admin/adminCompanyList',
     children: [
+      {
+        path: 'adminCompanyList',
+        component: AdminCompanyList,
+      },
+      {
+        path: 'adminCompanyList/:id',
+        component: AdminCompanyDetail,
+      },
       {
         path: 'adminCompanyMembershipList',
         component: AdminCompanyMembershipList,
