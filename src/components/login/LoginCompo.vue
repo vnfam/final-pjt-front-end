@@ -95,7 +95,8 @@
 
 <script>
 import { useUserStore } from '@/stores/userStore';
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
+
 export default {
   data() {
     return {
@@ -151,7 +152,7 @@ export default {
 
       // 서버 요청
       try {
-        const response = await axios.post(process.env.VUE_APP_SERVER_URI + `/form/login`, loginData, {
+        const response = await instance.post(`/api/form/login`, loginData, {
           withCredentials: true,
         });
 

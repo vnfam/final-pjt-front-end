@@ -79,4 +79,4 @@ function setAccessToken(accessToken) {
   localStorage.setItem('user', JSON.stringify(user));
 }
 
-export default { instance, authInstance };
+export { instance, authInstance };
