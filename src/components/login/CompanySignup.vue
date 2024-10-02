@@ -268,7 +268,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   data() {
@@ -410,10 +411,11 @@ export default {
       }
 
       try {
-        const response = await axios.get('/api/company/check-email', {
+        const response = await instance.get('/api/company/check-email', {
           params: { email: this.email },
         });
 
+        console.log(response);
         if (response.data) {
           this.errors.email = '이미 사용 중인 이메일입니다.';
         } else {
@@ -532,7 +534,7 @@ export default {
     // 시공 종류 조회
     async getConstructionType() {
       try {
-        const response = await axios.get('/api/constructionType');
+        const response = await instance.get('/api/constructionType');
         this.constructionTypes = response.data; // 시공 종류 데이터 저장
       } catch (error) {
         console.log(error);
@@ -575,7 +577,8 @@ export default {
 
         // 서버로 POST 요청
         try {
-          await axios.post('/api/company', formData);
+          const response = await instance.post('/api/company', formData);
+          console.log(response);
           alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
           this.$router.push('/');
         } catch (error) {
