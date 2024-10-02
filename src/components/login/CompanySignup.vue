@@ -268,7 +268,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { instance } from '@/utils/axiosUtils';
 
 export default {
@@ -413,7 +412,7 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${this.serverUri}/api/company/check-email`, {
+        const response = await instance.get(`/api/company/check-email`, {
           params: { email: this.email },
         });
 
@@ -536,7 +535,7 @@ export default {
     // 시공 종류 조회
     async getConstructionType() {
       try {
-        const response = await axios.get(`${this.serverUri}/api/constructionType`);
+        const response = await instance.get(`/api/constructionType`);
         this.constructionTypes = response.data; // 시공 종류 데이터 저장
       } catch (error) {
         console.log(error);
