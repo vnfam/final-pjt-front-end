@@ -268,7 +268,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 import { instance } from '@/utils/axiosUtils';
 
 export default {
@@ -296,6 +296,8 @@ export default {
       selectedFileName: '',
       logoFile: null, // 로고 이미지 파일
       previewImage: null, // 로고 이미지 미리보기 URL
+
+      serverUri: process.env.VUE_APP_SERVER_URI,
     };
   },
   computed: {
@@ -411,7 +413,7 @@ export default {
       }
 
       try {
-        const response = await instance.get('/api/company/check-email', {
+        const response = await axios.get(`${this.serverUri}/api/company/check-email`, {
           params: { email: this.email },
         });
 
@@ -534,7 +536,7 @@ export default {
     // 시공 종류 조회
     async getConstructionType() {
       try {
-        const response = await instance.get('/api/constructionType');
+        const response = await axios.get(`${this.serverUri}/api/constructionType`);
         this.constructionTypes = response.data; // 시공 종류 데이터 저장
       } catch (error) {
         console.log(error);
