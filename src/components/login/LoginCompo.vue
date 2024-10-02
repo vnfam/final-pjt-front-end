@@ -152,7 +152,7 @@ export default {
 
       // 서버 요청
       try {
-        const response = await instance.post(`/api/form/login`, loginData, {
+        const response = await instance.post(`/form/login`, loginData, {
           withCredentials: true,
         });
 
