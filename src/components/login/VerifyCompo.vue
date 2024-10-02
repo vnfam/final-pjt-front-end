@@ -13,7 +13,7 @@ export default {
     console.log(code);
 
     const request = async () => {
-      const response = await axios.post('http://localhost:8080/api/verify', {
+      const response = await axios.post(process.env.VUE_APP_SERVER_URI + '/api/verify', {
         verificationCode: code,
         email: email,
       });
