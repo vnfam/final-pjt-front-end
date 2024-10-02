@@ -69,7 +69,7 @@ import { useUserStore } from '@/stores/userStore';
 import { mapState } from 'pinia';
 import authInstance from '@/utils/axiosUtils';
 
-const SERVER_BASE_URL = 'http://localhost:8080';
+const SERVER_BASE_URL = process.env.VUE_APP_SERVER_URI;
 
 export default {
   data() {

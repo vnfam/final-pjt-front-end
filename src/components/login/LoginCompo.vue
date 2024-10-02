@@ -62,7 +62,7 @@
               type="button"
               class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
-              <a href="http://localhost:8080/oauth2/authorization/naver" class="inline-flex"
+              <a :href="`${serverUri}/oauth2/authorization/naver`" class="inline-flex">
                 ><img
                   alt="네이버 로고"
                   class="w-[160px] border-box"
@@ -76,7 +76,7 @@
               type="button"
               class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#fee500] border-[#fee500] text-black flex items-center justify-center"
             >
-              <a href="http://localhost:8080/oauth2/authorization/kakao" class="inline-flex">
+              <a :href="`${serverUri}/oauth2/authorization/kakao`" class="inline-flex">
                 <img
                   alt="카카오 로고"
                   loading="lazy"
@@ -102,6 +102,7 @@ export default {
       email: '',
       password: '',
       errorMessage: '',
+      serverUri: process.env.VUE_APP_SERVER_URI,
     };
   },
   methods: {
@@ -150,7 +151,7 @@ export default {
 
       // 서버 요청
       try {
-        const response = await axios.post(`http://localhost:8080/form/login`, loginData, {
+        const response = await axios.post(process.env.VUE_APP_SERVER_URI + `/form/login`, loginData, {
           withCredentials: true,
         });
 
