@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
