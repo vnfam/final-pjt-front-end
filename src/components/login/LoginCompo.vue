@@ -63,7 +63,7 @@
               class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
               <a :href="`${serverUri}/oauth2/authorization/naver`" class="inline-flex">
-                ><img
+                <img
                   alt="네이버 로고"
                   class="w-[160px] border-box"
                   loading="lazy"
